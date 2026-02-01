@@ -2062,9 +2062,10 @@ function StatisticsCards({ stats }: { stats: StatCard[] }) {
 
 ### 1. **SECURITY BUGS**
 
-#### 1.1. No Input Validation - `[...path]/route.ts`
+#### 1.1. No Input Validation - `[...path]/route.ts` ✅ **ĐÃ FIX**
 **File:** `app/api-proxy/[...path]/route.ts`  
-**Dòng:** 7-73
+**Dòng:** 7-73  
+**Status:** ✅ **FIXED** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -2083,13 +2084,22 @@ async function handleRequest(request: NextRequest, method: string) {
 - ❌ Không whitelist allowed paths
 - ❌ Có thể forward request đến internal services
 
-**Fix:**
+**Fix đã áp dụng:**
 ```typescript
+// Allowed API paths to prevent SSRF
 const ALLOWED_PATHS = [
   '/auth',
   '/friends',
   '/writing-chat-bot',
   '/assignment-attachments',
+  '/users',
+  '/classes',
+  '/students',
+  '/stats',
+  '/events',
+  '/news',
+  '/vocabulary',
+  '/writing',
 ];
 
 function isPathAllowed(path: string): boolean {
@@ -2101,7 +2111,7 @@ async function handleRequest(request: NextRequest, method: string) {
   const url = new URL(request.url);
   const path = url.pathname.replace('/api-proxy', '');
   
-  // Validate path
+  // Validate path to prevent SSRF
   if (!isPathAllowed(path)) {
     return new Response(
       JSON.stringify({ status: false, message: 'Path not allowed', data: null }),
@@ -2112,9 +2122,10 @@ async function handleRequest(request: NextRequest, method: string) {
   // Prevent SSRF - validate target URL
   const targetUrl = `${backendUrl}${path}${url.search}`;
   const targetUrlObj = new URL(targetUrl);
+  const backendUrlObj = new URL(backendUrl);
   
   // Ensure target is from allowed backend
-  if (targetUrlObj.hostname !== new URL(backendUrl).hostname) {
+  if (targetUrlObj.hostname !== backendUrlObj.hostname || targetUrlObj.protocol !== backendUrlObj.protocol) {
     return new Response(
       JSON.stringify({ status: false, message: 'Invalid target URL', data: null }),
       { status: 403, headers: { 'Content-Type': 'application/json' } }
@@ -2124,6 +2135,14 @@ async function handleRequest(request: NextRequest, method: string) {
   // ... rest of code
 }
 ```
+
+**Changes made:**
+1. ✅ Created `ALLOWED_PATHS` whitelist với tất cả valid API paths
+2. ✅ Added `isPathAllowed()` function để validate paths
+3. ✅ Added path validation trước khi forward request
+4. ✅ Added hostname và protocol validation để prevent SSRF
+5. ✅ Return 403 error nếu path không được phép
+6. ✅ Security improvement: Prevent access to internal services
 
 ---
 
