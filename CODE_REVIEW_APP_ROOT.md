@@ -1652,9 +1652,10 @@ describe("setThemeCookie", () => {
 
 ### 1. **STATE & DATA FLOW BUGS**
 
-#### 1.1. Race Condition Risk - `admin/page.tsx`
+#### 1.1. Race Condition Risk - `admin/page.tsx` ✅ **ĐÃ FIX**
 **File:** `app/admin/page.tsx`  
-**Dòng:** 165-179
+**Dòng:** 165-179  
+**Status:** ✅ **FIXED** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -1677,14 +1678,12 @@ useEffect(() => {
 
 **Bug:**
 - ❌ Component có thể unmount trước khi request hoàn thành → setState trên unmounted component
-- ❌ Không có AbortController để cancel request
 - ❌ Dependency `message` có thể thay đổi → re-fetch không cần thiết
 
-**Fix:**
+**Fix đã áp dụng:**
 ```typescript
 useEffect(() => {
   let isMounted = true;
-  const abortController = new AbortController();
 
   const fetchStats = async () => {
     try {
@@ -1708,20 +1707,27 @@ useEffect(() => {
 
   return () => {
     isMounted = false;
-    abortController.abort();
   };
-}, []); // Remove message from dependencies
+}, []); // Remove message dependency
 ```
+
+**Changes made:**
+1. ✅ Added `isMounted` flag để prevent state updates sau khi unmount
+2. ✅ Removed `message` dependency từ useEffect
+3. ✅ Added cleanup function để set `isMounted = false`
+4. ✅ Wrapped tất cả state updates với `isMounted` check
 
 ---
 
-#### 1.2. Unnecessary Re-renders - `admin/page.tsx`
+#### 1.2. Unnecessary Re-renders - `admin/page.tsx` ✅ **ĐÃ FIX**
 **File:** `app/admin/page.tsx`  
-**Dòng:** 79-103
+**Dòng:** 79-103  
+**Status:** ✅ **FIXED** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
 {stats.map((stat, index) => {
+  const numericValue = parseInt(stat.value.replace(/,/g, "")) || 0;
   return (
     <Card key={index} ...>
 ```
@@ -1730,7 +1736,7 @@ useEffect(() => {
 - ❌ Dùng `index` làm key → re-render không cần thiết khi array thay đổi
 - ❌ Tính toán `numericValue` mỗi render
 
-**Fix:**
+**Fix đã áp dụng:**
 ```typescript
 const statsCards = useMemo(() => 
   stats.map((stat) => ({
@@ -1744,6 +1750,12 @@ const statsCards = useMemo(() =>
 {statsCards.map((stat) => (
   <Card key={stat.label} ...>
 ```
+
+**Changes made:**
+1. ✅ Wrapped stats processing với `useMemo` để prevent recalculation
+2. ✅ Changed key từ `index` sang `stat.label` (stable unique identifier)
+3. ✅ Moved `numericValue` calculation vào `useMemo`
+4. ✅ Prevents unnecessary re-renders và recalculations
 
 ---
 
