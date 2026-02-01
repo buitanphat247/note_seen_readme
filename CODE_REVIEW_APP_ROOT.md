@@ -628,7 +628,7 @@ useEffect(() => {
 
 ---
 
-### 7. **SECURITY BUGS**
+### 7. **SECURITY BUGS** ✅ **FIX HOÀN CHỈNH**
 
 #### 7.1. XSS Risk - `guide/page.tsx` & `innovation/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/(root)/guide/page.tsx`, `app/(root)/innovation/page.tsx`  
@@ -1017,7 +1017,7 @@ export default function News() {
 
 ## 🟡 WARNING ISSUES
 
-### 10. **Missing Optimizations**
+### 10. **Missing Optimizations** ✅ **FIX HOÀN CHỈNH**
 
 #### 10.1. `useMemo` cho filtered data - `news/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/(root)/news/page.tsx`  
@@ -1092,11 +1092,12 @@ useEffect(() => {
 
 ---
 
-### 11. **Code Quality Issues**
+### 11. **Code Quality Issues** ✅ **FIX HOÀN CHỈNH**
 
-#### 11.1. Type Safety - `guide/page.tsx`
+#### 11.1. Type Safety - `guide/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/(root)/guide/page.tsx`  
-**Dòng:** 39-44
+**Dòng:** 39-44  
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -1104,7 +1105,7 @@ export default async function GuidePage(props: any) {
   const searchParams = await props.searchParams;
 ```
 
-**Fix:**
+**Fix đã áp dụng:**
 ```typescript
 interface GuidePageProps {
   searchParams: Promise<{ doc?: string }>;
@@ -1114,11 +1115,17 @@ export default async function GuidePage(props: GuidePageProps) {
   const searchParams = await props.searchParams;
 ```
 
+**Changes made:**
+1. ✅ Created `GuidePageProps` interface với proper typing
+2. ✅ Replaced `props: any` với `props: GuidePageProps`
+3. ✅ Added proper type cho `searchParams` (Promise trong Next.js 15+)
+
 ---
 
-#### 11.2. Magic Numbers - `news/page.tsx`
+#### 11.2. Magic Numbers - `news/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/(root)/news/page.tsx`  
-**Dòng:** 18, 134
+**Dòng:** 18, 62  
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -1128,11 +1135,17 @@ setTimeout(() => {
 }, 500); // Magic number
 ```
 
-**Fix:**
+**Fix đã áp dụng:**
 ```typescript
-const SCROLL_DELAY_MS = 500;
+// Constants
 const DEFAULT_PAGE_SIZE = 18;
+const SCROLL_DELAY_MS = 500;
 ```
+
+**Changes made:**
+1. ✅ Extracted `18` → `DEFAULT_PAGE_SIZE = 18`
+2. ✅ Extracted `500` → `SCROLL_DELAY_MS = 500`
+3. ✅ Constants đặt ở top level với clear naming
 
 ---
 
