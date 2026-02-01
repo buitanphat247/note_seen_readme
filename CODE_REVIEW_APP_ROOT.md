@@ -855,29 +855,49 @@ import {
 
 ---
 
-#### 9.3. Large Component - `writing/[id]/page.tsx` ⚠️ **DEFERRED**
+#### 9.3. Large Component - `writing/[id]/page.tsx` ✅ **ĐÃ FIX**
 **File:** `app/(root)/features/writing/[id]/page.tsx`  
-**Dòng:** 75-592  
-**Status:** ⚠️ **DEFERRED** - 2026-01-21
+**Dòng:** 75-592 (trước đây) → ~250 dòng (sau refactor)  
+**Status:** ✅ **FIXED** - 2026-01-21
 
 **Vấn đề:** Component quá lớn (592 dòng) → khó maintain, re-render toàn bộ
 
-**Fix đề xuất:** Split thành smaller components:
-- `WritingPracticeHeader`
-- `WritingPracticeContent`
-- `WritingPracticeControls`
-- `WritingPracticeTimer`
+**Fix đã áp dụng:** Split thành smaller components:
+- ✅ `WritingPracticeHeader` - Header với breadcrumb, title, timer, và back button
+- ✅ `WritingPracticeContent` - Vietnamese sentences display với scroll behavior
+- ✅ `WritingPracticeControls` - Transcript panel với toggle buttons và masked text
+- ✅ `WritingPracticeInput` - Input area với hint tooltip và submit button
 
-**Decision:**
-- ⚠️ Component quá lớn, cần refactor lớn
-- ⚠️ Có thể làm sau khi có thời gian
-- ✅ Component hiện tại vẫn hoạt động tốt
-- ✅ Không phải critical bug, chỉ là code quality issue
+**Changes made:**
+1. ✅ Created `components/WritingPracticeHeader.tsx` (~60 dòng)
+2. ✅ Created `components/WritingPracticeContent.tsx` (~80 dòng)
+3. ✅ Created `components/WritingPracticeControls.tsx` (~130 dòng) - includes MaskedText component
+4. ✅ Created `components/WritingPracticeInput.tsx` (~90 dòng)
+5. ✅ Refactored main `page.tsx` từ 592 dòng xuống ~250 dòng
+6. ✅ Moved `MaskedText` component vào `WritingPracticeControls` (better encapsulation)
+7. ✅ Improved code organization và maintainability
+8. ✅ Each component có single responsibility
+9. ✅ Components có thể được test và reuse độc lập
 
-**Recommendation:**
-- Plan refactor trong sprint tiếp theo
-- Split component thành smaller, reusable components
-- Improve maintainability và testability
+**Benefits:**
+- ✅ Reduced main component size: 592 → ~250 dòng (58% reduction)
+- ✅ Better code organization và maintainability
+- ✅ Improved testability (mỗi component có thể test riêng)
+- ✅ Better reusability (components có thể reuse ở nơi khác)
+- ✅ Reduced re-render scope (chỉ re-render component cần thiết)
+- ✅ Easier to understand và debug
+
+**File structure:**
+```
+app/(root)/features/writing/
+├── [id]/
+│   └── page.tsx (main component - ~250 dòng)
+└── components/
+    ├── WritingPracticeHeader.tsx (~60 dòng)
+    ├── WritingPracticeContent.tsx (~80 dòng)
+    ├── WritingPracticeControls.tsx (~130 dòng)
+    └── WritingPracticeInput.tsx (~90 dòng)
+```
 
 ---
 
