@@ -2787,7 +2787,10 @@ export const GET = (req: NextRequest) => proxyRequest(req, 'GET', {
 
 ---
 
-#### 4.2. Magic Numbers - Tất cả routes
+#### 4.2. Magic Numbers - Tất cả routes ✅ **ĐÃ FIX HOÀN CHỈNH**
+**File:** Tất cả files trong `app/api-proxy`  
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
+
 **Vấn đề:**
 ```typescript
 setTimeout(() => controller.abort(), 30000); // Magic number
@@ -2795,20 +2798,41 @@ setTimeout(() => controller.abort(), 10000); // Different in different files
 setTimeout(() => controller.abort(), 60000); // Another different value
 ```
 
-**Fix:**
+**Fix đã áp dụng:**
 ```typescript
-// Create constants file
-// app/api-proxy/constants.ts
-
+// Created constants file: app/api-proxy/constants.ts
 export const TIMEOUTS = {
   DEFAULT: 30000,      // 30 seconds
   PROFILE: 10000,      // 10 seconds
   AI_GENERATION: 60000, // 60 seconds
+  FILE_UPLOAD: 300000,  // 5 minutes
 } as const;
 
-// Usage:
+export const RATE_LIMIT = {
+  MAX_REQUESTS: 100,
+  WINDOW_MS: 60000, // 1 minute
+} as const;
+
+export const BODY_SIZE_LIMITS = {
+  DEFAULT: 10 * 1024 * 1024, // 10MB
+  FILE_UPLOAD: 100 * 1024 * 1024, // 100MB
+} as const;
+
+export const ALLOWED_COOKIE_NAMES = ['_u', 'access_token', 'refresh_token'] as const;
+
+// Usage in routes:
+import { TIMEOUTS, RATE_LIMIT, BODY_SIZE_LIMITS, ALLOWED_COOKIE_NAMES } from './constants';
 setTimeout(() => controller.abort(), TIMEOUTS.DEFAULT);
 ```
+
+**Changes made:**
+1. ✅ Created `app/api-proxy/constants.ts` với tất cả constants
+2. ✅ Extracted timeout values thành `TIMEOUTS` object
+3. ✅ Extracted rate limit config thành `RATE_LIMIT` object
+4. ✅ Extracted body size limits thành `BODY_SIZE_LIMITS` object
+5. ✅ Extracted allowed cookie names thành `ALLOWED_COOKIE_NAMES` constant
+6. ✅ Updated `[...path]/route.ts`, `auth/profile/route.ts`, `auth/refresh/route.ts`, `writing-chat-bot/generate/route.ts`, `assignment-attachments/route.ts` để sử dụng constants
+7. ✅ All magic numbers replaced với named constants
 
 ---
 
