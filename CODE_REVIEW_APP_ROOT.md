@@ -2349,9 +2349,10 @@ try {
 
 ---
 
-#### 2.2. Body Size Limit - `writing-chat-bot/generate/route.ts`
+#### 2.2. Body Size Limit - `writing-chat-bot/generate/route.ts` ✅ **ĐÃ FIX**
 **File:** `app/api-proxy/writing-chat-bot/generate/route.ts`  
-**Dòng:** 9
+**Dòng:** 9  
+**Status:** ✅ **FIXED** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -2362,22 +2363,30 @@ const body = await request.json();
 - ❌ Không check body size → có thể bị DoS với large payload
 - ❌ Không validate body structure
 
-**Fix:**
+**Fix đã áp dụng:**
 ```typescript
+// Constants
 const MAX_BODY_SIZE = 10 * 1024 * 1024; // 10MB
 
 export async function POST(request: NextRequest) {
   try {
-    // Check content-length
+    // Check content-length to prevent DoS
     const contentLength = request.headers.get('content-length');
-    if (contentLength && parseInt(contentLength) > MAX_BODY_SIZE) {
+    if (contentLength && parseInt(contentLength, 10) > MAX_BODY_SIZE) {
       return NextResponse.json(
-        { status: 500, message: 'Request body too large' },
+        { status: 500, message: 'Request body too large. Maximum size is 10MB.' },
         { status: 413 }
       );
     }
     
-    // Read body with size limit
+    const body = await request.json();
+```
+
+**Changes made:**
+1. ✅ Added `MAX_BODY_SIZE` constant (10MB)
+2. ✅ Check `content-length` header trước khi parse body
+3. ✅ Return 413 (Payload Too Large) nếu body quá lớn
+4. ✅ Prevent DoS attacks với large payloads
     const bodyText = await request.text();
     if (bodyText.length > MAX_BODY_SIZE) {
       return NextResponse.json(
