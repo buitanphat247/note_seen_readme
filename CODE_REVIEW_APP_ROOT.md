@@ -542,20 +542,32 @@ useEffect(() => {
 
 ---
 
-#### 5.2. Event Listener không cleanup - `news/page.tsx`
+#### 5.2. Event Listener không cleanup - `news/page.tsx` ✅ **ĐÃ FIX**
 **File:** `app/(root)/news/page.tsx`  
-**Dòng:** 16 (state `isScrolling`)
+**Dòng:** 16 (state `isScrolling`)  
+**Status:** ✅ **FIXED** - 2026-01-21
 
 **Vấn đề:** Không có event listener nhưng state `isScrolling` có thể leak nếu component unmount giữa timeout
 
-**Fix:**
+**Fix đã áp dụng:**
 ```typescript
+// Cleanup timeout and state on unmount
 useEffect(() => {
   return () => {
-    setIsScrolling(false); // Cleanup on unmount
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
+      scrollTimeoutRef.current = null;
+    }
+    setIsScrolling(false); // Cleanup state on unmount
   };
 }, []);
 ```
+
+**Changes made:**
+1. ✅ Added cleanup function trong `useEffect` để clear timeout
+2. ✅ Added `setIsScrolling(false)` để reset state khi unmount
+3. ✅ Clear `scrollTimeoutRef.current` để prevent memory leaks
+4. ✅ Prevents state updates sau khi component unmount
 
 ---
 
