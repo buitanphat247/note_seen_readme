@@ -2146,9 +2146,10 @@ async function handleRequest(request: NextRequest, method: string) {
 
 ---
 
-#### 1.2. Cookie Forwarding Security - `[...path]/route.ts`
+#### 1.2. Cookie Forwarding Security - `[...path]/route.ts` ✅ **ĐÃ FIX**
 **File:** `app/api-proxy/[...path]/route.ts`  
-**Dòng:** 18-21, 52
+**Dòng:** 18-21, 52  
+**Status:** ✅ **FIXED** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -2165,9 +2166,9 @@ setCookies.forEach(c => responseHeaders.append('Set-Cookie', c.replace(/;\s*doma
 - ❌ Không validate cookie domain
 - ❌ Domain replacement regex có thể không đủ
 
-**Fix:**
+**Fix đã áp dụng:**
 ```typescript
-// Only forward specific cookies
+// Only forward specific cookies to prevent leaking sensitive cookies
 const ALLOWED_COOKIE_NAMES = ['_u', 'access_token', 'refresh_token'];
 
 function filterCookies(cookieHeader: string | null): string {
@@ -2175,7 +2176,7 @@ function filterCookies(cookieHeader: string | null): string {
   
   const cookies = cookieHeader.split(';').map(c => c.trim());
   const filtered = cookies.filter(cookie => {
-    const name = cookie.split('=')[0];
+    const name = cookie.split('=')[0].trim();
     return ALLOWED_COOKIE_NAMES.includes(name);
   });
   
@@ -2183,12 +2184,11 @@ function filterCookies(cookieHeader: string | null): string {
 }
 
 // In handleRequest:
-const cookie = filterCookies(request.headers.get('cookie'));
-if (cookie) headers['Cookie'] = cookie;
+const filteredCookie = filterCookies(cookie);
+if (filteredCookie) headers['Cookie'] = filteredCookie;
 
 // When forwarding Set-Cookie:
 setCookies.forEach(c => {
-  // Remove domain, secure, httpOnly, sameSite to prevent issues
   const cleaned = c
     .replace(/;\s*domain=[^;]*/gi, '')
     .replace(/;\s*secure/gi, '')
@@ -2197,6 +2197,13 @@ setCookies.forEach(c => {
   responseHeaders.append('Set-Cookie', cleaned);
 });
 ```
+
+**Changes made:**
+1. ✅ Created `ALLOWED_COOKIE_NAMES` whitelist
+2. ✅ Added `filterCookies()` function để chỉ forward allowed cookies
+3. ✅ Improved Set-Cookie cleaning với multiple regex replacements
+4. ✅ Removed secure, httpOnly, sameSite flags để prevent issues
+5. ✅ Security improvement: Prevent cookie leakage
 
 ---
 
