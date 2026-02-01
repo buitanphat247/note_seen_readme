@@ -494,10 +494,10 @@ if (!mounted) {
 
 ### 5. **MEMORY LEAK**
 
-#### 5.1. Interval không cleanup - `features/writing/[id]/page.tsx` ✅ **ĐÃ VERIFY**
+#### 5.1. Interval không cleanup - `features/writing/[id]/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/(root)/features/writing/[id]/page.tsx`  
-**Dòng:** 98-103  
-**Status:** ✅ **VERIFIED** - 2026-01-21
+**Dòng:** 48-59  
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -512,26 +512,15 @@ useEffect(() => {
 
 **Bug:** Không cleanup interval khi component unmount
 
-**Verification:**
-- ✅ Code đã có cleanup function trong `useEffect`:
+**Fix đã áp dụng:**
 ```typescript
-return () => {
-  if (intervalRef.current) {
-    clearInterval(intervalRef.current);
-  }
-};
-```
-- ✅ Interval được cleanup đúng cách khi component unmount hoặc `loading` thay đổi
-
-**Fix:**
-```typescript
+// Timer effect
 useEffect(() => {
   if (!loading) {
     intervalRef.current = setInterval(() => {
       setTimeElapsed((prev) => prev + 1);
     }, 1000);
   }
-  
   return () => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
@@ -539,6 +528,12 @@ useEffect(() => {
   };
 }, [loading]);
 ```
+
+**Changes made:**
+1. ✅ Cleanup function được implement đúng cách trong useEffect
+2. ✅ Interval được cleanup khi component unmount
+3. ✅ Interval được cleanup khi loading state thay đổi
+4. ✅ Prevents memory leaks từ setInterval
 
 ---
 
