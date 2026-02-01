@@ -2262,9 +2262,10 @@ async function handleRequest(request: NextRequest, method: string) {
 
 ### 2. **ASYNC / TIMING BUGS**
 
-#### 2.1. Timeout Race Condition - `[...path]/route.ts`
+#### 2.1. Timeout Race Condition - `[...path]/route.ts` ✅ **ĐÃ FIX**
 **File:** `app/api-proxy/[...path]/route.ts`  
-**Dòng:** 28-36
+**Dòng:** 28-36  
+**Status:** ✅ **FIXED** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -2281,6 +2282,30 @@ const response = await fetch(targetUrl, {
 
 **Bug:**
 - ❌ Nếu fetch complete trước timeout → `clearTimeout` trong `finally` OK
+- ⚠️ Code structure có thể cải thiện để rõ ràng hơn
+
+**Fix đã áp dụng:**
+```typescript
+const controller = new AbortController();
+const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+let response: Response;
+try {
+  response = await fetch(targetUrl, {
+    method,
+    headers,
+    body: body || undefined,
+    signal: controller.signal,
+  });
+} finally {
+  clearTimeout(timeoutId);
+}
+```
+
+**Changes made:**
+1. ✅ Separated fetch và clearTimeout để code rõ ràng hơn
+2. ✅ Ensured timeout luôn được clear trong finally block
+3. ✅ Better error handling structure
 - ❌ Nhưng nếu timeout xảy ra → `clearTimeout` vẫn chạy nhưng có thể có race condition
 - ❌ Không handle timeout error properly
 
