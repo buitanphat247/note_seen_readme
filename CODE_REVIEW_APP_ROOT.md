@@ -4647,9 +4647,10 @@ const MESSAGES_LIMIT = 50;
 
 ### 1. **STATE & DATA FLOW BUGS**
 
-#### 1.1. Race Condition Risk - `super-admin/page.tsx`
+#### 1.1. Race Condition Risk - `super-admin/page.tsx` ✅ **ĐÃ FIX**
 **File:** `app/super-admin/page.tsx`  
-**Dòng:** 159-173
+**Dòng:** 159-173  
+**Status:** ✅ **FIXED** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -4674,7 +4675,7 @@ useEffect(() => {
 - ❌ Component có thể unmount trước khi request hoàn thành → setState trên unmounted component
 - ❌ Dependency `message` có thể thay đổi → re-fetch không cần thiết
 
-**Fix:**
+**Fix đã áp dụng:**
 ```typescript
 useEffect(() => {
   let isMounted = true;
@@ -4705,11 +4706,18 @@ useEffect(() => {
 }, []); // Remove message dependency
 ```
 
+**Changes made:**
+1. ✅ Added `isMounted` flag để prevent state updates sau khi unmount
+2. ✅ Removed `message` dependency từ useEffect
+3. ✅ Added cleanup function để set `isMounted = false`
+4. ✅ Wrapped tất cả state updates với `isMounted` check
+
 ---
 
-#### 1.2. Unnecessary Re-renders - `super-admin/page.tsx`
+#### 1.2. Unnecessary Re-renders - `super-admin/page.tsx` ✅ **ĐÃ FIX**
 **File:** `app/super-admin/page.tsx`  
-**Dòng:** 141-145
+**Dòng:** 141-145  
+**Status:** ✅ **FIXED** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -4721,12 +4729,16 @@ useEffect(() => {
 **Bug:**
 - ❌ Dùng `index` làm key → re-render không cần thiết khi array thay đổi
 
-**Fix:**
+**Fix đã áp dụng:**
 ```typescript
 {stats.map((stat) => (
   <StatCard key={stat.label} {...stat} />
 ))}
 ```
+
+**Changes made:**
+1. ✅ Changed key từ `index` sang `stat.label` (stable unique identifier)
+2. ✅ Prevents unnecessary re-renders khi array order changes
 
 ---
 
