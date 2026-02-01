@@ -1240,18 +1240,27 @@ const SCROLL_DELAY_MS = 500;
 
 ## 🔧 RECOMMENDED ACTIONS
 
-1. **Immediate:**
-   - Fix race conditions với AbortController
-   - Cleanup intervals/timeouts
-   - Fix hydration issues
+### ✅ Completed Actions (app/(root))
+1. ✅ **Immediate:**
+   - ✅ Fix race conditions với AbortController
+   - ✅ Cleanup intervals/timeouts
+   - ✅ Fix hydration issues
+   - ✅ Add ErrorBoundary
+   - ✅ Optimize re-renders với useMemo/useCallback
+   - ✅ Improve error handling
+   - ✅ Fix type safety issues
+   - ✅ Optimize bundle size với tree-shaking
 
-2. **Short-term:**
-   - Add ErrorBoundary
-   - Optimize re-renders
-   - Improve error handling
+2. ✅ **Short-term:**
+   - ✅ Split large components (writing/[id]/page.tsx)
+   - ✅ Fix memory leaks
+   - ✅ Fix date formatting consistency
+   - ✅ Extract magic numbers thành constants
 
-3. **Long-term:**
-   - Split large components
+3. **Long-term (Optional improvements):**
+   - Extract hardcoded arrays to constants file
+   - Consistent loading skeleton pattern
+   - Centralized error message constants
    - Optimize bundle size
    - Add comprehensive tests
 
