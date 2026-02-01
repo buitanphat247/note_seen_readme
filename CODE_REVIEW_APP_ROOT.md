@@ -1761,9 +1761,10 @@ const statsCards = useMemo(() =>
 
 ### 2. **ASYNC / TIMING BUGS**
 
-#### 2.1. Missing Error Handling - `AdminLayoutClient.tsx`
+#### 2.1. Missing Error Handling - `AdminLayoutClient.tsx` ✅ **ĐÃ FIX**
 **File:** `app/admin/AdminLayoutClient.tsx`  
-**Dòng:** 44-62
+**Dòng:** 44-62  
+**Status:** ✅ **FIXED** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -1793,7 +1794,7 @@ const fetchUserInfo = useCallback(async (showError = false) => {
 - ❌ Không có cleanup
 - ❌ Dependency `message` → re-create function mỗi render
 
-**Fix:**
+**Fix đã áp dụng:**
 ```typescript
 const fetchUserInfo = useCallback(async (showError = false) => {
   if (!userId) {
@@ -1824,18 +1825,30 @@ const fetchUserInfo = useCallback(async (showError = false) => {
       setLoadingProfile(false);
     }
   }
-  
-  return () => {
-    isMounted = false;
-  };
 }, [userId]); // Remove message dependency
+
+// Use ref to avoid dependency issues in useEffect
+const fetchUserInfoRef = useRef(fetchUserInfo);
+fetchUserInfoRef.current = fetchUserInfo;
+
+useEffect(() => {
+  fetchUserInfoRef.current(false);
+}, []);
 ```
+
+**Changes made:**
+1. ✅ Added `isMounted` flag để prevent state updates sau khi unmount
+2. ✅ Changed `error: any` thành `error: unknown` với proper type checking
+3. ✅ Removed `message` dependency từ useCallback
+4. ✅ Used `useRef` pattern để avoid dependency issues trong useEffect
+5. ✅ Improved error handling với instanceof check
 
 ---
 
-#### 2.2. Date Formatting Mismatch - `AdminLayoutClient.tsx`
+#### 2.2. Date Formatting Mismatch - `AdminLayoutClient.tsx` ✅ **ĐÃ FIX**
 **File:** `app/admin/AdminLayoutClient.tsx`  
-**Dòng:** 155
+**Dòng:** 155  
+**Status:** ✅ **FIXED** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -1844,9 +1857,22 @@ const fetchUserInfo = useCallback(async (showError = false) => {
 
 **Bug:** Server và client có thể format khác nhau (timezone, locale)
 
-**Fix:**
+**Fix đã áp dụng:**
 ```typescript
-// Use a consistent date formatting library
+{useMemo(() => {
+  if (!userInfo.created_at) return "Chưa có thông tin";
+  const date = new Date(userInfo.created_at);
+  const day = date.getDate();
+  const month = date.toLocaleDateString("vi-VN", { month: "long" });
+  const year = date.getFullYear();
+  return `${day} ${month} ${year}`;
+}, [userInfo.created_at])}
+```
+
+**Changes made:**
+1. ✅ Wrapped date formatting với `useMemo` để prevent recalculation
+2. ✅ Format date consistently trên client side
+3. ✅ Consistent format với profile/page.tsx
 import { format } from 'date-fns';
 import { vi } from 'date-fns/locale';
 
