@@ -6,6 +6,122 @@
 
 ---
 
+## 📑 MỤC LỤC
+
+### 📁 app/(root)
+- [📊 TỔNG QUAN](#-tổng-quan)
+- [🔴 CRITICAL ISSUES](#-critical-issues)
+  - [1. STATE & DATA FLOW BUGS](#1-state--data-flow-bugs--fix-hoàn-chỉnh)
+  - [2. ASYNC / TIMING BUGS](#2-async--timing-bugs--fix-hoàn-chỉnh)
+  - [3. RENDER / REACT LIFECYCLE BUGS](#3-render--react-lifecycle-bugs)
+  - [4. HYDRATION / SSR BUGS](#4-hydration--ssr-bugs--fix-hoàn-chỉnh)
+  - [5. MEMORY LEAK](#5-memory-leak--fix-hoàn-chỉnh)
+  - [6. UI / CSS BUGS](#6-ui--css-bugs--fix-hoàn-chỉnh)
+  - [7. SECURITY BUGS](#7-security-bugs--fix-hoàn-chỉnh)
+  - [8. ERROR HANDLING BUGS](#8-error-handling-bugs--fix-hoàn-chỉnh)
+  - [9. PERFORMANCE BUGS](#9-performance-bugs--fix-hoàn-chỉnh)
+  - [11. CODE QUALITY ISSUES](#11-code-quality-issues--fix-hoàn-chỉnh)
+- [🟡 WARNING ISSUES](#-warning-issues)
+- [🟢 INFO / SUGGESTIONS](#-info--suggestions)
+- [📈 PERFORMANCE METRICS](#-performance-metrics)
+- [✅ PRIORITY FIX LIST](#-priority-fix-list)
+- [📝 SUMMARY](#-summary)
+- [🔧 RECOMMENDED ACTIONS](#-recommended-actions)
+
+### 📁 app/actions
+- [📁 PHÂN TÍCH: app/actions](#-phân-tích-appactions)
+- [🔴 CRITICAL ISSUES - app/actions](#-critical-issues---appactions)
+- [🟡 WARNING ISSUES - app/actions](#-warning-issues---appactions)
+- [🟢 INFO / SUGGESTIONS - app/actions](#-info--suggestions---appactions)
+- [📈 PERFORMANCE METRICS - app/actions](#-performance-metrics---appactions)
+- [✅ PRIORITY FIX LIST - app/actions](#-priority-fix-list---appactions)
+- [📝 SUMMARY - app/actions](#-summary---appactions)
+- [🔧 RECOMMENDED ACTIONS - app/actions](#-recommended-actions---appactions)
+
+### 📁 app/admin
+- [📁 PHÂN TÍCH: app/admin](#-phân-tích-appadmin)
+- [🔴 CRITICAL ISSUES - app/admin](#-critical-issues---appadmin)
+- [🟡 WARNING ISSUES - app/admin](#-warning-issues---appadmin)
+
+### 📁 app/api-proxy
+- [📁 PHÂN TÍCH: app/api-proxy](#-phân-tích-appapi-proxy)
+- [🔴 CRITICAL ISSUES - app/api-proxy](#-critical-issues---appapi-proxy)
+- [🟡 WARNING ISSUES - app/api-proxy](#-warning-issues---appapi-proxy)
+- [📈 PERFORMANCE METRICS - app/admin & app/api-proxy](#-performance-metrics---appadmin--appapi-proxy)
+- [✅ PRIORITY FIX LIST - app/admin & app/api-proxy](#-priority-fix-list---appadmin--appapi-proxy)
+- [📝 SUMMARY - app/admin & app/api-proxy](#-summary---appadmin--appapi-proxy)
+- [🔧 RECOMMENDED ACTIONS - app/admin & app/api-proxy](#-recommended-actions---appadmin--appapi-proxy)
+
+### 📁 app/auth, app/config, app/components
+- [📁 PHÂN TÍCH: app/auth](#-phân-tích-appauth)
+- [📁 PHÂN TÍCH: app/config](#-phân-tích-appconfig)
+- [📁 PHÂN TÍCH: app/components](#-phân-tích-appcomponents)
+- [🔴 CRITICAL ISSUES - app/auth](#-critical-issues---appauth)
+- [🔴 CRITICAL ISSUES - app/config](#-critical-issues---appconfig)
+- [🔴 CRITICAL ISSUES - app/components](#-critical-issues---appcomponents)
+- [🟡 WARNING ISSUES - app/auth](#-warning-issues---appauth)
+- [🟡 WARNING ISSUES - app/config](#-warning-issues---appconfig)
+- [🟡 WARNING ISSUES - app/components](#-warning-issues---appcomponents)
+- [📈 PERFORMANCE METRICS - app/auth, app/config, app/components](#-performance-metrics---appauth-appconfig-appcomponents)
+- [✅ PRIORITY FIX LIST - app/auth, app/config, app/components](#-priority-fix-list---appauth-appconfig-appcomponents)
+- [📝 SUMMARY - app/auth, app/config, app/components](#-summary---appauth-appconfig-appcomponents)
+- [🔧 RECOMMENDED ACTIONS - app/auth, app/config, app/components](#-recommended-actions---appauth-appconfig-appcomponents)
+
+### 📁 app/context, app/hooks, app/social
+- [📁 PHÂN TÍCH: app/context](#-phân-tích-appcontext)
+- [📁 PHÂN TÍCH: app/hooks](#-phân-tích-apphooks)
+- [📁 PHÂN TÍCH: app/social](#-phân-tích-appsocial)
+- [🔴 CRITICAL ISSUES - app/context](#-critical-issues---appcontext)
+- [🔴 CRITICAL ISSUES - app/hooks](#-critical-issues---apphooks)
+- [🔴 CRITICAL ISSUES - app/social](#-critical-issues---appsocial)
+- [🟡 WARNING ISSUES - app/context](#-warning-issues---appcontext)
+- [🟡 WARNING ISSUES - app/hooks](#-warning-issues---apphooks)
+- [🟡 WARNING ISSUES - app/social](#-warning-issues---appsocial)
+- [📈 PERFORMANCE METRICS - app/context, app/hooks, app/social](#-performance-metrics---appcontext-apphooks-appsocial)
+- [✅ PRIORITY FIX LIST - app/context, app/hooks, app/social](#-priority-fix-list---appcontext-apphooks-appsocial)
+- [📝 SUMMARY - app/context, app/hooks, app/social](#-summary---appcontext-apphooks-appsocial)
+- [🔧 RECOMMENDED ACTIONS - app/context, app/hooks, app/social](#-recommended-actions---appcontext-apphooks-appsocial)
+
+### 📁 app/super-admin, app/user, app (Global)
+- [📁 PHÂN TÍCH: app/super-admin](#-phân-tích-appsuper-admin)
+- [📁 PHÂN TÍCH: app/user](#-phân-tích-appuser)
+- [📁 PHÂN TÍCH: app (Global Files)](#-phân-tích-app-global-files)
+- [🔴 CRITICAL ISSUES - app/super-admin](#-critical-issues---appsuper-admin)
+- [🔴 CRITICAL ISSUES - app/user](#-critical-issues---appuser)
+- [🔴 CRITICAL ISSUES - app (Global Files)](#-critical-issues---app-global-files)
+- [🟡 WARNING ISSUES - app/super-admin](#-warning-issues---appsuper-admin)
+- [🟡 WARNING ISSUES - app/user](#-warning-issues---appuser)
+- [🟡 WARNING ISSUES - app (Global Files)](#-warning-issues---app-global-files)
+- [📈 PERFORMANCE METRICS - app/super-admin, app/user, app (Global)](#-performance-metrics---appsuper-admin-appuser-app-global)
+- [✅ PRIORITY FIX LIST - app/super-admin, app/user, app (Global)](#-priority-fix-list---appsuper-admin-appuser-app-global)
+- [📝 SUMMARY - app/super-admin, app/user, app (Global)](#-summary---appsuper-admin-appuser-app-global)
+- [🔧 RECOMMENDED ACTIONS - app/super-admin, app/user, app (Global)](#-recommended-actions---appsuper-admin-appuser-app-global)
+
+### 📁 interface & lib
+- [📁 PHÂN TÍCH: interface](#-phân-tích-interface)
+- [📁 PHÂN TÍCH: lib](#-phân-tích-lib)
+- [🔴 CRITICAL ISSUES - interface](#-critical-issues---interface)
+- [🔴 CRITICAL ISSUES - lib](#-critical-issues---lib)
+- [🟡 WARNING ISSUES - interface](#-warning-issues---interface)
+- [🟡 WARNING ISSUES - lib](#-warning-issues---lib)
+- [📈 PERFORMANCE METRICS - interface & lib](#-performance-metrics---interface--lib)
+- [✅ PRIORITY FIX LIST - interface & lib](#-priority-fix-list---interface--lib)
+- [📝 SUMMARY - interface & lib](#-summary---interface--lib)
+- [🔧 RECOMMENDED ACTIONS - interface & lib](#-recommended-actions---interface--lib)
+
+### 📊 Tổng kết & Performance
+- [📊 TỔNG KẾT TOÀN BỘ CODE REVIEW](#-tổng-kết-toàn-bộ-code-review)
+- [📊 FINAL TỔNG KẾT TOÀN BỘ CODE REVIEW](#-final-tổng-kết-toàn-bộ-code-review)
+- [🚀 ĐÁNH GIÁ HIỆU NĂNG VÀ MODULES ĐẠT CHUẨN PERFORMANCE](#-đánh-giá-hiệu-năng-và-modules-đạt-chuẩn-performance)
+- [✅ MODULES ĐẠT CHUẨN PERFORMANCE](#-modules-đạt-chuẩn-performance)
+- [📊 PERFORMANCE BENCHMARKS](#-performance-benchmarks)
+- [🎯 PERFORMANCE BEST PRACTICES IDENTIFIED](#-performance-best-practices-identified)
+- [🔍 MODULES CẦN CẢI THIỆN PERFORMANCE](#-modules-cần-cải-thiện-performance)
+- [📈 PERFORMANCE RECOMMENDATIONS](#-performance-recommendations)
+- [🏆 KẾT LUẬN](#-kết-luận)
+
+---
+
 ## 📊 TỔNG QUAN
 
 ### Thống kê
