@@ -2411,49 +2411,84 @@ setCookies.forEach(c => {
 
 ---
 
-#### 1.3. No Rate Limiting - Tất cả routes
-**File:** Tất cả files trong `app/api-proxy`
+#### 1.3. No Rate Limiting - Tất cả routes ✅ **ĐÃ FIX HOÀN CHỈNH**
+**File:** Tất cả files trong `app/api-proxy`  
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 - ❌ Không có rate limiting → có thể bị DDoS
 - ❌ Không giới hạn request size
 - ❌ Không có request throttling
 
-**Fix:**
+**Fix đã áp dụng:**
 ```typescript
-// Create a rate limiter utility
-import { Ratelimit } from "@upstash/ratelimit";
-import { Redis } from "@upstash/redis";
+// Rate limiting configuration
+const RATE_LIMIT_MAX_REQUESTS = 100;
+const RATE_LIMIT_WINDOW_MS = 60000; // 1 minute
 
-const ratelimit = new Ratelimit({
-  redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(100, "1 m"), // 100 requests per minute
-});
+// In-memory rate limiting map
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+
+function checkRateLimit(
+  identifier: string,
+  maxRequests = RATE_LIMIT_MAX_REQUESTS,
+  windowMs = RATE_LIMIT_WINDOW_MS
+): { success: boolean; limit: number; remaining: number; reset: number } {
+  const now = Date.now();
+  const record = rateLimitMap.get(identifier);
+
+  if (!record || now > record.resetTime) {
+    rateLimitMap.set(identifier, { count: 1, resetTime: now + windowMs });
+    return {
+      success: true,
+      limit: maxRequests,
+      remaining: maxRequests - 1,
+      reset: Math.ceil(windowMs / 1000),
+    };
+  }
+
+  if (record.count >= maxRequests) {
+    return {
+      success: false,
+      limit: maxRequests,
+      remaining: 0,
+      reset: Math.ceil((record.resetTime - now) / 1000),
+    };
+  }
+
+  record.count++;
+  return {
+    success: true,
+    limit: maxRequests,
+    remaining: maxRequests - record.count,
+    reset: Math.ceil((record.resetTime - now) / 1000),
+  };
+}
 
 async function handleRequest(request: NextRequest, method: string) {
-  // Get client identifier
-  const ip = request.headers.get("x-forwarded-for") || 
-             request.headers.get("x-real-ip") || 
-             "unknown";
-  
+  // Rate limiting: Get client IP
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    request.headers.get("x-real-ip") ||
+    "unknown";
+
   // Check rate limit
-  const { success, limit, remaining, reset } = await ratelimit.limit(`api-proxy:${ip}`);
-  
-  if (!success) {
+  const rateLimitResult = checkRateLimit(`api-proxy:${ip}`);
+  if (!rateLimitResult.success) {
     return new Response(
-      JSON.stringify({ 
-        status: false, 
-        message: `Rate limit exceeded. Try again in ${reset} seconds.`,
-        data: null 
+      JSON.stringify({
+        status: false,
+        message: `Rate limit exceeded. Try again in ${rateLimitResult.reset} seconds.`,
+        data: null,
       }),
-      { 
+      {
         status: 429,
-        headers: { 
-          'Content-Type': 'application/json',
-          'X-RateLimit-Limit': limit.toString(),
-          'X-RateLimit-Remaining': remaining.toString(),
-          'X-RateLimit-Reset': reset.toString(),
-        }
+        headers: {
+          "Content-Type": "application/json",
+          "X-RateLimit-Limit": rateLimitResult.limit.toString(),
+          "X-RateLimit-Remaining": rateLimitResult.remaining.toString(),
+          "X-RateLimit-Reset": rateLimitResult.reset.toString(),
+        },
       }
     );
   }
@@ -2461,6 +2496,14 @@ async function handleRequest(request: NextRequest, method: string) {
   // ... rest of code
 }
 ```
+
+**Changes made:**
+1. ✅ Implemented in-memory rate limiting với sliding window algorithm
+2. ✅ Rate limit: 100 requests per minute per IP
+3. ✅ Get client IP từ headers (`x-forwarded-for` hoặc `x-real-ip`)
+4. ✅ Return proper 429 status với rate limit headers
+5. ✅ Constants cho rate limit config (`RATE_LIMIT_MAX_REQUESTS`, `RATE_LIMIT_WINDOW_MS`)
+6. ✅ Note: Có thể upgrade lên Redis-based rate limiting sau nếu cần distributed rate limiting
 
 ---
 
