@@ -901,6 +901,90 @@ app/(root)/features/writing/
 
 ---
 
+### 11. **CODE QUALITY ISSUES**
+
+#### 11.1. Type Safety - `guide/page.tsx` ✅ **ĐÃ FIX**
+**File:** `app/(root)/guide/page.tsx`  
+**Dòng:** 39-44  
+**Status:** ✅ **FIXED** - 2026-01-21
+
+**Vấn đề:**
+```typescript
+export default async function GuidePage(props: any) {
+  const searchParams = await props.searchParams;
+```
+
+**Bug:** Sử dụng `any` type → mất type safety, không có IntelliSense
+
+**Fix đã áp dụng:**
+```typescript
+interface GuidePageProps {
+  searchParams: Promise<{ doc?: string }>;
+}
+
+export default async function GuidePage(props: GuidePageProps) {
+  const searchParams = await props.searchParams;
+```
+
+**Changes made:**
+1. ✅ Created `GuidePageProps` interface với proper typing
+2. ✅ Replaced `props: any` với `props: GuidePageProps`
+3. ✅ Added proper type cho `searchParams` (Promise trong Next.js 15+)
+4. ✅ Applied same fix cho `innovation/page.tsx`
+
+**Benefits:**
+- ✅ Type safety - TypeScript có thể catch errors tại compile time
+- ✅ Better IntelliSense - IDE có thể suggest properties
+- ✅ Self-documenting code - Types mô tả rõ ràng structure
+- ✅ Easier refactoring - TypeScript sẽ warn nếu structure thay đổi
+
+---
+
+#### 11.2. Magic Numbers - `news/page.tsx` ✅ **ĐÃ FIX**
+**File:** `app/(root)/news/page.tsx`  
+**Dòng:** 18, 62  
+**Status:** ✅ **FIXED** - 2026-01-21
+
+**Vấn đề:**
+```typescript
+const pageSize = 18;
+setTimeout(() => {
+  setIsScrolling(false);
+}, 500); // Magic number
+```
+
+**Bug:** Magic numbers không có ý nghĩa rõ ràng, khó maintain và thay đổi
+
+**Fix đã áp dụng:**
+```typescript
+// Constants
+const DEFAULT_PAGE_SIZE = 18;
+const SCROLL_DELAY_MS = 500;
+
+export default function News() {
+  // ...
+  const pageSize = DEFAULT_PAGE_SIZE;
+  // ...
+  scrollTimeoutRef.current = setTimeout(() => {
+    setIsScrolling(false);
+    scrollTimeoutRef.current = null;
+  }, SCROLL_DELAY_MS);
+```
+
+**Changes made:**
+1. ✅ Extracted `18` thành `DEFAULT_PAGE_SIZE` constant
+2. ✅ Extracted `500` thành `SCROLL_DELAY_MS` constant
+3. ✅ Constants được đặt ở top level với clear naming
+4. ✅ Self-documenting code - tên constant mô tả purpose
+
+**Benefits:**
+- ✅ Better maintainability - chỉ cần thay đổi ở một nơi
+- ✅ Self-documenting - tên constant giải thích purpose
+- ✅ Easier to test - có thể test với different values
+- ✅ Better code organization - constants tập trung ở một chỗ
+
+---
+
 ## 🟡 WARNING ISSUES
 
 ### 10. **Missing Optimizations**
