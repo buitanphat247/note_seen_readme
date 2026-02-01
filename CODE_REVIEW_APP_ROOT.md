@@ -1193,20 +1193,20 @@ const SCROLL_DELAY_MS = 500;
 ## ✅ PRIORITY FIX LIST
 
 ### 🔴 Critical (Fix ngay)
-1. ✅ **Race condition** trong `events/page.tsx` - AbortController **FIXED**
-2. **Memory leak** trong `writing/[id]/page.tsx` - Cleanup interval
-3. ✅ **Double submit** trong `events/page.tsx` - Disable button **FIXED**
-4. **Hydration mismatch** trong `news/[id]/page.tsx` - Fix SSR
+1. ✅ **Race condition** trong `events/page.tsx` - AbortController **FIX HOÀN CHỈNH**
+2. ✅ **Memory leak** trong `writing/[id]/page.tsx` - Cleanup interval **FIX HOÀN CHỈNH**
+3. ✅ **Double submit** trong `events/page.tsx` - Disable button **FIX HOÀN CHỈNH**
+4. ✅ **Hydration mismatch** trong `news/[id]/page.tsx` - Fix SSR **FIX HOÀN CHỈNH**
 
 ### 🟡 High (Fix sớm)
-5. ✅ **Stale state** trong `profile/page.tsx` - Sync với localStorage **FIXED**
-6. **Re-render** trong `news/page.tsx` - Memoize components
-7. **Error handling** trong `vocabulary/[folderId]/page.tsx` - Better catch
+5. ✅ **Stale state** trong `profile/page.tsx` - Sync với localStorage **FIX HOÀN CHỈNH**
+6. ✅ **Re-render** trong `news/page.tsx` - Memoize components **FIX HOÀN CHỈNH**
+7. ✅ **Error handling** trong `vocabulary/[folderId]/page.tsx` - Better catch **FIX HOÀN CHỈNH**
 
 ### 🟢 Medium (Cải thiện)
-8. **Layout shift** trong `about/page.tsx` - Image optimization
-9. **Bundle size** trong `about/page.tsx` - Tree-shake icons
-10. **Type safety** trong `guide/page.tsx` - Remove `any`
+8. ✅ **Layout shift** trong `about/page.tsx` - Image optimization **FIX HOÀN CHỈNH**
+9. ✅ **Bundle size** trong `about/page.tsx` - Tree-shake icons **FIX HOÀN CHỈNH**
+10. ✅ **Type safety** trong `guide/page.tsx` - Remove `any` **FIX HOÀN CHỈNH**
 
 ---
 
