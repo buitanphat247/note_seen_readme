@@ -1966,9 +1966,10 @@ async function getInitialUserData() {
 
 ### 4. **CODE QUALITY**
 
-#### 4.1. Magic Numbers - `admin/page.tsx`
+#### 4.1. Magic Numbers - `admin/page.tsx` ✅ **ĐÃ FIX**
 **File:** `app/admin/page.tsx`  
-**Dòng:** 60-66
+**Dòng:** 60-66  
+**Status:** ✅ **FIXED** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -1977,6 +1978,29 @@ const getGreeting = () => {
   if (hour < 12) return "Chào buổi sáng";
   if (hour < 18) return "Chào buổi chiều";
   return "Chào buổi tối";
+```
+
+**Bug:** Magic numbers `12` và `18` không có ý nghĩa rõ ràng
+
+**Fix đã áp dụng:**
+```typescript
+// Constants
+const MORNING_HOUR = 12;
+const EVENING_HOUR = 18;
+
+function WelcomeBanner() {
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < MORNING_HOUR) return "Chào buổi sáng";
+    if (hour < EVENING_HOUR) return "Chào buổi chiều";
+    return "Chào buổi tối";
+  };
+```
+
+**Changes made:**
+1. ✅ Extracted `12` → `MORNING_HOUR = 12`
+2. ✅ Extracted `18` → `EVENING_HOUR = 18`
+3. ✅ Constants đặt ở top level với clear naming
 };
 ```
 
