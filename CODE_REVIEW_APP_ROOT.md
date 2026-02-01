@@ -492,7 +492,7 @@ if (!mounted) {
 
 ---
 
-### 5. **MEMORY LEAK**
+### 5. **MEMORY LEAK** ✅ **FIX HOÀN CHỈNH**
 
 #### 5.1. Interval không cleanup - `features/writing/[id]/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/(root)/features/writing/[id]/page.tsx`  
