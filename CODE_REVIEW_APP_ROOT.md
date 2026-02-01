@@ -22,10 +22,10 @@
 
 ### 1. **STATE & DATA FLOW BUGS**
 
-#### 1.1. Stale State - `events/page.tsx` ✅ **ĐÃ FIX**
+#### 1.1. Stale State - `events/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/(root)/events/page.tsx`  
 **Dòng:** 37-54  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -113,10 +113,10 @@ useEffect(() => {
 
 ---
 
-#### 1.2. Out-of-sync State - `profile/page.tsx` ✅ **ĐÃ FIX**
+#### 1.2. Out-of-sync State - `profile/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/(root)/profile/page.tsx`  
 **Dòng:** 28-46  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -193,10 +193,10 @@ useEffect(() => {
 
 ### 2. **ASYNC / TIMING BUGS**
 
-#### 2.1. Double Submit - `events/page.tsx` ✅ **ĐÃ FIX**
+#### 2.1. Double Submit - `events/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/(root)/events/page.tsx`  
 **Dòng:** 175-179  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -254,10 +254,10 @@ useEffect(() => {
 
 ---
 
-#### 2.2. Request về sai thứ tự - `news/page.tsx` ✅ **ĐÃ FIX**
+#### 2.2. Request về sai thứ tự - `news/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/(root)/news/page.tsx`  
 **Dòng:** 129-137  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -323,10 +323,10 @@ useEffect(() => {
 
 ### 3. **RENDER / REACT LIFECYCLE BUGS**
 
-#### 3.1. Infinite Re-render Risk - `news/[id]/page.tsx` ✅ **ĐÃ FIX**
+#### 3.1. Infinite Re-render Risk - `news/[id]/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/(root)/news/[id]/page.tsx`  
 **Dòng:** 51-56  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -389,10 +389,10 @@ const fetchEvents = useCallback(async () => {
 
 ---
 
-#### 3.3. Unnecessary Re-renders - `about/page.tsx` ✅ **ĐÃ FIX**
+#### 3.3. Unnecessary Re-renders - `about/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/(root)/about/page.tsx`  
 **Dòng:** 130-138  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -422,10 +422,10 @@ const fetchEvents = useCallback(async () => {
 
 ### 4. **HYDRATION / SSR BUGS**
 
-#### 4.1. Client-only Code in SSR - `news/[id]/page.tsx` ✅ **ĐÃ FIX**
+#### 4.1. Client-only Code in SSR - `news/[id]/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/(root)/news/[id]/page.tsx`  
 **Dòng:** 18-29  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -457,10 +457,10 @@ if (!mounted) {
 
 ---
 
-#### 4.2. Date Formatting Mismatch - `profile/page.tsx` ✅ **ĐÃ FIX**
+#### 4.2. Date Formatting Mismatch - `profile/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/(root)/profile/page.tsx`  
 **Dòng:** 250-255  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -542,10 +542,10 @@ useEffect(() => {
 
 ---
 
-#### 5.2. Event Listener không cleanup - `news/page.tsx` ✅ **ĐÃ FIX**
+#### 5.2. Event Listener không cleanup - `news/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/(root)/news/page.tsx`  
 **Dòng:** 16 (state `isScrolling`)  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:** Không có event listener nhưng state `isScrolling` có thể leak nếu component unmount giữa timeout
 
@@ -573,10 +573,10 @@ useEffect(() => {
 
 ### 6. **UI / CSS BUGS**
 
-#### 6.1. Layout Shift - `about/page.tsx` ✅ **ĐÃ FIX**
+#### 6.1. Layout Shift - `about/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/(root)/about/page.tsx`  
 **Dòng:** 114-119  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -609,10 +609,10 @@ useEffect(() => {
 
 ---
 
-#### 6.2. Z-index Hell - `news/[id]/page.tsx` ✅ **ĐÃ FIX**
+#### 6.2. Z-index Hell - `news/[id]/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/(root)/news/[id]/page.tsx`  
 **Dòng:** 149  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -693,10 +693,10 @@ localStorage.setItem("user", JSON.stringify(userInfo));
 
 ### 8. **ERROR HANDLING BUGS**
 
-#### 8.1. Promise reject không catch - `vocabulary/[folderId]/page.tsx` ✅ **ĐÃ FIX**
+#### 8.1. Promise reject không catch - `vocabulary/[folderId]/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/(root)/features/vocabulary/[folderId]/page.tsx`  
 **Dòng:** 29-49  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -748,9 +748,9 @@ const fetchVocabularies = async () => {
 
 ---
 
-#### 8.2. Không có ErrorBoundary - Tất cả pages ✅ **ĐÃ FIX**
+#### 8.2. Không có ErrorBoundary - Tất cả pages ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/error-boundary.tsx` (new file)  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:** Nếu 1 component crash → toàn bộ app crash
 
@@ -783,10 +783,10 @@ export default class ErrorBoundary extends Component<Props, State> {
 
 ### 9. **PERFORMANCE BUGS**
 
-#### 9.1. Re-render quá nhiều - `news/page.tsx` ✅ **ĐÃ FIX**
+#### 9.1. Re-render quá nhiều - `news/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/(root)/news/page.tsx`  
 **Dòng:** 106-121  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -867,10 +867,10 @@ import {
 
 ---
 
-#### 9.3. Large Component - `writing/[id]/page.tsx` ✅ **ĐÃ FIX**
+#### 9.3. Large Component - `writing/[id]/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/(root)/features/writing/[id]/page.tsx`  
 **Dòng:** 75-592 (trước đây) → ~250 dòng (sau refactor)  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:** Component quá lớn (592 dòng) → khó maintain, re-render toàn bộ
 
@@ -915,10 +915,10 @@ app/(root)/features/writing/
 
 ### 11. **CODE QUALITY ISSUES**
 
-#### 11.1. Type Safety - `guide/page.tsx` ✅ **ĐÃ FIX**
+#### 11.1. Type Safety - `guide/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/(root)/guide/page.tsx`  
 **Dòng:** 39-44  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -952,10 +952,10 @@ export default async function GuidePage(props: GuidePageProps) {
 
 ---
 
-#### 11.2. Magic Numbers - `news/page.tsx` ✅ **ĐÃ FIX**
+#### 11.2. Magic Numbers - `news/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/(root)/news/page.tsx`  
 **Dòng:** 18, 62  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -1664,10 +1664,10 @@ describe("setThemeCookie", () => {
 
 ### 1. **STATE & DATA FLOW BUGS**
 
-#### 1.1. Race Condition Risk - `admin/page.tsx` ✅ **ĐÃ FIX**
+#### 1.1. Race Condition Risk - `admin/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/admin/page.tsx`  
 **Dòng:** 165-179  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -1731,10 +1731,10 @@ useEffect(() => {
 
 ---
 
-#### 1.2. Unnecessary Re-renders - `admin/page.tsx` ✅ **ĐÃ FIX**
+#### 1.2. Unnecessary Re-renders - `admin/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/admin/page.tsx`  
 **Dòng:** 79-103  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -1773,10 +1773,10 @@ const statsCards = useMemo(() =>
 
 ### 2. **ASYNC / TIMING BUGS**
 
-#### 2.1. Missing Error Handling - `AdminLayoutClient.tsx` ✅ **ĐÃ FIX**
+#### 2.1. Missing Error Handling - `AdminLayoutClient.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/admin/AdminLayoutClient.tsx`  
 **Dòng:** 44-62  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -1857,10 +1857,10 @@ useEffect(() => {
 
 ---
 
-#### 2.2. Date Formatting Mismatch - `AdminLayoutClient.tsx` ✅ **ĐÃ FIX**
+#### 2.2. Date Formatting Mismatch - `AdminLayoutClient.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/admin/AdminLayoutClient.tsx`  
 **Dòng:** 155  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -1978,10 +1978,10 @@ async function getInitialUserData() {
 
 ### 4. **CODE QUALITY**
 
-#### 4.1. Magic Numbers - `admin/page.tsx` ✅ **ĐÃ FIX**
+#### 4.1. Magic Numbers - `admin/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/admin/page.tsx`  
 **Dòng:** 60-66  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -2074,10 +2074,10 @@ function StatisticsCards({ stats }: { stats: StatCard[] }) {
 
 ### 1. **SECURITY BUGS**
 
-#### 1.1. No Input Validation - `[...path]/route.ts` ✅ **ĐÃ FIX**
+#### 1.1. No Input Validation - `[...path]/route.ts` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/api-proxy/[...path]/route.ts`  
 **Dòng:** 7-73  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -2158,10 +2158,10 @@ async function handleRequest(request: NextRequest, method: string) {
 
 ---
 
-#### 1.2. Cookie Forwarding Security - `[...path]/route.ts` ✅ **ĐÃ FIX**
+#### 1.2. Cookie Forwarding Security - `[...path]/route.ts` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/api-proxy/[...path]/route.ts`  
 **Dòng:** 18-21, 52  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -2274,10 +2274,10 @@ async function handleRequest(request: NextRequest, method: string) {
 
 ### 2. **ASYNC / TIMING BUGS**
 
-#### 2.1. Timeout Race Condition - `[...path]/route.ts` ✅ **ĐÃ FIX**
+#### 2.1. Timeout Race Condition - `[...path]/route.ts` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/api-proxy/[...path]/route.ts`  
 **Dòng:** 28-36  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -2361,10 +2361,10 @@ try {
 
 ---
 
-#### 2.2. Body Size Limit - `writing-chat-bot/generate/route.ts` ✅ **ĐÃ FIX**
+#### 2.2. Body Size Limit - `writing-chat-bot/generate/route.ts` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/api-proxy/writing-chat-bot/generate/route.ts`  
 **Dòng:** 9  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -4781,10 +4781,10 @@ const MESSAGES_LIMIT = 50;
 
 ### 1. **STATE & DATA FLOW BUGS**
 
-#### 1.1. Race Condition Risk - `super-admin/page.tsx` ✅ **ĐÃ FIX**
+#### 1.1. Race Condition Risk - `super-admin/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/super-admin/page.tsx`  
 **Dòng:** 159-173  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
@@ -4848,10 +4848,10 @@ useEffect(() => {
 
 ---
 
-#### 1.2. Unnecessary Re-renders - `super-admin/page.tsx` ✅ **ĐÃ FIX**
+#### 1.2. Unnecessary Re-renders - `super-admin/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
 **File:** `app/super-admin/page.tsx`  
 **Dòng:** 141-145  
-**Status:** ✅ **FIXED** - 2026-01-21
+**Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
 ```typescript
