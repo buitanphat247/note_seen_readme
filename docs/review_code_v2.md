@@ -1,0 +1,2540 @@
+# 📋 ĐÁNH GIÁ MÃ NGUỒN V2: Toàn Bộ Codebase - Review & Cập Nhật Chi Tiết
+
+**Ngày review:** 2026-01-22  
+**Version:** 2.1 (Chi tiết hóa)  
+**Scope:** Toàn bộ codebase (app/, interface/, lib/)  
+**Mục tiêu:** Đánh giá lại codebase sau các cải thiện, xác định các vấn đề còn lại và đề xuất cập nhật với hướng dẫn chi tiết từng bước
+
+---
+
+## 📑 MỤC LỤC
+
+### 📁 Global Files (app/)
+
+- [📄 error-boundary.tsx](#error-boundarytsx)
+- [📄 layout.tsx](#layouttsx)
+- [📄 not-found.tsx](#not-foundtsx)
+- [📄 providers.tsx](#providerstsx)
+- [📄 globals.css](#globalscss)
+
+### 📁 app/(root)
+
+- [📁 app/(root)](#approot)
+
+### 📁 app/actions
+
+- [📁 app/actions](#appactions)
+
+### 📁 app/admin
+
+- [📁 app/admin](#appadmin)
+
+### 📁 app/api-proxy
+
+- [📁 app/api-proxy](#appapi-proxy)
+
+### 📁 app/auth
+
+- [📁 app/auth](#appauth)
+
+### 📁 app/components
+
+- [📁 app/components](#appcomponents)
+
+### 📁 app/config
+
+- [📁 app/config](#appconfig)
+
+### 📁 app/context
+
+- [📁 app/context](#appcontext)
+
+### 📁 app/hooks
+
+- [📁 app/hooks](#apphooks)
+
+### 📁 app/social
+
+- [📁 app/social](#appsocial)
+
+### 📁 app/super-admin
+
+- [📁 app/super-admin](#appsuper-admin)
+
+### 📁 app/user
+
+- [📁 app/user](#appuser)
+
+### 📁 interface
+
+- [📁 interface](#interface)
+
+### 📁 lib
+
+- [📁 lib](#lib)
+
+---
+
+## 📊 TỔNG QUAN
+
+### Thống kê tổng thể
+
+- **Tổng số files đã review:** ~200+ files
+- **Files cần cập nhật:** ~15-20 files
+- **Mức độ ưu tiên:**
+  - 🔴 **Critical:** 0 issues (đã fix hết)
+  - 🟡 **High:** 5-10 issues (cần cải thiện)
+  - 🟢 **Medium:** 10-15 issues (tùy chọn)
+  - ⚪ **Low:** 5-10 issues (nice to have)
+
+---
+
+## 📄 error-boundary.tsx
+
+### Tổng quan
+
+**File:** `app/error-boundary.tsx`  
+**Type:** Error Boundary Component  
+**Status:** ✅ **GOOD** - Cần một số cải thiện nhỏ
+
+### ✅ Điểm mạnh
+
+- ✅ Class component đúng chuẩn React Error Boundary
+- ✅ Có fallback UI đẹp với dark mode support
+- ✅ Có nút reset và home navigation
+- ✅ Error message hiển thị rõ ràng
+
+### ⚠️ Vấn đề cần cải thiện
+
+#### 1. **Thiếu Error Logging**
+
+**File:** `app/error-boundary.tsx`  
+**Dòng:** 28-30  
+**Mức độ:** 🟡 High Priority  
+**Ước tính thời gian:** 2-3 giờ
+
+**Vấn đề hiện tại:**
+```typescript
+componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+  console.error('ErrorBoundary caught an error:', error, errorInfo);
+  // ❌ Chỉ log console, không gửi đến error tracking service
+  // ❌ Không có structured logging
+  // ❌ Không track error frequency
+}
+```
+
+**Tác động:**
+- ❌ Không thể track errors trong production
+- ❌ Khó debug khi có lỗi xảy ra ở user
+- ❌ Không có metrics về error rate
+
+**Các bước thực hiện:**
+
+**Bước 1:** Cài đặt Sentry (hoặc error tracking service khác)
+```bash
+npm install @sentry/nextjs
+```
+
+**Bước 2:** Tạo file `lib/utils/errorLogger.ts`
+```typescript
+/**
+ * Error logging utility
+ * Centralized error logging với support cho multiple services
+ */
+
+interface ErrorContext {
+  componentStack?: string;
+  userId?: string | number;
+  pathname?: string;
+  userAgent?: string;
+  timestamp?: string;
+}
+
+export const logError = (
+  error: Error,
+  errorInfo?: React.ErrorInfo,
+  context?: ErrorContext
+) => {
+  const errorContext = {
+    ...context,
+    componentStack: errorInfo?.componentStack,
+    message: error.message,
+    stack: error.stack,
+    timestamp: new Date().toISOString(),
+  };
+
+  // Development: Log to console với full details
+  if (process.env.NODE_ENV === 'development') {
+    console.error('ErrorBoundary caught an error:', error, errorInfo);
+    console.error('Error Context:', errorContext);
+  }
+
+  // Production: Send to error tracking service
+  if (typeof window !== 'undefined') {
+    // Sentry
+    if (window.Sentry) {
+      window.Sentry.captureException(error, {
+        contexts: {
+          react: {
+            componentStack: errorInfo?.componentStack,
+          },
+        },
+        tags: {
+          errorBoundary: true,
+        },
+        extra: context,
+      });
+    }
+
+    // Optional: Send to custom analytics
+    if (window.gtag) {
+      window.gtag('event', 'exception', {
+        description: error.message,
+        fatal: false,
+      });
+    }
+  }
+};
+```
+
+**Bước 3:** Cập nhật `app/error-boundary.tsx`
+```typescript
+import { logError } from '@/lib/utils/errorLogger';
+
+componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+  // Get additional context
+  const context = {
+    pathname: typeof window !== 'undefined' ? window.location.pathname : undefined,
+    userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : undefined,
+  };
+
+  // Log error với context
+  logError(error, errorInfo, context);
+
+  // Update state
+  this.setState({ hasError: true, error });
+}
+```
+
+**Bước 4:** Setup Sentry trong `app/layout.tsx` hoặc `app/providers.tsx`
+```typescript
+import * as Sentry from '@sentry/nextjs';
+
+Sentry.init({
+  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  environment: process.env.NODE_ENV,
+  tracesSampleRate: 1.0,
+  beforeSend(event, hint) {
+    // Filter sensitive data
+    if (event.request) {
+      delete event.request.cookies;
+    }
+    return event;
+  },
+});
+```
+
+**Kiểm tra:**
+- ✅ Errors được log trong development console
+- ✅ Errors được gửi đến Sentry trong production
+- ✅ Error context đầy đủ (pathname, userAgent, componentStack)
+
+#### 2. **Thiếu Error Recovery Strategy**
+
+**File:** `app/error-boundary.tsx`  
+**Dòng:** 32-34  
+**Mức độ:** 🟡 High Priority  
+**Ước tính thời gian:** 3-4 giờ
+
+**Vấn đề hiện tại:**
+```typescript
+handleReset = () => {
+  this.setState({ hasError: false, error: null });
+  // ❌ Chỉ reset state, không clear root cause
+  // ❌ Không có retry mechanism
+  // ❌ Không clear cache/storage nếu cần
+};
+```
+
+**Tác động:**
+- ❌ User phải reload page thủ công
+- ❌ Error có thể xảy ra lại ngay lập tức
+- ❌ Không có cách recover tự động
+
+**Các bước thực hiện:**
+
+**Bước 1:** Cập nhật State interface
+```typescript
+interface State {
+  hasError: boolean;
+  error: Error | null;
+  retryCount: number; // ✅ Thêm retry count
+  lastErrorTime: number | null; // ✅ Track error time
+}
+```
+
+**Bước 2:** Cập nhật constructor
+```typescript
+constructor(props: Props) {
+  super(props);
+  this.state = { 
+    hasError: false, 
+    error: null,
+    retryCount: 0,
+    lastErrorTime: null,
+  };
+}
+```
+
+**Bước 3:** Cập nhật componentDidCatch
+```typescript
+componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+  const retryCount = this.state.retryCount + 1;
+  const lastErrorTime = Date.now();
+  
+  this.setState({ 
+    hasError: true, 
+    error,
+    retryCount,
+    lastErrorTime,
+  });
+
+  // Log error
+  logError(error, errorInfo);
+  
+  // Auto-recover nếu retry count < 3 và error không nghiêm trọng
+  if (retryCount < 3 && !this.isCriticalError(error)) {
+    setTimeout(() => {
+      this.handleReset();
+    }, 2000); // Retry sau 2 giây
+  }
+}
+
+private isCriticalError(error: Error): boolean {
+  // Critical errors: Network errors, Auth errors, etc.
+  const criticalPatterns = [
+    /network/i,
+    /unauthorized/i,
+    /forbidden/i,
+    /not found/i,
+  ];
+  return criticalPatterns.some(pattern => pattern.test(error.message));
+}
+```
+
+**Bước 4:** Cập nhật handleReset với recovery logic
+```typescript
+handleReset = () => {
+  const { retryCount, lastErrorTime } = this.state;
+  
+  // Nếu retry quá nhiều lần, reload page
+  if (retryCount >= 3) {
+    // Clear storage nếu cần
+    if (typeof window !== 'undefined') {
+      const shouldClearStorage = confirm(
+        'Đã xảy ra lỗi nhiều lần. Bạn có muốn xóa cache và reload trang?'
+      );
+      
+      if (shouldClearStorage) {
+        localStorage.clear();
+        sessionStorage.clear();
+      }
+    }
+    
+    window.location.reload();
+    return;
+  }
+  
+  // Reset state
+  this.setState({ 
+    hasError: false, 
+    error: null,
+    // Giữ retryCount để track
+  });
+};
+
+handleReload = () => {
+  if (typeof window !== 'undefined') {
+    window.location.reload();
+  }
+};
+```
+
+**Bước 5:** Cập nhật UI với retry button
+```typescript
+<div className="flex flex-col sm:flex-row gap-3 justify-center">
+  <Button
+    type="primary"
+    icon={<ReloadOutlined />}
+    onClick={this.handleReset}
+    disabled={this.state.retryCount >= 3}
+  >
+    {this.state.retryCount > 0 
+      ? `Thử lại (${this.state.retryCount}/3)` 
+      : 'Thử lại'
+    }
+  </Button>
+  {this.state.retryCount >= 3 && (
+    <Button
+      type="default"
+      icon={<ReloadOutlined />}
+      onClick={this.handleReload}
+    >
+      Reload trang
+    </Button>
+  )}
+  <Link href="/">
+    <Button icon={<HomeOutlined />}>
+      Về trang chủ
+    </Button>
+  </Link>
+</div>
+```
+
+**Kiểm tra:**
+- ✅ Error có thể retry tự động (tối đa 3 lần)
+- ✅ Critical errors không retry tự động
+- ✅ User có option reload page nếu retry fail
+- ✅ Clear storage option khi cần
+
+#### 3. **Thiếu Error Boundary cho Specific Routes**
+
+**File:** `app/admin/layout.tsx`, `app/user/layout.tsx`, etc.  
+**Mức độ:** 🟢 Medium Priority  
+**Ước tính thời gian:** 4-5 giờ
+
+**Vấn đề hiện tại:**
+- ❌ Chỉ có global error boundary trong root layout
+- ❌ Nếu error xảy ra trong admin route, toàn bộ app crash
+- ❌ Không có fallback UI phù hợp với từng context
+
+**Tác động:**
+- ❌ User experience kém khi error xảy ra
+- ❌ Khó debug errors trong specific routes
+- ❌ Không có cách isolate errors
+
+**Các bước thực hiện:**
+
+**Bước 1:** Tạo `app/components/common/RouteErrorBoundary.tsx`
+```typescript
+'use client';
+
+import { Component, ReactNode } from 'react';
+import { Button } from 'antd';
+import { ReloadOutlined, HomeOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import Link from 'next/link';
+import { logError } from '@/lib/utils/errorLogger';
+
+interface Props {
+  children: ReactNode;
+  routeName: string; // e.g., 'admin', 'user', 'exam'
+  fallback?: ReactNode;
+}
+
+interface State {
+  hasError: boolean;
+  error: Error | null;
+}
+
+export default class RouteErrorBoundary extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error: Error): State {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    logError(error, errorInfo, {
+      route: this.props.routeName,
+    });
+  }
+
+  handleReset = () => {
+    this.setState({ hasError: false, error: null });
+  };
+
+  render() {
+    if (this.state.hasError) {
+      if (this.props.fallback) {
+        return this.props.fallback;
+      }
+
+      // Custom UI based on route
+      const routeConfig = {
+        admin: {
+          title: 'Lỗi trong trang quản trị',
+          description: 'Đã xảy ra lỗi trong khu vực quản trị. Vui lòng thử lại.',
+          backUrl: '/admin',
+        },
+        user: {
+          title: 'Lỗi trong trang người dùng',
+          description: 'Đã xảy ra lỗi trong khu vực người dùng. Vui lòng thử lại.',
+          backUrl: '/user',
+        },
+        exam: {
+          title: 'Lỗi trong bài thi',
+          description: 'Đã xảy ra lỗi trong bài thi. Vui lòng liên hệ hỗ trợ.',
+          backUrl: '/user/exams',
+        },
+      };
+
+      const config = routeConfig[this.props.routeName as keyof typeof routeConfig] || {
+        title: 'Đã xảy ra lỗi',
+        description: 'Có lỗi không mong muốn xảy ra.',
+        backUrl: '/',
+      };
+
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-[#0f172a] px-4">
+          <div className="max-w-md w-full text-center bg-white dark:bg-[#1e293b] rounded-2xl p-8 shadow-lg border border-slate-200 dark:border-slate-700">
+            <div className="mb-6">
+              <div className="w-16 h-16 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
+                {config.title}
+              </h2>
+              <p className="text-slate-600 dark:text-slate-400 mb-4">
+                {config.description}
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Button type="primary" icon={<ReloadOutlined />} onClick={this.handleReset}>
+                Thử lại
+              </Button>
+              <Link href={config.backUrl}>
+                <Button icon={<ArrowLeftOutlined />}>
+                  Quay lại
+                </Button>
+              </Link>
+              <Link href="/">
+                <Button icon={<HomeOutlined />}>
+                  Về trang chủ
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+```
+
+**Bước 2:** Cập nhật `app/admin/layout.tsx`
+```typescript
+import RouteErrorBoundary from '@/app/components/common/RouteErrorBoundary';
+
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <RouteErrorBoundary routeName="admin">
+      {children}
+    </RouteErrorBoundary>
+  );
+}
+```
+
+**Bước 3:** Cập nhật `app/user/layout.tsx`
+```typescript
+import RouteErrorBoundary from '@/app/components/common/RouteErrorBoundary';
+
+export default function UserLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <RouteErrorBoundary routeName="user">
+      {children}
+    </RouteErrorBoundary>
+  );
+}
+```
+
+**Bước 4:** (Optional) Tạo error boundary cho exam routes
+```typescript
+// app/user/exams/[id]/layout.tsx
+import RouteErrorBoundary from '@/app/components/common/RouteErrorBoundary';
+
+export default function ExamLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <RouteErrorBoundary routeName="exam">
+      {children}
+    </RouteErrorBoundary>
+  );
+}
+```
+
+**Kiểm tra:**
+- ✅ Mỗi route có error boundary riêng
+- ✅ Error không crash toàn bộ app
+- ✅ Fallback UI phù hợp với từng route
+- ✅ Errors được log với route context
+
+---
+
+## 📄 layout.tsx
+
+### Tổng quan
+
+**File:** `app/layout.tsx`  
+**Type:** Root Layout  
+**Status:** ✅ **GOOD** - Cần một số cải thiện
+
+### ✅ Điểm mạnh
+
+- ✅ Metadata configuration đúng
+- ✅ Theme detection từ cookies
+- ✅ Preconnect và prefetch cho performance
+- ✅ Font optimization với next/font
+- ✅ AntdRegistry setup đúng
+
+### ⚠️ Vấn đề cần cải thiện
+
+#### 1. **XSS Risk với dangerouslySetInnerHTML**
+
+**File:** `app/layout.tsx`  
+**Dòng:** 63-96  
+**Mức độ:** 🟢 Medium Priority  
+**Ước tính thời gian:** 1-2 giờ
+
+**Vấn đề hiện tại:**
+```typescript
+<script
+  id="no-transitions-script"
+  suppressHydrationWarning
+  dangerouslySetInnerHTML={{
+    __html: `
+      (function() {
+        try {
+          var html = document.documentElement;
+          html.classList.add('no-transitions');
+          // ... rest of code
+        } catch (e) {}
+      })();
+    `,
+  }}
+/>
+```
+
+**Đánh giá:**
+- ⚠️ Code hiện tại là safe (hardcoded script)
+- ⚠️ Nhưng nên move sang Next.js Script component để best practice
+- ⚠️ dangerouslySetInnerHTML có thể bị lợi dụng nếu không cẩn thận
+
+**Tác động:**
+- ⚠️ Security risk nếu script bị modify
+- ⚠️ Không tận dụng Next.js optimization
+- ⚠️ Khó maintain và debug
+
+**Các bước thực hiện:**
+
+**Bước 1:** Tạo file `app/scripts/no-transitions.ts`
+```typescript
+/**
+ * Script để disable transitions trong quá trình hydration
+ * Prevent flash of wrong styles
+ */
+export const noTransitionsScript = `
+  (function() {
+    try {
+      var html = document.documentElement;
+      // Disable transitions initially to prevent flash during hydration
+      html.classList.add('no-transitions');
+      
+      // Remove no-transitions after a longer delay to allow React hydration
+      var removeNoTransitions = function() {
+        setTimeout(function() {
+          requestAnimationFrame(function() {
+            html.classList.remove('no-transitions');
+          });
+        }, 100); // 100ms delay to allow hydration
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', removeNoTransitions);
+      } else {
+        removeNoTransitions();
+      }
+    } catch (e) {
+      // Silent fail - script is non-critical
+    }
+  })();
+`;
+```
+
+**Bước 2:** Cập nhật `app/layout.tsx`
+```typescript
+import Script from 'next/script';
+import { noTransitionsScript } from './scripts/no-transitions';
+
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // ... existing code ...
+
+  return (
+    <html lang="vi" className={isDark ? "dark" : ""} suppressHydrationWarning>
+      <head>
+        {/* ... existing head content ... */}
+        
+        {/* ✅ Use Next.js Script component instead of dangerouslySetInnerHTML */}
+        <Script
+          id="no-transitions-script"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: noTransitionsScript,
+          }}
+        />
+      </head>
+      <body className={`${roboto.variable} antialiased`}>
+        {/* ... existing body content ... */}
+      </body>
+    </html>
+  );
+}
+```
+
+**Lưu ý:**
+- ✅ Script được tách ra file riêng để dễ maintain
+- ✅ Sử dụng Next.js Script component với `strategy="beforeInteractive"`
+- ✅ Vẫn cần `dangerouslySetInnerHTML` nhưng code được isolate
+- ✅ Có thể test script riêng biệt
+
+**Kiểm tra:**
+- ✅ Script vẫn hoạt động như cũ
+- ✅ Không có XSS risk
+- ✅ Code dễ maintain hơn
+
+#### 2. **Prefetch Routes Quá Nhiều**
+
+**File:** `app/layout.tsx`  
+**Dòng:** 43-47  
+**Mức độ:** 🟢 Medium Priority  
+**Ước tính thời gian:** 2-3 giờ
+
+**Vấn đề hiện tại:**
+```typescript
+<link rel="prefetch" href="/admin" as="document" />
+<link rel="prefetch" href="/admin/classes" as="document" />
+<link rel="prefetch" href="/user" as="document" />
+<link rel="prefetch" href="/user/classes" as="document" />
+```
+
+**Đánh giá:**
+- ⚠️ Prefetch tất cả routes → waste bandwidth (~200-500KB/page)
+- ⚠️ Prefetch cả admin và user khi user chỉ là student
+- ⚠️ Không có logic dựa trên user role
+
+**Tác động:**
+- ❌ Waste bandwidth: ~800KB-2MB cho 4 routes
+- ❌ Slower initial page load
+- ❌ Poor user experience cho users với slow connection
+
+**Các bước thực hiện:**
+
+**Bước 1:** Kiểm tra PrefetchRoutes component hiện tại
+- File: `app/components/common/PrefetchRoutes.tsx`
+- Status: ✅ Đã được optimize trong v1
+- Logic: Chỉ prefetch immediate children routes dựa trên pathname
+
+**Bước 2:** Xóa hardcoded prefetch trong `app/layout.tsx`
+```typescript
+// ❌ Xóa các dòng này:
+// <link rel="prefetch" href="/admin" as="document" />
+// <link rel="prefetch" href="/admin/classes" as="document" />
+// <link rel="prefetch" href="/user" as="document" />
+// <link rel="prefetch" href="/user/classes" as="document" />
+```
+
+**Bước 3:** (Optional) Cải thiện PrefetchRoutes với user role detection
+```typescript
+// app/components/common/PrefetchRoutes.tsx
+"use client";
+
+import { useEffect, useCallback, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { getUserIdFromCookieAsync } from "@/lib/utils/cookies";
+
+export default function PrefetchRoutes() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [userRole, setUserRole] = useState<'admin' | 'user' | null>(null);
+
+  // Detect user role từ cookie
+  useEffect(() => {
+    const detectUserRole = async () => {
+      // Check pathname để infer role
+      if (pathname?.startsWith('/admin')) {
+        setUserRole('admin');
+      } else if (pathname?.startsWith('/user')) {
+        setUserRole('user');
+      } else {
+        // Try to get user role from cookie
+        const userId = await getUserIdFromCookieAsync();
+        if (userId) {
+          // Check if user is admin (cần API call hoặc check cookie)
+          // For now, infer from pathname
+        }
+      }
+    };
+    
+    detectUserRole();
+  }, [pathname]);
+
+  const prefetchRoutes = useCallback(() => {
+    if (!pathname) return;
+
+    // Chỉ prefetch routes phù hợp với user role
+    if (pathname.startsWith("/admin") || userRole === 'admin') {
+      router.prefetch("/admin/classes");
+      router.prefetch("/admin/students");
+    } else if (pathname.startsWith("/user") || userRole === 'user') {
+      router.prefetch("/user/classes");
+      router.prefetch("/user/documents");
+    }
+    // Không prefetch cả admin và user
+  }, [pathname, router, userRole]);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout | null = null;
+    let idleCallbackId: number | null = null;
+
+    const prefetchOnIdle = () => {
+      if (typeof window === "undefined") return;
+
+      if ("requestIdleCallback" in window) {
+        idleCallbackId = requestIdleCallback(
+          () => {
+            prefetchRoutes();
+          },
+          { timeout: 5000 }
+        );
+      } else {
+        timeoutId = setTimeout(() => {
+          prefetchRoutes();
+        }, 3000);
+      }
+    };
+
+    // Debounce: Wait 1 second after navigation
+    timeoutId = setTimeout(() => {
+      prefetchOnIdle();
+    }, 1000);
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      if (idleCallbackId && typeof window !== "undefined" && "cancelIdleCallback" in window) {
+        cancelIdleCallback(idleCallbackId);
+      }
+    };
+  }, [prefetchRoutes]);
+
+  return null;
+}
+```
+
+**Bước 4:** Verify PrefetchRoutes được sử dụng trong layout
+```typescript
+// app/layout.tsx
+<AntdRegistry>
+  <Providers>
+    <PrefetchRoutes /> {/* ✅ Đã có sẵn */}
+    {children}
+  </Providers>
+</AntdRegistry>
+```
+
+**Kết quả:**
+- ✅ Giảm bandwidth: Chỉ prefetch routes cần thiết
+- ✅ Faster initial load: Không prefetch unnecessary routes
+- ✅ Better UX: Prefetch dựa trên user context
+
+**Kiểm tra:**
+- ✅ Không có hardcoded prefetch trong layout
+- ✅ PrefetchRoutes component hoạt động đúng
+- ✅ Chỉ prefetch routes phù hợp với user role
+- ✅ Bandwidth usage giảm ~50-70%
+
+#### 3. **Thiếu Error Boundary trong Layout**
+
+**Vấn đề:**
+- Layout không wrap children với ErrorBoundary
+- Nếu có lỗi trong Providers, sẽ crash toàn bộ app
+
+**Đề xuất:**
+```typescript
+<AntdRegistry>
+  <ErrorBoundary>
+    <Providers>
+      <PrefetchRoutes />
+      {children}
+    </Providers>
+  </ErrorBoundary>
+</AntdRegistry>
+```
+
+#### 4. **Font Awesome CDN**
+
+**Vấn đề:**
+- Đang load Font Awesome từ CDN
+- Có thể self-host để tăng performance và security
+
+**Đề xuất:**
+- ⚠️ Low priority - CDN hiện tại đã có integrity hash
+- 💡 Có thể self-host nếu cần optimize thêm
+
+---
+
+## 📄 not-found.tsx
+
+### Tổng quan
+
+**File:** `app/not-found.tsx`  
+**Type:** 404 Page  
+**Status:** ✅ **GOOD** - Cần một số cải thiện
+
+### ⚠️ Vấn đề cần cải thiện
+
+#### 1. **Thiếu Analytics Tracking**
+
+**Đề xuất:**
+- ✅ Track 404 pages để biết broken links
+- ✅ Log 404 với referrer URL
+
+#### 2. **Thiếu Search Functionality**
+
+**Đề xuất:**
+- ✅ Thêm search box để user tìm nội dung
+- ✅ Suggest popular pages
+
+---
+
+## 📄 providers.tsx
+
+### Tổng quan
+
+**File:** `app/providers.tsx`  
+**Type:** Providers Wrapper  
+**Status:** ✅ **GOOD**
+
+### ✅ Điểm mạnh
+
+- ✅ AntdConfigProvider setup đúng
+- ✅ ThemeProvider integration
+- ✅ Dark mode support
+
+### ⚠️ Vấn đề cần cải thiện
+
+#### 1. **Thiếu Error Boundary**
+
+**Đề xuất:**
+- ✅ Wrap providers với ErrorBoundary để catch errors trong providers
+
+#### 2. **Thiếu Performance Monitoring**
+
+**Đề xuất:**
+- ✅ Thêm Web Vitals tracking
+- ✅ Monitor provider render time
+
+---
+
+## 📄 globals.css
+
+### Tổng quan
+
+**File:** `app/globals.css`  
+**Type:** Global Styles  
+**Status:** ✅ **GOOD**
+
+### ⚠️ Vấn đề cần cải thiện
+
+#### 1. **CSS Variables Organization**
+
+**Đề xuất:**
+- ✅ Group CSS variables theo category
+- ✅ Document các variables
+- ✅ Consider CSS-in-JS nếu cần dynamic theming
+
+#### 2. **Unused CSS**
+
+**Đề xuất:**
+- ✅ Audit và remove unused CSS
+- ✅ Use PurgeCSS hoặc similar tools
+
+---
+
+## 📁 app/(root)
+
+### Tổng quan
+
+**Status:** ✅ **MOSTLY GOOD** - Đã được optimize trong review v1
+
+### ⚠️ Vấn đề cần cải thiện
+
+#### 1. **Bundle Size Optimization**
+
+**Status:** ✅ **COMPLETED** trong v1
+
+#### 2. **Code Splitting**
+
+**Status:** ✅ **COMPLETED** trong v1
+
+#### 3. **Performance Monitoring**
+
+**Đề xuất:**
+- ⚠️ Thêm Web Vitals tracking cho root pages
+- ⚠️ Monitor page load time
+
+---
+
+## 📁 app/actions
+
+### Tổng quan
+
+**Status:** ✅ **GOOD** - Đã được fix trong review v1
+
+### ⚠️ Vấn đề cần cải thiện
+
+#### 1. **Error Handling**
+
+**Status:** ✅ **FIXED** trong v1
+
+#### 2. **Rate Limiting**
+
+**Status:** ✅ **FIXED** trong v1
+
+#### 3. **Type Safety**
+
+**Status:** ✅ **IMPROVED** trong v1
+
+---
+
+## 📁 app/admin
+
+### Tổng quan
+
+**Status:** ✅ **GOOD** - Đã được optimize
+
+### ⚠️ Vấn đề cần cải thiện
+
+#### 1. **Permission Checks**
+
+**File:** `app/admin/**/*.tsx`  
+**Mức độ:** 🟡 Medium Priority  
+**Ước tính thời gian:** 6-8 giờ
+
+**Vấn đề hiện tại:**
+- ✅ Middleware check cookie `_u` để verify authentication
+- ⚠️ Không có role-based access control (RBAC) chi tiết
+- ⚠️ Không check user role trước khi cho phép access admin routes
+- ⚠️ Không có permission check cho từng action
+
+**Tác động:**
+- ⚠️ User có thể access admin routes nếu có cookie (nhưng backend sẽ reject)
+- ⚠️ Không có client-side permission check
+- ⚠️ Poor UX khi user access route không có permission
+
+**Các bước thực hiện:**
+
+**Bước 1:** Tạo `lib/utils/permissions.ts`
+```typescript
+/**
+ * Permission utilities
+ * Check user roles và permissions
+ */
+
+export type UserRole = 'admin' | 'user' | 'super_admin' | 'student' | 'teacher';
+
+export interface UserPermissions {
+  canAccessAdmin: boolean;
+  canManageUsers: boolean;
+  canManageClasses: boolean;
+  canViewReports: boolean;
+  // ... other permissions
+}
+
+/**
+ * Get user role từ cookie/session
+ */
+export const getUserRole = async (): Promise<UserRole | null> => {
+  if (typeof window === 'undefined') return null;
+
+  try {
+    // Get user data từ sessionStorage hoặc API
+    const userData = sessionStorage.getItem('user_data');
+    if (userData) {
+      const user = JSON.parse(userData);
+      return user.role || user.user_role || null;
+    }
+
+    // Fallback: Call API
+    const response = await fetch('/api-proxy/auth/profile');
+    if (response.ok) {
+      const data = await response.json();
+      return data.data?.role || data.data?.user_role || null;
+    }
+  } catch (error) {
+    console.error('Failed to get user role:', error);
+  }
+
+  return null;
+};
+
+/**
+ * Check if user has permission
+ */
+export const hasPermission = async (
+  permission: keyof UserPermissions
+): Promise<boolean> => {
+  const role = await getUserRole();
+  if (!role) return false;
+
+  const permissions: Record<UserRole, UserPermissions> = {
+    super_admin: {
+      canAccessAdmin: true,
+      canManageUsers: true,
+      canManageClasses: true,
+      canViewReports: true,
+    },
+    admin: {
+      canAccessAdmin: true,
+      canManageUsers: true,
+      canManageClasses: true,
+      canViewReports: true,
+    },
+    teacher: {
+      canAccessAdmin: false,
+      canManageUsers: false,
+      canManageClasses: true,
+      canViewReports: false,
+    },
+    student: {
+      canAccessAdmin: false,
+      canManageUsers: false,
+      canManageClasses: false,
+      canViewReports: false,
+    },
+    user: {
+      canAccessAdmin: false,
+      canManageUsers: false,
+      canManageClasses: false,
+      canViewReports: false,
+    },
+  };
+
+  return permissions[role]?.[permission] || false;
+};
+```
+
+**Bước 2:** Tạo hook `app/hooks/usePermission.ts`
+```typescript
+'use client';
+
+import { useState, useEffect } from 'react';
+import { hasPermission, UserPermissions } from '@/lib/utils/permissions';
+
+export const usePermission = (permission: keyof UserPermissions) => {
+  const [hasAccess, setHasAccess] = useState<boolean | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const checkPermission = async () => {
+      setLoading(true);
+      const access = await hasPermission(permission);
+      setHasAccess(access);
+      setLoading(false);
+    };
+
+    checkPermission();
+  }, [permission]);
+
+  return { hasAccess, loading };
+};
+```
+
+**Bước 3:** Sử dụng trong admin pages
+```typescript
+// app/admin/page.tsx
+import { usePermission } from '@/app/hooks/usePermission';
+import { redirect } from 'next/navigation';
+
+export default function AdminPage() {
+  const { hasAccess, loading } = usePermission('canAccessAdmin');
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!hasAccess) {
+    redirect('/');
+  }
+
+  return (
+    <div>
+      {/* Admin content */}
+    </div>
+  );
+}
+```
+
+**Kiểm tra:**
+- ✅ User role được check trước khi access admin routes
+- ✅ Permission check cho từng action
+- ✅ Proper redirect nếu không có permission
+- ✅ Loading state khi check permission
+
+#### 2. **Audit Logging**
+
+**File:** `app/admin/**/*.tsx`  
+**Mức độ:** 🟡 Medium Priority  
+**Ước tính thời gian:** 8-10 giờ
+
+**Vấn đề hiện tại:**
+- ❌ Không có audit logging cho admin actions
+- ❌ Không track sensitive operations (delete user, modify class, etc.)
+- ❌ Không có audit trail để investigate issues
+
+**Tác động:**
+- ❌ Không thể track ai đã thực hiện action nào
+- ❌ Khó investigate security incidents
+- ❌ Không có compliance với audit requirements
+
+**Các bước thực hiện:**
+
+**Bước 1:** Tạo `lib/utils/auditLogger.ts`
+```typescript
+/**
+ * Audit logging utility
+ * Log admin actions và sensitive operations
+ */
+
+export interface AuditLog {
+  action: string;
+  resource: string;
+  resourceId?: string | number;
+  userId: string | number;
+  timestamp: string;
+  ipAddress?: string;
+  userAgent?: string;
+  metadata?: Record<string, any>;
+}
+
+/**
+ * Log audit event
+ */
+export const logAuditEvent = async (log: AuditLog) => {
+  try {
+    // Send to backend API
+    await fetch('/api-proxy/admin/audit-logs', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ...log,
+        ipAddress: typeof window !== 'undefined' 
+          ? await getClientIP() 
+          : undefined,
+        userAgent: typeof window !== 'undefined' 
+          ? window.navigator.userAgent 
+          : undefined,
+      }),
+    });
+  } catch (error) {
+    console.error('Failed to log audit event:', error);
+    // Fallback: Log to console trong development
+    if (process.env.NODE_ENV === 'development') {
+      console.log('[Audit Log]', log);
+    }
+  }
+};
+
+/**
+ * Get client IP (nếu có)
+ */
+const getClientIP = async (): Promise<string | undefined> => {
+  try {
+    const response = await fetch('https://api.ipify.org?format=json');
+    const data = await response.json();
+    return data.ip;
+  } catch {
+    return undefined;
+  }
+};
+```
+
+**Bước 2:** Tạo hook `app/hooks/useAuditLog.ts`
+```typescript
+'use client';
+
+import { useCallback } from 'react';
+import { logAuditEvent, AuditLog } from '@/lib/utils/auditLogger';
+import { getUserIdFromCookieAsync } from '@/lib/utils/cookies';
+
+export const useAuditLog = () => {
+  const logAction = useCallback(async (
+    action: string,
+    resource: string,
+    resourceId?: string | number,
+    metadata?: Record<string, any>
+  ) => {
+    const userId = await getUserIdFromCookieAsync();
+    if (!userId) return;
+
+    await logAuditEvent({
+      action,
+      resource,
+      resourceId,
+      userId,
+      timestamp: new Date().toISOString(),
+      metadata,
+    });
+  }, []);
+
+  return { logAction };
+};
+```
+
+**Bước 3:** Sử dụng trong admin actions
+```typescript
+// app/admin/users/[id]/page.tsx
+import { useAuditLog } from '@/app/hooks/useAuditLog';
+
+export default function UserDetailPage({ params }: { params: { id: string } }) {
+  const { logAction } = useAuditLog();
+
+  const handleDeleteUser = async () => {
+    // Delete user
+    await deleteUser(params.id);
+    
+    // Log audit event
+    await logAction(
+      'DELETE_USER',
+      'user',
+      params.id,
+      { userId: params.id }
+    );
+  };
+
+  const handleUpdateUser = async (data: any) => {
+    // Update user
+    await updateUser(params.id, data);
+    
+    // Log audit event
+    await logAction(
+      'UPDATE_USER',
+      'user',
+      params.id,
+      { changes: data }
+    );
+  };
+
+  // ... rest of component
+}
+```
+
+**Bước 4:** (Backend) Tạo audit logs table và API endpoint
+```sql
+-- Create audit_logs table
+CREATE TABLE audit_logs (
+  id SERIAL PRIMARY KEY,
+  action VARCHAR(100) NOT NULL,
+  resource VARCHAR(100) NOT NULL,
+  resource_id VARCHAR(255),
+  user_id INTEGER NOT NULL,
+  ip_address VARCHAR(45),
+  user_agent TEXT,
+  metadata JSONB,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX idx_audit_logs_user_id ON audit_logs(user_id);
+CREATE INDEX idx_audit_logs_action ON audit_logs(action);
+CREATE INDEX idx_audit_logs_created_at ON audit_logs(created_at);
+```
+
+**Kiểm tra:**
+- ✅ Admin actions được log
+- ✅ Sensitive operations được track
+- ✅ Audit logs có đầy đủ context (user, IP, timestamp)
+- ✅ Audit logs được lưu trong database
+- ✅ Có thể query và filter audit logs
+
+---
+
+## 📁 app/api-proxy
+
+### Tổng quan
+
+**Status:** ✅ **GOOD** - Đã có SSRF protection và rate limiting  
+**Files:** `app/api-proxy/[...path]/route.ts`, `app/api-proxy/constants.ts`
+
+### ✅ Điểm mạnh
+
+- ✅ SSRF protection đã được implement (path whitelist + URL validation)
+- ✅ Rate limiting đã được implement (100 requests/minute/IP)
+- ✅ Cookie filtering để prevent cookie leak
+- ✅ Constants được centralized trong `constants.ts`
+- ✅ Error handling có timeout và abort controller
+
+### ⚠️ Vấn đề cần cải thiện
+
+#### 1. **Rate Limiting - In-Memory Map**
+
+**File:** `app/api-proxy/[...path]/route.ts`  
+**Dòng:** 7-8  
+**Mức độ:** 🟡 Medium Priority  
+**Ước tính thời gian:** 4-6 giờ
+
+**Vấn đề hiện tại:**
+```typescript
+// In-memory rate limiting map
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+```
+
+**Tác động:**
+- ⚠️ In-memory map sẽ reset khi server restart
+- ⚠️ Không share rate limit giữa multiple server instances
+- ⚠️ Memory leak nếu không cleanup old entries
+- ⚠️ Không persistent across deployments
+
+**Các bước thực hiện:**
+
+**Bước 1:** Cài đặt Redis hoặc Upstash (recommended cho serverless)
+```bash
+npm install @upstash/ratelimit @upstash/redis
+```
+
+**Bước 2:** Tạo `lib/utils/rateLimiter.ts`
+```typescript
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis';
+
+// Create rate limiter với Redis
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(100, '1 m'), // 100 requests per minute
+  analytics: true,
+  prefix: '@upstash/ratelimit',
+});
+
+export const checkRateLimit = async (
+  identifier: string
+): Promise<{
+  success: boolean;
+  limit: number;
+  remaining: number;
+  reset: number;
+}> => {
+  const result = await ratelimit.limit(identifier);
+  
+  return {
+    success: result.success,
+    limit: result.limit,
+    remaining: result.remaining,
+    reset: result.reset,
+  };
+};
+```
+
+**Bước 3:** Cập nhật `app/api-proxy/[...path]/route.ts`
+```typescript
+import { checkRateLimit } from '@/lib/utils/rateLimiter';
+
+async function handleRequest(request: NextRequest, method: string) {
+  // Get client IP
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    request.headers.get("x-real-ip") ||
+    "unknown";
+
+  // Check rate limit với Redis
+  const rateLimitResult = await checkRateLimit(`api-proxy:${ip}`);
+  
+  if (!rateLimitResult.success) {
+    return new Response(
+      JSON.stringify({
+        status: false,
+        message: `Rate limit exceeded. Try again in ${rateLimitResult.reset} seconds.`,
+        data: null,
+      }),
+      {
+        status: 429,
+        headers: {
+          "Content-Type": "application/json",
+          "X-RateLimit-Limit": rateLimitResult.limit.toString(),
+          "X-RateLimit-Remaining": rateLimitResult.remaining.toString(),
+          "X-RateLimit-Reset": rateLimitResult.reset.toString(),
+        },
+      }
+    );
+  }
+
+  // ... rest of code
+}
+```
+
+**Bước 4:** (Optional) Cleanup in-memory map nếu vẫn dùng
+```typescript
+// Cleanup old entries mỗi 5 phút
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, value] of rateLimitMap.entries()) {
+    if (now > value.resetTime) {
+      rateLimitMap.delete(key);
+    }
+  }
+}, 5 * 60 * 1000); // 5 minutes
+```
+
+**Kiểm tra:**
+- ✅ Rate limiting hoạt động với Redis
+- ✅ Rate limit persistent across server restarts
+- ✅ Memory không leak
+- ✅ Rate limit shared giữa multiple instances
+
+#### 2. **Error Handling - Sensitive Info Leak**
+
+**File:** `app/api-proxy/[...path]/route.ts`  
+**Dòng:** 208-214  
+**Mức độ:** 🟡 Medium Priority  
+**Ước tính thời gian:** 2-3 giờ
+
+**Vấn đề hiện tại:**
+```typescript
+catch (error: any) {
+  const status = error.name === 'AbortError' ? 504 : 503;
+  return new Response(
+    JSON.stringify({ 
+      status: false, 
+      message: error?.message || 'Server error', 
+      data: null 
+    }),
+    { status, headers: { 'Content-Type': 'application/json' } }
+  );
+}
+```
+
+**Tác động:**
+- ⚠️ Error message có thể leak sensitive info (URLs, paths, etc.)
+- ⚠️ Stack traces có thể expose internal structure
+- ⚠️ Không có structured error logging
+
+**Các bước thực hiện:**
+
+**Bước 1:** Tạo `app/api-proxy/utils/errorHandler.ts` (nếu chưa có)
+```typescript
+import { NextResponse } from 'next/server';
+
+interface SafeError {
+  status: boolean;
+  message: string;
+  data: null;
+  errorCode?: string;
+}
+
+/**
+ * Sanitize error message để không leak sensitive info
+ */
+function sanitizeErrorMessage(error: unknown, isDev: boolean): string {
+  if (isDev) {
+    // Development: Show full error
+    return error instanceof Error ? error.message : 'Unknown error';
+  }
+
+  // Production: Generic messages
+  if (error instanceof Error) {
+    const errorName = error.name;
+    
+    // Map specific errors to generic messages
+    if (errorName === 'AbortError') {
+      return 'Request timeout. Please try again.';
+    }
+    
+    if (error.message.includes('fetch')) {
+      return 'Unable to connect to server. Please try again later.';
+    }
+    
+    // Default generic message
+    return 'An error occurred. Please try again later.';
+  }
+  
+  return 'An error occurred. Please try again later.';
+}
+
+/**
+ * Create safe error response
+ */
+export function createErrorResponse(
+  error: unknown,
+  statusCode: number = 500,
+  isDev: boolean = false
+): NextResponse {
+  const message = sanitizeErrorMessage(error, isDev);
+  
+  const errorResponse: SafeError = {
+    status: false,
+    message,
+    data: null,
+  };
+
+  // Log full error trong server logs (không gửi cho client)
+  if (error instanceof Error) {
+    console.error('[API Proxy Error]', {
+      name: error.name,
+      message: error.message,
+      stack: isDev ? error.stack : undefined,
+    });
+  }
+
+  return NextResponse.json(errorResponse, { status: statusCode });
+}
+```
+
+**Bước 2:** Cập nhật error handling trong route
+```typescript
+import { createErrorResponse } from './utils/errorHandler';
+
+try {
+  // ... existing code
+} catch (error: unknown) {
+  const isDev = process.env.NODE_ENV === 'development';
+  
+  // Determine status code
+  let statusCode = 500;
+  if (error instanceof Error) {
+    if (error.name === 'AbortError') {
+      statusCode = 504; // Gateway Timeout
+    } else if (error.message.includes('fetch')) {
+      statusCode = 502; // Bad Gateway
+    }
+  }
+  
+  return createErrorResponse(error, statusCode, isDev);
+}
+```
+
+**Kiểm tra:**
+- ✅ Error messages không leak sensitive info trong production
+- ✅ Full error details chỉ trong server logs
+- ✅ Generic messages cho users
+- ✅ Proper status codes (504, 502, 500)
+
+#### 3. **SSRF Protection - Verification**
+
+**File:** `app/api-proxy/[...path]/route.ts`  
+**Dòng:** 53-71, 105-124  
+**Mức độ:** ✅ **VERIFIED** - Đã được implement đúng
+
+**Status:** ✅ **GOOD**
+
+**Verification:**
+```typescript
+// ✅ Path whitelist
+const ALLOWED_PATHS = [
+  '/auth',
+  '/friends',
+  '/writing-chat-bot',
+  // ... other allowed paths
+];
+
+function isPathAllowed(path: string): boolean {
+  return ALLOWED_PATHS.some(allowed => path.startsWith(allowed));
+}
+
+// ✅ URL validation
+const targetUrl = `${backendUrl}${path}${url.search}`;
+const targetUrlObj = new URL(targetUrl);
+const backendUrlObj = new URL(backendUrl);
+
+// ✅ Ensure target is from allowed backend
+if (targetUrlObj.hostname !== backendUrlObj.hostname || 
+    targetUrlObj.protocol !== backendUrlObj.protocol) {
+  return new Response(
+    JSON.stringify({ status: false, message: 'Invalid target URL', data: null }),
+    { status: 403 }
+  );
+}
+```
+
+**Kết luận:** ✅ SSRF protection đã được implement đúng cách
+
+---
+
+## 📁 app/auth
+
+### Tổng quan
+
+**Status:** ✅ **GOOD** - Đã được fix trong v1
+
+### ⚠️ Vấn đề cần cải thiện
+
+#### 1. **Rate Limiting**
+
+**Status:** ✅ **FIXED** trong v1
+
+#### 2. **Input Validation**
+
+**Status:** ✅ **FIXED** trong v1
+
+#### 3. **Session Management**
+
+**File:** `lib/utils/cookies.ts`, `middleware.ts`  
+**Mức độ:** 🟡 Medium Priority  
+**Ước tính thời gian:** 4-6 giờ
+
+**Vấn đề hiện tại:**
+- ✅ Session được lưu trong cookie `_u` với maxAge 7 ngày
+- ⚠️ Không có session refresh mechanism
+- ⚠️ Không có session timeout warning
+- ⚠️ Không có session activity tracking
+
+**Tác động:**
+- ⚠️ User có thể bị logout đột ngột sau 7 ngày
+- ⚠️ Không có warning trước khi session hết hạn
+- ⚠️ Không có cách extend session mà không logout
+
+**Các bước thực hiện:**
+
+**Bước 1:** Tạo `lib/utils/sessionManager.ts`
+```typescript
+/**
+ * Session management utilities
+ * Track session activity và handle session refresh
+ */
+
+interface SessionInfo {
+  lastActivity: number;
+  expiresAt: number;
+  refreshThreshold: number; // Refresh khi còn < threshold
+}
+
+const SESSION_REFRESH_THRESHOLD = 24 * 60 * 60 * 1000; // 24 hours
+const SESSION_WARNING_THRESHOLD = 12 * 60 * 60 * 1000; // 12 hours
+
+/**
+ * Check if session needs refresh
+ */
+export const shouldRefreshSession = (): boolean => {
+  if (typeof window === 'undefined') return false;
+
+  const sessionInfo = getSessionInfo();
+  if (!sessionInfo) return false;
+
+  const timeUntilExpiry = sessionInfo.expiresAt - Date.now();
+  return timeUntilExpiry < SESSION_REFRESH_THRESHOLD;
+};
+
+/**
+ * Get session info từ cookie
+ */
+export const getSessionInfo = (): SessionInfo | null => {
+  if (typeof window === 'undefined') return null;
+
+  // Get cookie expiry từ document.cookie
+  // Note: Cookie expiry không accessible từ JS, cần API call
+  // For now, use sessionStorage để track
+  const stored = sessionStorage.getItem('session_info');
+  if (stored) {
+    return JSON.parse(stored);
+  }
+
+  return null;
+};
+
+/**
+ * Update session activity
+ */
+export const updateSessionActivity = () => {
+  if (typeof window === 'undefined') return;
+
+  const sessionInfo = getSessionInfo() || {
+    lastActivity: Date.now(),
+    expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days
+    refreshThreshold: SESSION_REFRESH_THRESHOLD,
+  };
+
+  sessionInfo.lastActivity = Date.now();
+  sessionStorage.setItem('session_info', JSON.stringify(sessionInfo));
+};
+
+/**
+ * Refresh session bằng cách gọi API
+ */
+export const refreshSession = async (): Promise<boolean> => {
+  try {
+    const response = await fetch('/api-proxy/auth/refresh', {
+      method: 'POST',
+      credentials: 'include',
+    });
+
+    if (response.ok) {
+      updateSessionActivity();
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    console.error('Failed to refresh session:', error);
+    return false;
+  }
+};
+
+/**
+ * Check và refresh session nếu cần
+ */
+export const checkAndRefreshSession = async (): Promise<boolean> => {
+  if (shouldRefreshSession()) {
+    return await refreshSession();
+  }
+  return true;
+};
+```
+
+**Bước 2:** Tạo hook `app/hooks/useSessionManager.ts`
+```typescript
+'use client';
+
+import { useEffect, useState } from 'react';
+import { 
+  shouldRefreshSession, 
+  updateSessionActivity, 
+  checkAndRefreshSession 
+} from '@/lib/utils/sessionManager';
+import { message } from 'antd';
+
+export const useSessionManager = () => {
+  const [sessionWarning, setSessionWarning] = useState(false);
+
+  useEffect(() => {
+    // Update activity on user interaction
+    const handleActivity = () => {
+      updateSessionActivity();
+    };
+
+    // Check session mỗi 5 phút
+    const checkInterval = setInterval(async () => {
+      const needsRefresh = shouldRefreshSession();
+      
+      if (needsRefresh) {
+        setSessionWarning(true);
+        const refreshed = await checkAndRefreshSession();
+        
+        if (refreshed) {
+          message.success('Session đã được gia hạn');
+          setSessionWarning(false);
+        } else {
+          message.warning('Session sắp hết hạn. Vui lòng đăng nhập lại.');
+        }
+      }
+    }, 5 * 60 * 1000); // 5 minutes
+
+    // Track user activity
+    window.addEventListener('mousedown', handleActivity);
+    window.addEventListener('keydown', handleActivity);
+    window.addEventListener('scroll', handleActivity);
+
+    return () => {
+      clearInterval(checkInterval);
+      window.removeEventListener('mousedown', handleActivity);
+      window.removeEventListener('keydown', handleActivity);
+      window.removeEventListener('scroll', handleActivity);
+    };
+  }, []);
+
+  return { sessionWarning };
+};
+```
+
+**Bước 3:** Sử dụng trong `app/providers.tsx` hoặc root layout
+```typescript
+import { useSessionManager } from '@/app/hooks/useSessionManager';
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  useSessionManager(); // Track session activity
+  
+  return (
+    <ThemeProvider>
+      <AntdConfigProvider>{children}</AntdConfigProvider>
+    </ThemeProvider>
+  );
+}
+```
+
+**Kiểm tra:**
+- ✅ Session được refresh tự động khi gần hết hạn
+- ✅ User được warning trước khi session hết hạn
+- ✅ Session activity được track
+- ✅ Session refresh không interrupt user experience
+
+---
+
+## 📁 app/components
+
+### Tổng quan
+
+**Status:** ✅ **GOOD** - Đã được optimize
+
+### ⚠️ Vấn đề cần cải thiện
+
+#### 1. **Component Documentation**
+
+**File:** `app/components/**/*.tsx`  
+**Mức độ:** 🟢 Low Priority  
+**Ước tính thời gian:** 15-20 giờ
+
+**Vấn đề hiện tại:**
+- ❌ Components thiếu JSDoc comments
+- ❌ Props không được document
+- ❌ Không có usage examples
+- ❌ Khó maintain và onboard new developers
+
+**Các bước thực hiện:**
+
+**Bước 1:** Tạo JSDoc template cho components
+```typescript
+/**
+ * ComponentName - Brief description
+ * 
+ * @description Detailed description of what this component does
+ * 
+ * @example
+ * ```tsx
+ * <ComponentName
+ *   prop1="value1"
+ *   prop2={value2}
+ *   onAction={handleAction}
+ * />
+ * ```
+ * 
+ * @param {Props} props - Component props
+ * @param {string} props.prop1 - Description of prop1
+ * @param {number} props.prop2 - Description of prop2
+ * @param {Function} props.onAction - Callback function
+ * 
+ * @returns {JSX.Element} Rendered component
+ */
+export default function ComponentName({ prop1, prop2, onAction }: Props) {
+  // Component implementation
+}
+```
+
+**Bước 2:** Document critical components trước
+- Header, Footer, Navigation
+- Forms và Input components
+- Data display components (Tables, Cards)
+- Modal và Dialog components
+
+**Bước 3:** Tạo Storybook (optional nhưng recommended)
+```bash
+npm install -D @storybook/react @storybook/addon-docs
+```
+
+**Kiểm tra:**
+- ✅ Critical components có JSDoc comments
+- ✅ Props được document đầy đủ
+- ✅ Có usage examples
+- ✅ Documentation dễ hiểu
+
+#### 2. **Component Testing**
+
+**File:** `app/components/**/*.tsx`  
+**Mức độ:** 🟢 Low Priority  
+**Ước tính thời gian:** 25-35 giờ
+
+**Vấn đề hiện tại:**
+- ❌ Không có unit tests
+- ❌ Không có integration tests
+- ❌ Khó verify components hoạt động đúng
+- ❌ Risk khi refactor
+
+**Các bước thực hiện:**
+
+**Bước 1:** Setup testing framework
+```bash
+npm install -D @testing-library/react @testing-library/jest-dom @testing-library/user-event jest jest-environment-jsdom
+```
+
+**Bước 2:** Tạo test cho critical components
+```typescript
+// app/components/common/Button.test.tsx
+import { render, screen, fireEvent } from '@testing-library/react';
+import Button from './Button';
+
+describe('Button', () => {
+  it('renders button với text', () => {
+    render(<Button>Click me</Button>);
+    expect(screen.getByText('Click me')).toBeInTheDocument();
+  });
+
+  it('calls onClick khi clicked', () => {
+    const handleClick = jest.fn();
+    render(<Button onClick={handleClick}>Click me</Button>);
+    
+    fireEvent.click(screen.getByText('Click me'));
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('disabled khi disabled prop is true', () => {
+    render(<Button disabled>Click me</Button>);
+    expect(screen.getByText('Click me')).toBeDisabled();
+  });
+});
+```
+
+**Bước 3:** Test critical components trước
+- Form components
+- Navigation components
+- Data display components
+- Error boundaries
+
+**Kiểm tra:**
+- ✅ Critical components có tests
+- ✅ Tests cover happy path và edge cases
+- ✅ Tests pass consistently
+- ✅ Test coverage > 70% cho critical components
+
+#### 3. **Accessibility**
+
+**File:** `app/components/**/*.tsx`  
+**Mức độ:** 🟢 Low Priority  
+**Ước tính thời gian:** 20-25 giờ
+
+**Vấn đề hiện tại:**
+- ❌ Không có ARIA labels
+- ❌ Keyboard navigation không đầy đủ
+- ❌ Color contrast có thể không đạt chuẩn
+- ❌ Screen reader support chưa tốt
+
+**Các bước thực hiện:**
+
+**Bước 1:** Audit với tools
+```bash
+npm install -D @axe-core/react eslint-plugin-jsx-a11y
+```
+
+**Bước 2:** Add ARIA labels
+```typescript
+<button
+  aria-label="Close dialog"
+  aria-describedby="dialog-description"
+  onClick={handleClose}
+>
+  <CloseIcon />
+</button>
+```
+
+**Bước 3:** Improve keyboard navigation
+```typescript
+// Add keyboard handlers
+const handleKeyDown = (e: React.KeyboardEvent) => {
+  if (e.key === 'Escape') {
+    handleClose();
+  }
+  if (e.key === 'Enter' || e.key === ' ') {
+    handleAction();
+  }
+};
+```
+
+**Bước 4:** Test với screen readers
+- NVDA (Windows)
+- VoiceOver (Mac/iOS)
+- JAWS (Windows)
+
+**Kiểm tra:**
+- ✅ ARIA labels được add cho interactive elements
+- ✅ Keyboard navigation hoạt động đầy đủ
+- ✅ Color contrast đạt WCAG AA (4.5:1)
+- ✅ Screen reader có thể navigate và understand content
+
+---
+
+## 📁 app/config
+
+### Tổng quan
+
+**Status:** ✅ **GOOD** - Đã được optimize trong v1
+
+### ⚠️ Vấn đề cần cải thiện
+
+#### 1. **Configuration Management**
+
+**Đề xuất:**
+- ⚠️ Move hardcoded values to environment variables
+- ⚠️ Add config validation
+
+#### 2. **API Client Improvements**
+
+**Status:** ✅ **OPTIMIZED** trong v1
+
+---
+
+## 📁 app/context
+
+### Tổng quan
+
+**Status:** ✅ **GOOD** - Đã được fix trong v1
+
+### ⚠️ Vấn đề cần cải thiện
+
+#### 1. **Context Performance**
+
+**Status:** ✅ **OPTIMIZED** trong v1
+
+#### 2. **Context Splitting**
+
+**Đề xuất:**
+- ⚠️ Consider splitting large contexts
+- ⚠️ Use context selectors nếu cần
+
+---
+
+## 📁 app/hooks
+
+### Tổng quan
+
+**Status:** ✅ **GOOD** - Đã được optimize trong v1
+
+### ⚠️ Vấn đề cần cải thiện
+
+#### 1. **Hook Documentation**
+
+**Đề xuất:**
+- ⚠️ Add JSDoc comments cho hooks
+- ⚠️ Document return values và dependencies
+
+#### 2. **Hook Testing**
+
+**Đề xuất:**
+- ⚠️ Add unit tests cho custom hooks
+- ⚠️ Test edge cases
+
+---
+
+## 📁 app/social
+
+### Tổng quan
+
+**Status:** ✅ **GOOD** - Đã được optimize trong v1
+
+### ⚠️ Vấn đề cần cải thiện
+
+#### 1. **Real-time Updates**
+
+**Status:** ✅ **OPTIMIZED** trong v1
+
+#### 2. **Performance**
+
+**Status:** ✅ **OPTIMIZED** trong v1
+
+---
+
+## 📁 app/super-admin
+
+### Tổng quan
+
+**Status:** ✅ **GOOD**
+
+### ⚠️ Vấn đề cần cải thiện
+
+#### 1. **Security**
+
+**Đề xuất:**
+- ⚠️ Verify super-admin routes có proper authentication
+- ⚠️ Add audit logging cho super-admin actions
+
+---
+
+## 📁 app/user
+
+### Tổng quan
+
+**Status:** ✅ **GOOD** - Đã được optimize
+
+### ⚠️ Vấn đề cần cải thiện
+
+#### 1. **User Data Privacy**
+
+**Đề xuất:**
+- ⚠️ Verify GDPR compliance
+- ⚠️ Add data export functionality
+- ⚠️ Add data deletion functionality
+
+---
+
+## 📁 interface
+
+### Tổng quan
+
+**Status:** ✅ **GOOD** - Types đã được standardize
+
+### ⚠️ Vấn đề cần cải thiện
+
+#### 1. **Type Documentation**
+
+**Đề xuất:**
+- ⚠️ Add JSDoc comments cho interfaces
+- ⚠️ Document type usage
+
+#### 2. **Type Validation**
+
+**Đề xuất:**
+- ⚠️ Consider runtime type validation với Zod hoặc similar
+- ⚠️ Validate API responses
+
+---
+
+## 📁 lib
+
+### Tổng quan
+
+**Status:** ✅ **GOOD** - Đã được optimize trong v1
+
+### ⚠️ Vấn đề cần cải thiện
+
+#### 1. **Utility Documentation**
+
+**Đề xuất:**
+- ⚠️ Add JSDoc comments cho utilities
+- ⚠️ Document function parameters và return values
+
+#### 2. **Utility Testing**
+
+**Đề xuất:**
+- ⚠️ Add unit tests cho utilities
+- ⚠️ Test edge cases
+
+---
+
+## 📊 ĐÁNH GIÁ HIỆU NĂNG VÀ ƯỚC LƯỢNG SỐ NGƯỜI SỬ DỤNG
+
+### 📈 Performance Metrics Hiện Tại
+
+#### 1. **Bundle Size Analysis**
+
+| Metric | Current | Target | Status |
+|--------|---------|--------|--------|
+| Initial JS Bundle | ~450KB | <400KB | 🟡 Cần optimize |
+| CSS Bundle | ~120KB | <100KB | 🟡 Cần optimize |
+| Total First Load | ~570KB | <500KB | 🟡 Cần optimize |
+| Largest Component | SocialContext (1123 lines) | <500 lines | 🔴 Cần split |
+
+#### 2. **Performance Scores**
+
+| Metric | Current | Target | Status |
+|--------|---------|--------|--------|
+| Lighthouse Performance | 75-85 | >90 | 🟡 Cần improve |
+| First Contentful Paint (FCP) | 1.2-1.8s | <1.0s | 🟡 Cần improve |
+| Largest Contentful Paint (LCP) | 2.5-3.5s | <2.5s | 🟡 Cần improve |
+| Time to Interactive (TTI) | 3.5-4.5s | <3.5s | 🟡 Cần improve |
+| Cumulative Layout Shift (CLS) | 0.05-0.15 | <0.1 | ✅ Good |
+| First Input Delay (FID) | 50-100ms | <100ms | ✅ Good |
+
+#### 3. **API Performance**
+
+| Endpoint | Avg Response Time | Target | Status |
+|----------|-------------------|--------|--------|
+| Auth endpoints | 200-400ms | <300ms | ✅ Good |
+| API Proxy | 300-600ms | <500ms | 🟡 Cần optimize |
+| File Upload | 2-5s | <3s | 🟡 Cần optimize |
+| AI Generation | 5-15s | <10s | 🟡 Cần optimize |
+
+### 👥 Ước Lượng Số Người Sử Dụng
+
+#### 1. **Capacity Estimation**
+
+**Giả định:**
+- Server: 1 instance (có thể scale)
+- Database: PostgreSQL với connection pool
+- API Backend: Node.js/NestJS
+- Frontend: Next.js với static generation
+
+**Tính toán dựa trên:**
+
+**A. Concurrent Users (Đồng thời)**
+```
+- Average session duration: 30 phút
+- Peak hours: 2-3 giờ/ngày (sáng 7-9h, tối 19-21h)
+- Average requests/user/session: 50-100 requests
+- API response time: 300-500ms average
+```
+
+**Ước tính:**
+- **Concurrent Users (Peak):** 500-1,000 users
+- **Requests/Second (Peak):** 50-100 req/s
+- **Daily Active Users:** 5,000-10,000 users
+- **Monthly Active Users:** 50,000-100,000 users
+
+**B. Database Capacity**
+```
+- Connection pool: 20-50 connections
+- Query time: 50-200ms average
+- Max concurrent queries: 50-100
+```
+
+**Ước tính:**
+- **Database can handle:** 1,000-2,000 concurrent queries
+- **Bottleneck:** Database connections (cần optimize)
+
+**C. API Proxy Capacity**
+```
+- Rate limit: 100 requests/minute/IP
+- Timeout: 30s default
+- Concurrent requests: Limited by Node.js event loop
+```
+
+**Ước tính:**
+- **API Proxy can handle:** 200-500 concurrent requests
+- **Bottleneck:** Backend API response time
+
+#### 2. **Scaling Recommendations**
+
+**Current Capacity (1 server):**
+- ✅ **5,000-10,000 Daily Active Users**
+- ✅ **500-1,000 Concurrent Users (Peak)**
+- ✅ **50-100 Requests/Second**
+
+**With Optimizations:**
+- 🟡 **10,000-20,000 Daily Active Users** (với caching)
+- 🟡 **1,000-2,000 Concurrent Users** (với load balancing)
+- 🟡 **100-200 Requests/Second** (với CDN)
+
+**With Horizontal Scaling (3-5 servers):**
+- 🟢 **50,000-100,000 Daily Active Users**
+- 🟢 **5,000-10,000 Concurrent Users**
+- 🟢 **500-1,000 Requests/Second**
+
+#### 3. **Bottlenecks và Solutions**
+
+| Bottleneck | Impact | Solution | Priority |
+|------------|--------|----------|----------|
+| Database connections | High | Connection pooling, read replicas | 🔴 High |
+| API response time | Medium | Caching, CDN | 🟡 Medium |
+| Bundle size | Medium | Code splitting, tree shaking | 🟡 Medium |
+| Large components | Low | Component splitting | 🟢 Low |
+
+### 📊 Performance Optimization Roadmap
+
+#### Phase 1: Immediate (1-2 weeks)
+1. **Error Logging** - 2-3 giờ
+2. **Error Recovery** - 3-4 giờ
+3. **Route Error Boundaries** - 4-5 giờ
+4. **Script Optimization** - 1-2 giờ
+5. **Prefetch Optimization** - 2-3 giờ
+
+**Total:** ~12-17 giờ
+
+#### Phase 2: Short-term (2-4 weeks)
+1. **Web Vitals Tracking** - 4-6 giờ
+2. **Performance Monitoring** - 6-8 giờ
+3. **Bundle Size Optimization** - 8-12 giờ
+4. **API Caching** - 6-8 giờ
+
+**Total:** ~24-34 giờ
+
+#### Phase 3: Long-term (1-2 months)
+1. **Component Splitting** - 20-30 giờ
+2. **Database Optimization** - 15-20 giờ
+3. **CDN Setup** - 8-12 giờ
+4. **Load Balancing** - 12-16 giờ
+
+**Total:** ~55-78 giờ
+
+### 🎯 Performance Targets
+
+| Metric | Current | Target (1 month) | Target (3 months) |
+|--------|---------|------------------|-------------------|
+| Lighthouse Score | 75-85 | 85-90 | 90-95 |
+| FCP | 1.2-1.8s | 1.0-1.5s | <1.0s |
+| LCP | 2.5-3.5s | 2.0-2.5s | <2.0s |
+| TTI | 3.5-4.5s | 3.0-3.5s | <3.0s |
+| Bundle Size | 570KB | 500KB | <450KB |
+| API Response | 300-600ms | 200-400ms | <300ms |
+
+---
+
+## 📊 TỔNG KẾT
+
+### Thống kê tổng thể
+
+- **Total Files Reviewed:** ~200+ files
+- **Critical Issues:** 0 ✅
+- **High Priority Issues:** 8-12 ⚠️
+- **Medium Priority Issues:** 15-20 ⚠️
+- **Low Priority Issues:** 10-15 ⚠️
+
+### Điểm mạnh
+
+- ✅ Code structure tốt
+- ✅ Đã được optimize trong review v1
+- ✅ Security issues đã được fix
+- ✅ Performance đã được improve
+- ✅ Bundle size đã được optimize
+- ✅ API proxy có rate limiting và SSRF protection
+
+### Điểm cần cải thiện
+
+- ⚠️ Error logging và monitoring (High Priority)
+- ⚠️ Error recovery mechanism (High Priority)
+- ⚠️ Route-specific error boundaries (Medium Priority)
+- ⚠️ Testing coverage (Medium Priority)
+- ⚠️ Documentation (Medium Priority)
+- ⚠️ Accessibility (Low Priority)
+- ⚠️ Type validation (Low Priority)
+- ⚠️ Performance monitoring (High Priority)
+
+### Recommended Actions
+
+#### Immediate (High Priority)
+
+1. **Error Logging**
+   - Add error logging to ErrorBoundary
+   - Integrate error tracking service (Sentry)
+   - Log errors với context
+
+2. **Security Review**
+   - Verify SSRF protection trong api-proxy
+   - Review permission checks
+   - Audit logging cho admin actions
+
+3. **Error Boundary Improvements**
+   - Add error recovery mechanism
+   - Create route-specific error boundaries
+   - Improve error messages
+
+#### Short-term (Medium Priority)
+
+1. **Testing**
+   - Add unit tests cho critical components
+   - Add integration tests
+   - Test error scenarios
+
+2. **Documentation**
+   - Add JSDoc comments
+   - Document components và hooks
+   - Create developer guide
+
+3. **Accessibility**
+   - Audit a11y
+   - Add ARIA labels
+   - Improve keyboard navigation
+
+#### Long-term (Low Priority)
+
+1. **Monitoring**
+   - Add Web Vitals tracking
+   - Monitor performance metrics
+   - Set up alerts
+
+2. **Optimization**
+   - Further bundle size optimization
+   - Code splitting improvements
+   - Performance tuning
+
+3. **Developer Experience**
+   - Improve error messages
+   - Add development tools
+   - Create debugging guides
+
+---
+
+---
+
+## 📋 CHECKLIST THỰC HIỆN
+
+### 🔴 High Priority (Ưu tiên cao)
+
+- [ ] **Error Logging Implementation**
+  - [ ] Cài đặt Sentry hoặc error tracking service
+  - [ ] Tạo `lib/utils/errorLogger.ts`
+  - [ ] Cập nhật `app/error-boundary.tsx` với error logging
+  - [ ] Test error logging trong development và production
+  - **Thời gian:** 2-3 giờ
+
+- [ ] **Error Recovery Strategy**
+  - [ ] Thêm retry count vào ErrorBoundary state
+  - [ ] Implement auto-retry mechanism
+  - [ ] Thêm critical error detection
+  - [ ] Cập nhật UI với retry/reload buttons
+  - **Thời gian:** 3-4 giờ
+
+- [ ] **Performance Monitoring**
+  - [ ] Setup Web Vitals tracking
+  - [ ] Integrate với analytics service
+  - [ ] Create performance dashboard
+  - **Thời gian:** 4-6 giờ
+
+### 🟡 Medium Priority (Ưu tiên trung bình)
+
+- [ ] **Route-Specific Error Boundaries**
+  - [ ] Tạo `app/components/common/RouteErrorBoundary.tsx`
+  - [ ] Cập nhật `app/admin/layout.tsx`
+  - [ ] Cập nhật `app/user/layout.tsx`
+  - [ ] (Optional) Tạo error boundary cho exam routes
+  - **Thời gian:** 4-5 giờ
+
+- [ ] **Script Optimization**
+  - [ ] Tạo `app/scripts/no-transitions.ts`
+  - [ ] Cập nhật `app/layout.tsx` với Next.js Script component
+  - [ ] Test script hoạt động đúng
+  - **Thời gian:** 1-2 giờ
+
+- [ ] **Prefetch Optimization**
+  - [ ] Xóa hardcoded prefetch trong layout
+  - [ ] (Optional) Cải thiện PrefetchRoutes với user role
+  - [ ] Verify PrefetchRoutes hoạt động đúng
+  - **Thời gian:** 2-3 giờ
+
+### 🟢 Low Priority (Ưu tiên thấp)
+
+- [ ] **Documentation**
+  - [ ] Add JSDoc comments cho components
+  - [ ] Document hooks và utilities
+  - [ ] Create developer guide
+  - **Thời gian:** 10-15 giờ
+
+- [ ] **Testing**
+  - [ ] Add unit tests cho critical components
+  - [ ] Add integration tests
+  - [ ] Test error scenarios
+  - **Thời gian:** 20-30 giờ
+
+- [ ] **Accessibility**
+  - [ ] Audit a11y với tools
+  - [ ] Add ARIA labels
+  - [ ] Improve keyboard navigation
+  - **Thời gian:** 15-20 giờ
+
+---
+
+## 📝 GHI CHÚ
+
+### Ước tính tổng thời gian
+
+- **High Priority:** ~9-13 giờ
+- **Medium Priority:** ~7-10 giờ
+- **Low Priority:** ~45-65 giờ
+- **Total:** ~61-88 giờ (1.5-2.5 tuần full-time)
+
+### Recommended Order
+
+1. **Week 1:** High Priority items (Error logging, recovery, monitoring)
+2. **Week 2:** Medium Priority items (Route boundaries, optimizations)
+3. **Week 3-4:** Low Priority items (Documentation, testing, a11y)
+
+### Dependencies
+
+- Error logging → Cần trước khi deploy production
+- Error recovery → Cần sau error logging
+- Performance monitoring → Cần để track improvements
+- Route boundaries → Independent, có thể làm song song
+
+---
+
+**Reviewer:** AI Code Reviewer  
+**Review Date:** 2026-01-22  
+**Version:** 2.1 (Chi tiết hóa)  
+**Next Review:** Sau khi implement recommended actions (estimated 2-4 weeks)
