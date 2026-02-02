@@ -1,7 +1,7 @@
 # 📋 ĐÁNH GIÁ MÃ NGUỒN V2: Toàn Bộ Codebase - Review & Cập Nhật Chi Tiết
 
 **Ngày review:** 2026-01-22  
-**Version:** 2.4 (Updated với API Proxy caching & context improvements)  
+**Version:** 2.5 (Updated với not-found.tsx improvements)  
 **Scope:** Toàn bộ codebase (app/, interface/, lib/)  
 **Mục tiêu:** Đánh giá lại codebase sau các cải thiện, xác định các vấn đề còn lại và đề xuất cập nhật với hướng dẫn chi tiết từng bước
 
@@ -975,21 +975,113 @@ export default function PrefetchRoutes() {
 
 **File:** `app/not-found.tsx`  
 **Type:** 404 Page  
-**Status:** ✅ **GOOD** - Cần một số cải thiện
+**Status:** ✅ **GOOD** - ✅ **ĐÃ CẢI THIỆN** (v2.5)
+
+### ✅ Điểm mạnh
+
+- ✅ UI đẹp với dark mode support
+- ✅ Có nút quay lại và về trang chủ
+- ✅ **Analytics Tracking** (v2.5) - Track 404 pages với referrer URL
+- ✅ **Search Functionality** (v2.5) - Search box để tìm nội dung
+- ✅ **Popular Pages Suggestions** (v2.5) - Suggest popular pages
 
 ### ⚠️ Vấn đề cần cải thiện
 
-#### 1. **Thiếu Analytics Tracking**
+#### 1. **Thiếu Analytics Tracking** ✅ **FIXED** (v2.5)
 
-**Đề xuất:**
-- ✅ Track 404 pages để biết broken links
-- ✅ Log 404 với referrer URL
+**File:** `app/not-found.tsx`  
+**Mức độ:** 🟢 Medium Priority  
+**Status:** ✅ **COMPLETED** - 2026-01-22
 
-#### 2. **Thiếu Search Functionality**
+**✅ Đã thực hiện:**
 
-**Đề xuất:**
-- ✅ Thêm search box để user tìm nội dung
-- ✅ Suggest popular pages
+**Analytics Utility:**
+- Created `lib/utils/analytics.ts`
+- `track404()` function để track 404 pages với:
+  - Pathname (URL không tìm thấy)
+  - Referrer URL (trang user đến từ đâu)
+  - Timestamp
+- Support cho Google Analytics (gtag) và custom analytics endpoint
+- Development console logging
+
+**Integration:**
+- Track 404 page khi component mount
+- Track events khi user click buttons (home, back, page suggestions)
+- Track search queries
+
+**Code changes:**
+```typescript
+// Track 404 page với analytics
+useEffect(() => {
+  if (typeof window !== "undefined") {
+    track404(pathname || window.location.pathname, document.referrer);
+  }
+}, [pathname]);
+```
+
+**Kết quả:**
+- ✅ 404 pages được track tự động
+- ✅ Referrer URL được log để biết broken links
+- ✅ Events được track khi user interact
+- ✅ Sẵn sàng integrate với analytics service (Google Analytics, etc.)
+
+#### 2. **Thiếu Search Functionality** ✅ **FIXED** (v2.5)
+
+**File:** `app/not-found.tsx`  
+**Mức độ:** 🟢 Medium Priority  
+**Status:** ✅ **COMPLETED** - 2026-01-22
+
+**✅ Đã thực hiện:**
+
+**Search Box:**
+- Input field với search icon
+- Real-time filtering của popular pages
+- Enter key support để navigate
+- Clear button để reset search
+
+**Popular Pages Suggestions:**
+- List 8 popular pages: Trang chủ, Từ vựng, Luyện viết, Luyện nghe, Tin tức, Sự kiện, Về chúng tôi, Hướng dẫn
+- Filter pages dựa trên search query
+- Click để navigate đến page
+- Track click events
+
+**Features:**
+- Search by page name hoặc URL
+- Auto-filter suggestions
+- Navigate on exact match
+- Track search queries và page clicks
+
+**Code changes:**
+```typescript
+// Search functionality
+const [searchQuery, setSearchQuery] = useState("");
+const [filteredPages, setFilteredPages] = useState(POPULAR_PAGES);
+
+// Filter pages based on search query
+useEffect(() => {
+  if (!searchQuery.trim()) {
+    setFilteredPages(POPULAR_PAGES);
+    return;
+  }
+  const query = searchQuery.toLowerCase();
+  const filtered = POPULAR_PAGES.filter(
+    (page) =>
+      page.label.toLowerCase().includes(query) ||
+      page.href.toLowerCase().includes(query)
+  );
+  setFilteredPages(filtered.length > 0 ? filtered : POPULAR_PAGES);
+}, [searchQuery]);
+```
+
+**Kết quả:**
+- ✅ User có thể search để tìm trang
+- ✅ Popular pages được suggest
+- ✅ Better UX với search functionality
+- ✅ Track search behavior để improve suggestions
+
+**Files changed:**
+- `Edu_Learn_Next/app/not-found.tsx` (updated)
+- `Edu_Learn_Next/lib/utils/analytics.ts` (created)
 
 ---
 
@@ -2735,12 +2827,22 @@ const isDark = useIsDark();
 
 **Reviewer:** AI Code Reviewer  
 **Review Date:** 2026-01-22  
-**Version:** 2.4 (Updated với API Proxy caching & context improvements)  
+**Version:** 2.5 (Updated với not-found.tsx improvements)  
 **Next Review:** Sau khi implement recommended actions (estimated 2-4 weeks)
 
 ---
 
 ## 📝 SUMMARY OF COMPLETED FIXES (v2.3)
+
+### ✅ Completed in v2.5 (2026-01-22)
+
+1. **not-found.tsx Improvements** ✅ **COMPLETED** - 2026-01-22
+   - ✅ Analytics Tracking - Track 404 pages với referrer URL
+   - ✅ Search Functionality - Search box để tìm nội dung
+   - ✅ Popular Pages Suggestions - Suggest 8 popular pages
+   - ✅ Track user interactions (search, clicks)
+   - **Files:** `app/not-found.tsx` (updated), `lib/utils/analytics.ts` (created)
+   - **Thời gian:** ~1 giờ
 
 ### ✅ Completed in v2.4 (2026-01-22)
 
@@ -2791,8 +2893,8 @@ const isDark = useIsDark();
 - **Remaining:** 1 (Error Logging Implementation)
 
 - **Total Medium Priority Items:** 3
-- **Completed:** 0
-- **Remaining:** 3
+- **Completed:** 1 (33%) - not-found.tsx improvements
+- **Remaining:** 2
 
 - **Total Low Priority Items:** 2
 - **Completed:** 0
