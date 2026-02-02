@@ -946,10 +946,12 @@ const fetchVocabularies = async () => {
 **Tệp:** `app/error-boundary.tsx` *(file mới)*  
 **Trạng thái:** ✅ Hoàn thành — **2026-01-21**
 
-##### Vấn đề
+**Vấn đề:**
+
 Nếu **một component bị crash** → **toàn bộ app bị crash**, không có fallback UI.
 
-##### Cách sửa đã áp dụng
+**Cách sửa đã áp dụng:**
+
 - Tạo file `app/error-boundary.tsx` với **class component ErrorBoundary**
 - Xử lý lỗi một cách **graceful** với UI thân thiện
 - Cung cấp các nút:
@@ -958,7 +960,7 @@ Nếu **một component bị crash** → **toàn bộ app bị crash**, không c
 - Hiển thị **chi tiết lỗi trong môi trường development**
 - Hỗ trợ **dark mode**
 
-##### Triển khai
+**Triển khai:**
 
 ```typescript
 "use client";
