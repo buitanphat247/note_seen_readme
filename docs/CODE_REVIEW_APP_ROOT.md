@@ -21,7 +21,8 @@
   - [7. LỖI BẢO MẬT](#7-security-bugs--fix-hoàn-chỉnh) ✅
   - [8. LỖI XỬ LÝ LỖI](#8-error-handling-bugs--fix-hoàn-chỉnh) ✅
   - [9. LỖI HIỆU NĂNG](#9-performance-bugs--fix-hoàn-chỉnh) ✅
-  - [11. VẤN ĐỀ CHẤT LƯỢNG CODE](#11-code-quality-issues--fix-hoàn-chỉnh) ✅
+  - [10. VẤN ĐỀ CHẤT LƯỢNG CODE](#10-vấn-đề-chất-lượng-code) ✅
+  - [11. Thiếu Tối Ưu Hóa](#11-thiếu-tối-ưu-hóa) ✅
 - [🟡 CÁC VẤN ĐỀ CẢNH BÁO](#-các-vấn-đề-cảnh-báo) ✅
 - [🟢 THÔNG TIN / GỢI Ý](#-thông-tin--gợi-ý) ✅
 - [📈 CHỈ SỐ HIỆU NĂNG](#-chỉ-số-hiệu-năng) ✅
@@ -1195,9 +1196,9 @@ app/(root)/features/writing/
 
 ---
 
-### 11. **VẤN ĐỀ CHẤT LƯỢNG CODE** ✅
+### 10. **VẤN ĐỀ CHẤT LƯỢNG CODE** ✅
 
-#### 11.1. An Toàn Kiểu Dữ Liệu (Type Safety) - `guide/page.tsx` ✅
+#### 10.1. An Toàn Kiểu Dữ Liệu (Type Safety) - `guide/page.tsx` ✅
 
 **Tệp:** `app/(root)/guide/page.tsx`  
 **Dòng:** 39-44  
@@ -1240,13 +1241,13 @@ catch errors tại compile time
 - ✅ Easier refactoring - TypeScript sẽ warn nếu structure thay đổi
 ```
 ---
-#### 11.2. Số "Ma" (Magic Numbers) – `news/page.tsx`
+#### 10.2. Số "Ma" (Magic Numbers) – `news/page.tsx`
 
 **Tệp:** `app/(root)/news/page.tsx`  
 **Dòng:** 18, 62  
 **Trạng thái:** ✅ Hoàn thành — **2026-01-21**
 
-### Vấn đề
+**Vấn đề:**
 
 ```typescript
 const pageSize = 18;
@@ -1293,9 +1294,9 @@ export default function News() {
 
 ## 🟡 CÁC VẤN ĐỀ CẢNH BÁO ✅
 
-### 10. **Thiếu Tối Ưu Hóa** ✅
+### 11. **Thiếu Tối Ưu Hóa** ✅
 
-#### 10.1. `useMemo` cho filtered data - `news/page.tsx` ✅
+#### 11.1. `useMemo` cho filtered data - `news/page.tsx` ✅
 
 **Tệp:** `app/(root)/news/page.tsx`  
 **Dòng:** 20-27  
@@ -1324,7 +1325,7 @@ const filteredNews = useMemo(() => {
 
 ---
 
-#### 10.2. `useCallback` cho handlers - `events/page.tsx` ✅
+#### 11.2. `useCallback` cho handlers - `events/page.tsx` ✅
 
 **Tệp:** `app/(root)/events/page.tsx`  
 **Dòng:** 37-54  
@@ -1348,7 +1349,7 @@ const fetchEvents = useCallback(async () => {
 
 ---
 
-#### 10.3. Debounce search - `events/page.tsx` ✅
+#### 11.3. Debounce search - `events/page.tsx` ✅
 
 **Tệp:** `app/(root)/events/page.tsx`  
 **Dòng:** 27-34  
@@ -1374,71 +1375,6 @@ useEffect(() => {
 1. ✅ Triển khai debounce với 500ms delay
 2. ✅ Proper dọn dẹp với `clearTimeout`
 3. ✅ Reduces unnecessary API calls
-
----
-
-### 11. **Code Quality Issues** ✅
-
-#### 11.1. An Toàn Kiểu Dữ Liệu (Type Safety) - `guide/page.tsx` ✅
-
-**Tệp:** `app/(root)/guide/page.tsx`  
-**Dòng:** 39-44  
-**Trạng thái:** ✅ Hoàn thành - 2026-01-21
-
-**Vấn đề:**
-
-```typescript
-export default async function GuidePage(props: any) {
-  const searchParams = await props.searchParams;
-```
-
-**Cách sửa đã áp dụng:**
-
-```typescript
-interface GuidePageProps {
-  searchParams: Promise<{ doc?: string }>;
-}
-
-export default async function GuidePage(props: GuidePageProps) {
-  const searchParams = await props.searchParams;
-```
-
-**Các thay đổi đã thực hiện:**
-
-1. ✅ Tạo `GuidePageProps` interface với đúng cách typing
-2. ✅ Replaced `props: any` với `props: GuidePageProps`
-3. ✅ Thêm đúng cách type cho `searchParams` (Promise trong Next.js 15+)
-
----
-
-#### 11.2. Số "Ma" (Magic Numbers) - `news/page.tsx` ✅
-
-**Tệp:** `app/(root)/news/page.tsx`  
-**Dòng:** 18, 62  
-**Trạng thái:** ✅ Hoàn thành - 2026-01-21
-
-**Vấn đề:**
-
-```typescript
-const pageSize = 18;
-setTimeout(() => {
-  setIsScrolling(false);
-}, 500); // Magic number
-```
-
-**Cách sửa đã áp dụng:**
-
-```typescript
-// Constants
-const DEFAULT_PAGE_SIZE = 18;
-const SCROLL_DELAY_MS = 500;
-```
-
-**Các thay đổi đã thực hiện:**
-
-1. ✅ Extracted `18` → `DEFAULT_PAGE_SIZE = 18`
-2. ✅ Extracted `500` → `SCROLL_DELAY_MS = 500`
-3. ✅ Constants đặt ở top level với clear naming
 
 ---
 
