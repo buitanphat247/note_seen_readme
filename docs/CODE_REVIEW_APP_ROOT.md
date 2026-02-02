@@ -1,7 +1,8 @@
-# 📋 ĐÁNH GIÁ MÃ NGUỒN: app/(root) - Đánh Giá Chi Tiết Hiệu Năng & Bug Tiềm Ẩn
+# 📋 ĐÁNH GIÁ MÃ NGUỒN: Toàn Bộ Codebase - Đánh Giá Chi Tiết Hiệu Năng & Bug Tiềm Ẩn
 
 **Ngày review:** 2026-01-21  
-**Scope:** Toàn bộ code trong `app/(root)` folder  
+**Ngày cập nhật:** 2026-01-22  
+**Scope:** Toàn bộ codebase (app/(root), app/actions, app/admin, app/api-proxy, app/auth, app/config, app/components, app/context, app/hooks, app/social, app/super-admin, app/user, interface, lib)  
 **Mục tiêu:** Phát hiện bugs, vấn đề hiệu năng, race conditions, và các lỗi tiềm ẩn
 
 ---
@@ -54,7 +55,7 @@
 - [🔴 CÁC LỖI NGHIÊM TRỌNG - app/api-proxy](#-các-lỗi-nghiêm-trọng---appapi-proxy) ✅
 - [🟡 CÁC VẤN ĐỀ CẢNH BÁO - app/api-proxy](#-các-vấn-đề-cảnh-báo---appapi-proxy) ✅
 - [📈 CHỈ SỐ HIỆU NĂNG - app/admin & app/api-proxy](#-chỉ-số-hiệu-năng---appadmin--appapi-proxy) ✅
-- [✅ DANH SÁCH ƯU TIÊN SỬA LỖI - app/admtrong & app/api-proxy](#-danh-sách-ưu-tiên-sửa-lỗi---appadmin--appapi-proxy) ✅
+- [✅ DANH SÁCH ƯU TIÊN SỬA LỖI - app/admin & app/api-proxy](#-danh-sách-ưu-tiên-sửa-lỗi---appadmin--appapi-proxy) ✅
 - [📝 TỔNG KẾT - app/admin & app/api-proxy](#-tổng-kết---appadmin--appapi-proxy) ✅
 - [🔧 HÀNH ĐỘNG KHUYÊN DÙNG - app/admin & app/api-proxy](#-hành-động-khuyên-dùng---appadmin--appapi-proxy) ✅
 
@@ -136,7 +137,7 @@
 
 ## 📊 TỔNG QUAN
 
-### Thống kê
+### Thống kê (app/(root) folder)
 
 - **Tổng số files:** 23 files (TypeScript/TSX)
 - **Files có vấn đề:** 15 files
@@ -144,6 +145,8 @@
   - 🔴 **Nghiêm trọng:** 8 issues
   - 🟡 **Cảnh báo:** 12 issues
   - 🟢 **Thông tin:** 5 issues
+
+> **Lưu ý:** File này bao gồm đánh giá cho toàn bộ codebase. Xem [📊 TỔNG KẾT CUỐI CÙNG TOÀN BỘ ĐÁNH GIÁ MÃ NGUỒN](#tổng-kết-cuối-cùng-toàn-bộ-đánh-giá-mã-nguồn) để xem thống kê tổng thể (~200+ files).
 
 ---
 
@@ -3433,7 +3436,7 @@ setTimeout(() => controller.abort(), TIMEOUTS.DEFAULT);
 
 ---
 
-## ✅ DANH SÁCH ƯU TIÊN SỬA LỖI - app/admtrong & app/api-proxy
+## ✅ DANH SÁCH ƯU TIÊN SỬA LỖI - app/admin & app/api-proxy
 
 ### 🔴 Critical (Fix ngay)
 
