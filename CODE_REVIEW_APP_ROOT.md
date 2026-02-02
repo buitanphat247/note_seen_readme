@@ -1,7 +1,7 @@
 # 📋 CODE REVIEW: app/(root) - Đánh Giá Chi Tiết Hiệu Năng & Bug Tiềm Ẩn
 
-**Ngày review:** 2026-01-21  
-**Scope:** Toàn bộ code trong `app/(root)` folder  
+**Ngày review:** 2026-01-21
+**Scope:** Toàn bộ code trong `app/(root)` folder
 **Mục tiêu:** Phát hiện bugs, vấn đề hiệu năng, race conditions, và các lỗi tiềm ẩn
 
 ---
@@ -23,8 +23,8 @@
 ### 1. **STATE & DATA FLOW BUGS** ✅ **FIX HOÀN CHỈNH**
 
 #### 1.1. Stale State - `events/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/(root)/events/page.tsx`  
-**Dòng:** 37-54  
+**File:** `app/(root)/events/page.tsx`
+**Dòng:** 37-54
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -114,8 +114,8 @@ useEffect(() => {
 ---
 
 #### 1.2. Out-of-sync State - `profile/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/(root)/profile/page.tsx`  
-**Dòng:** 28-46  
+**File:** `app/(root)/profile/page.tsx`
+**Dòng:** 28-46
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -194,8 +194,8 @@ useEffect(() => {
 ### 2. **ASYNC / TIMING BUGS** ✅ **FIX HOÀN CHỈNH**
 
 #### 2.1. Double Submit - `events/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/(root)/events/page.tsx`  
-**Dòng:** 175-179  
+**File:** `app/(root)/events/page.tsx`
+**Dòng:** 175-179
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -255,8 +255,8 @@ useEffect(() => {
 ---
 
 #### 2.2. Request về sai thứ tự - `news/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/(root)/news/page.tsx`  
-**Dòng:** 129-137  
+**File:** `app/(root)/news/page.tsx`
+**Dòng:** 129-137
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -324,8 +324,8 @@ useEffect(() => {
 ### 3. **RENDER / REACT LIFECYCLE BUGS**
 
 #### 3.1. Infinite Re-render Risk - `news/[id]/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/(root)/news/[id]/page.tsx`  
-**Dòng:** 51-56  
+**File:** `app/(root)/news/[id]/page.tsx`
+**Dòng:** 51-56
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -362,8 +362,8 @@ const relatedNewsList = useMemo(() =>
 ---
 
 #### 3.2. Missing Dependency - `events/page.tsx` ✅ **ĐÃ VERIFY**
-**File:** `app/(root)/events/page.tsx`  
-**Dòng:** 56-58  
+**File:** `app/(root)/events/page.tsx`
+**Dòng:** 56-58
 **Status:** ✅ **VERIFIED** - 2026-01-21
 
 **Vấn đề:**
@@ -390,8 +390,8 @@ const fetchEvents = useCallback(async () => {
 ---
 
 #### 3.3. Unnecessary Re-renders - `about/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/(root)/about/page.tsx`  
-**Dòng:** 130-138  
+**File:** `app/(root)/about/page.tsx`
+**Dòng:** 130-138
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -423,8 +423,8 @@ const fetchEvents = useCallback(async () => {
 ### 4. **HYDRATION / SSR BUGS** ✅ **FIX HOÀN CHỈNH**
 
 #### 4.1. Client-only Code in SSR - `news/[id]/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/(root)/news/[id]/page.tsx`  
-**Dòng:** 18-29  
+**File:** `app/(root)/news/[id]/page.tsx`
+**Dòng:** 18-29
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -440,7 +440,7 @@ if (!mounted) {
 }
 ```
 
-**Bug:** 
+**Bug:**
 - Server render skeleton
 - Client render content → hydration mismatch
 - FOUC (Flash of Unstyled Content)
@@ -458,8 +458,8 @@ if (!mounted) {
 ---
 
 #### 4.2. Date Formatting Mismatch - `profile/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/(root)/profile/page.tsx`  
-**Dòng:** 250-255  
+**File:** `app/(root)/profile/page.tsx`
+**Dòng:** 250-255
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -495,8 +495,8 @@ if (!mounted) {
 ### 5. **MEMORY LEAK** ✅ **FIX HOÀN CHỈNH**
 
 #### 5.1. Interval không cleanup - `features/writing/[id]/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/(root)/features/writing/[id]/page.tsx`  
-**Dòng:** 48-59  
+**File:** `app/(root)/features/writing/[id]/page.tsx`
+**Dòng:** 48-59
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -538,8 +538,8 @@ useEffect(() => {
 ---
 
 #### 5.2. Event Listener không cleanup - `news/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/(root)/news/page.tsx`  
-**Dòng:** 16 (state `isScrolling`)  
+**File:** `app/(root)/news/page.tsx`
+**Dòng:** 16 (state `isScrolling`)
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:** Không có event listener nhưng state `isScrolling` có thể leak nếu component unmount giữa timeout
@@ -569,8 +569,8 @@ useEffect(() => {
 ### 6. **UI / CSS BUGS** ✅ **FIX HOÀN CHỈNH**
 
 #### 6.1. Layout Shift - `about/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/(root)/about/page.tsx`  
-**Dòng:** 114-119  
+**File:** `app/(root)/about/page.tsx`
+**Dòng:** 114-119
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -605,8 +605,8 @@ useEffect(() => {
 ---
 
 #### 6.2. Z-index Hell - `news/[id]/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/(root)/news/[id]/page.tsx`  
-**Dòng:** 149  
+**File:** `app/(root)/news/[id]/page.tsx`
+**Dòng:** 149
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -631,8 +631,8 @@ useEffect(() => {
 ### 7. **SECURITY BUGS** ✅ **FIX HOÀN CHỈNH**
 
 #### 7.1. XSS Risk - `guide/page.tsx` & `innovation/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/(root)/guide/page.tsx`, `app/(root)/innovation/page.tsx`  
-**Dòng:** 77  
+**File:** `app/(root)/guide/page.tsx`, `app/(root)/innovation/page.tsx`
+**Dòng:** 77
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -669,8 +669,8 @@ useEffect(() => {
 ---
 
 #### 7.2. Token trong localStorage - `profile/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/(root)/profile/page.tsx`  
-**Dòng:** (implicit - localStorage usage)  
+**File:** `app/(root)/profile/page.tsx`
+**Dòng:** (implicit - localStorage usage)
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:** Nếu lưu token trong localStorage → vulnerable to XSS
@@ -698,8 +698,8 @@ localStorage.setItem("user", JSON.stringify(userInfo));
 ### 8. **ERROR HANDLING BUGS** ✅ **FIX HOÀN CHỈNH**
 
 #### 8.1. Promise reject không catch - `vocabulary/[folderId]/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/(root)/features/vocabulary/[folderId]/page.tsx`  
-**Dòng:** 29-49  
+**File:** `app/(root)/features/vocabulary/[folderId]/page.tsx`
+**Dòng:** 29-49
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -753,7 +753,7 @@ const fetchVocabularies = async () => {
 ---
 
 #### 8.2. Không có ErrorBoundary - Tất cả pages ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/error-boundary.tsx` (new file)  
+**File:** `app/error-boundary.tsx` (new file)
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:** Nếu 1 component crash → toàn bộ app crash
@@ -788,8 +788,8 @@ export default class ErrorBoundary extends Component<Props, State> {
 ### 9. **PERFORMANCE BUGS** ✅ **FIX HOÀN CHỈNH**
 
 #### 9.1. Re-render quá nhiều - `news/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/(root)/news/page.tsx`  
-**Dòng:** 106-121  
+**File:** `app/(root)/news/page.tsx`
+**Dòng:** 106-121
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -805,7 +805,7 @@ export default class ErrorBoundary extends Component<Props, State> {
 ))}
 ```
 
-**Bug:** 
+**Bug:**
 - `ScrollAnimation` re-render mỗi khi `isScrolling` thay đổi
 - Key thay đổi → unmount/remount components
 
@@ -843,8 +843,8 @@ export default class ErrorBoundary extends Component<Props, State> {
 ---
 
 #### 9.2. Bundle size - `about/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/(root)/about/page.tsx`  
-**Dòng:** 4-19  
+**File:** `app/(root)/about/page.tsx`
+**Dòng:** 4-19
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -886,8 +886,8 @@ import {
 ---
 
 #### 9.3. Large Component - `writing/[id]/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/(root)/features/writing/[id]/page.tsx`  
-**Dòng:** 75-592 (trước đây) → ~250 dòng (sau refactor)  
+**File:** `app/(root)/features/writing/[id]/page.tsx`
+**Dòng:** 75-592 (trước đây) → ~250 dòng (sau refactor)
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:** Component quá lớn (592 dòng) → khó maintain, re-render toàn bộ
@@ -934,8 +934,8 @@ app/(root)/features/writing/
 ### 11. **CODE QUALITY ISSUES** ✅ **FIX HOÀN CHỈNH**
 
 #### 11.1. Type Safety - `guide/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/(root)/guide/page.tsx`  
-**Dòng:** 39-44  
+**File:** `app/(root)/guide/page.tsx`
+**Dòng:** 39-44
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -971,8 +971,8 @@ export default async function GuidePage(props: GuidePageProps) {
 ---
 
 #### 11.2. Magic Numbers - `news/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/(root)/news/page.tsx`  
-**Dòng:** 18, 62  
+**File:** `app/(root)/news/page.tsx`
+**Dòng:** 18, 62
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -1020,8 +1020,8 @@ export default function News() {
 ### 10. **Missing Optimizations** ✅ **FIX HOÀN CHỈNH**
 
 #### 10.1. `useMemo` cho filtered data - `news/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/(root)/news/page.tsx`  
-**Dòng:** 20-27  
+**File:** `app/(root)/news/page.tsx`
+**Dòng:** 20-27
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:** Filtered data được tính toán lại mỗi render
@@ -1046,8 +1046,8 @@ const filteredNews = useMemo(() => {
 ---
 
 #### 10.2. `useCallback` cho handlers - `events/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/(root)/events/page.tsx`  
-**Dòng:** 37-54  
+**File:** `app/(root)/events/page.tsx`
+**Dòng:** 37-54
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:** Handlers được tạo lại mỗi render → unnecessary re-renders
@@ -1067,8 +1067,8 @@ const fetchEvents = useCallback(async () => {
 ---
 
 #### 10.3. Debounce search - `events/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/(root)/events/page.tsx`  
-**Dòng:** 27-34  
+**File:** `app/(root)/events/page.tsx`
+**Dòng:** 27-34
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:** Search input gửi request mỗi keystroke → nhiều requests không cần thiết
@@ -1095,8 +1095,8 @@ useEffect(() => {
 ### 11. **Code Quality Issues** ✅ **FIX HOÀN CHỈNH**
 
 #### 11.1. Type Safety - `guide/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/(root)/guide/page.tsx`  
-**Dòng:** 39-44  
+**File:** `app/(root)/guide/page.tsx`
+**Dòng:** 39-44
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -1123,8 +1123,8 @@ export default async function GuidePage(props: GuidePageProps) {
 ---
 
 #### 11.2. Magic Numbers - `news/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/(root)/news/page.tsx`  
-**Dòng:** 18, 62  
+**File:** `app/(root)/news/page.tsx`
+**Dòng:** 18, 62
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -1283,8 +1283,8 @@ const SCROLL_DELAY_MS = 500;
 ### 1. **SECURITY BUGS**
 
 #### 1.1. Input Validation Missing - `theme.ts` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/actions/theme.ts`  
-**Dòng:** 5-14  
+**File:** `app/actions/theme.ts`
+**Dòng:** 5-14
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -1301,7 +1301,7 @@ export async function setThemeCookie(theme: string) {
 }
 ```
 
-**Bug:** 
+**Bug:**
 - ❌ Không validate input `theme` → có thể inject malicious values
 - ❌ `httpOnly: false` → vulnerable to XSS attacks
 - ❌ Không sanitize input → có thể chứa special characters
@@ -1419,8 +1419,8 @@ export async function setThemeCookie(
 ---
 
 #### 1.2. No Error Handling - `theme.ts` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/actions/theme.ts`  
-**Dòng:** 5-14  
+**File:** `app/actions/theme.ts`
+**Dòng:** 5-14
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -1455,8 +1455,8 @@ export async function setThemeCookie(theme: string) {
 ---
 
 #### 1.3. No Rate Limiting - `theme.ts` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/actions/theme.ts`  
-**Dòng:** 5-14  
+**File:** `app/actions/theme.ts`
+**Dòng:** 5-14
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -1511,8 +1511,8 @@ export async function setThemeCookie(theme: string) {
 ### 2. **ASYNC / TIMING BUGS**
 
 #### 2.1. Race Condition in ThemeContext - `ThemeContext.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/context/ThemeContext.tsx`  
-**Dòng:** 49-120  
+**File:** `app/context/ThemeContext.tsx`
+**Dòng:** 49-120
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -1564,8 +1564,8 @@ const toggleTheme = async (e?: React.MouseEvent) => {
 ---
 
 #### 2.2. Unhandled Promise Rejection - `ThemeContext.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/context/ThemeContext.tsx`  
-**Dòng:** 85-87  
+**File:** `app/context/ThemeContext.tsx`
+**Dòng:** 85-87
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -1603,8 +1603,8 @@ try {
 ### 3. **CODE QUALITY**
 
 #### 3.1. Missing Type Safety - `theme.ts` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/actions/theme.ts`  
-**Dòng:** 5  
+**File:** `app/actions/theme.ts`
+**Dòng:** 5
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -1634,8 +1634,8 @@ export async function setThemeCookie(
 ---
 
 #### 3.2. Magic Numbers - `theme.ts` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/actions/theme.ts`  
-**Dòng:** 10  
+**File:** `app/actions/theme.ts`
+**Dòng:** 10
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -1830,8 +1830,8 @@ describe("setThemeCookie", () => {
 ### 1. **STATE & DATA FLOW BUGS** ✅ **FIX HOÀN CHỈNH**
 
 #### 1.1. Race Condition Risk - `admin/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/admin/page.tsx`  
-**Dòng:** 165-179  
+**File:** `app/admin/page.tsx`
+**Dòng:** 165-179
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -1897,8 +1897,8 @@ useEffect(() => {
 ---
 
 #### 1.2. Unnecessary Re-renders - `admin/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/admin/page.tsx`  
-**Dòng:** 79-103  
+**File:** `app/admin/page.tsx`
+**Dòng:** 79-103
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -1939,8 +1939,8 @@ const statsCards = useMemo(() =>
 ### 2. **ASYNC / TIMING BUGS** ✅ **FIX HOÀN CHỈNH**
 
 #### 2.1. Missing Error Handling - `AdminLayoutClient.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/admin/AdminLayoutClient.tsx`  
-**Dòng:** 44-62  
+**File:** `app/admin/AdminLayoutClient.tsx`
+**Dòng:** 44-62
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -2023,8 +2023,8 @@ useEffect(() => {
 ---
 
 #### 2.2. Date Formatting Mismatch - `AdminLayoutClient.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/admin/AdminLayoutClient.tsx`  
-**Dòng:** 155  
+**File:** `app/admin/AdminLayoutClient.tsx`
+**Dòng:** 155
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -2053,7 +2053,7 @@ useEffect(() => {
 import { format } from 'date-fns';
 import { vi } from 'date-fns/locale';
 
-{userInfo.created_at 
+{userInfo.created_at
   ? format(new Date(userInfo.created_at), 'dd/MM/yyyy', { locale: vi })
   : "Chưa có thông tin"}
 ```
@@ -2063,8 +2063,8 @@ import { vi } from 'date-fns/locale';
 ### 3. **SECURITY BUGS** ✅ **FIX HOÀN CHỈNH**
 
 #### 3.1. Cookie Decryption Error Handling - `admin/layout.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/admin/layout.tsx`  
-**Dòng:** 5-30  
+**File:** `app/admin/layout.tsx`
+**Dòng:** 5-30
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -2145,8 +2145,8 @@ async function getInitialUserData() {
 ### 4. **CODE QUALITY** ✅ **FIX HOÀN CHỈNH**
 
 #### 4.1. Magic Numbers - `admin/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/admin/page.tsx`  
-**Dòng:** 60-66  
+**File:** `app/admin/page.tsx`
+**Dòng:** 60-66
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -2198,8 +2198,8 @@ const getGreeting = () => {
 ---
 
 #### 4.2. Type Safety - `admin/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/admin/page.tsx`  
-**Dòng:** 76, 108  
+**File:** `app/admin/page.tsx`
+**Dòng:** 76, 108
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -2267,8 +2267,8 @@ function QuickActionsGrid({ items }: { items: QuickActionItem[] }) {
 ### 1. **SECURITY BUGS** ✅ **FIX HOÀN CHỈNH**
 
 #### 1.1. No Input Validation - `[...path]/route.ts` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/api-proxy/[...path]/route.ts`  
-**Dòng:** 7-73  
+**File:** `app/api-proxy/[...path]/route.ts`
+**Dòng:** 7-73
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -2351,8 +2351,8 @@ async function handleRequest(request: NextRequest, method: string) {
 ---
 
 #### 1.2. Cookie Forwarding Security - `[...path]/route.ts` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/api-proxy/[...path]/route.ts`  
-**Dòng:** 18-21, 52  
+**File:** `app/api-proxy/[...path]/route.ts`
+**Dòng:** 18-21, 52
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -2412,7 +2412,7 @@ setCookies.forEach(c => {
 ---
 
 #### 1.3. No Rate Limiting - Tất cả routes ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** Tất cả files trong `app/api-proxy`  
+**File:** Tất cả files trong `app/api-proxy`
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -2510,8 +2510,8 @@ async function handleRequest(request: NextRequest, method: string) {
 ### 2. **ASYNC / TIMING BUGS** ✅ **FIX HOÀN CHỈNH**
 
 #### 2.1. Timeout Race Condition - `[...path]/route.ts` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/api-proxy/[...path]/route.ts`  
-**Dòng:** 28-36  
+**File:** `app/api-proxy/[...path]/route.ts`
+**Dòng:** 28-36
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -2597,8 +2597,8 @@ try {
 ---
 
 #### 2.2. Body Size Limit - `writing-chat-bot/generate/route.ts` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/api-proxy/writing-chat-bot/generate/route.ts`  
-**Dòng:** 9  
+**File:** `app/api-proxy/writing-chat-bot/generate/route.ts`
+**Dòng:** 9
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -2641,9 +2641,9 @@ export async function POST(request: NextRequest) {
         { status: 413 }
       );
     }
-    
+
     const body = JSON.parse(bodyText);
-    
+
     // Validate body structure
     if (!body || typeof body !== 'object') {
       return NextResponse.json(
@@ -2651,7 +2651,7 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    
+
     // ... rest of code
   }
 }
@@ -2788,7 +2788,7 @@ export const GET = (req: NextRequest) => proxyRequest(req, 'GET', {
 ---
 
 #### 4.2. Magic Numbers - Tất cả routes ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** Tất cả files trong `app/api-proxy`  
+**File:** Tất cả files trong `app/api-proxy`
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -2943,7 +2943,7 @@ setTimeout(() => controller.abort(), TIMEOUTS.DEFAULT);
 ### 1. **SECURITY BUGS**
 
 #### 1.1. Password in Plain Text - `auth/page.tsx`
-**File:** `app/auth/page.tsx`  
+**File:** `app/auth/page.tsx`
 **Dòng:** 43-73, 75-110
 
 **Vấn đề:**
@@ -2985,7 +2985,7 @@ const handleSignIn = async (values: any) => {
 ---
 
 #### 1.2. Username Generation Logic - `auth/page.tsx`
-**File:** `app/auth/page.tsx`  
+**File:** `app/auth/page.tsx`
 **Dòng:** 79
 
 **Vấn đề:**
@@ -3031,7 +3031,7 @@ const username = generateUsername(values.email, values.name);
 ---
 
 #### 1.3. No Rate Limiting on Client - `auth/page.tsx`
-**File:** `app/auth/page.tsx`  
+**File:** `app/auth/page.tsx`
 **Dòng:** 43-73
 
 **Vấn đề:**
@@ -3080,7 +3080,7 @@ const handleSignIn = async (values: any) => {
 ---
 
 #### 1.4. Force Reload Security - `auth/page.tsx`
-**File:** `app/auth/page.tsx`  
+**File:** `app/auth/page.tsx`
 **Dòng:** 60-63, 97-100
 
 **Vấn đề:**
@@ -3119,7 +3119,7 @@ if (response.status && response.data?.user) {
 ### 2. **STATE & DATA FLOW BUGS**
 
 #### 2.1. Race Condition - `auth/page.tsx`
-**File:** `app/auth/page.tsx`  
+**File:** `app/auth/page.tsx`
 **Dòng:** 23-30
 
 **Vấn đề:**
@@ -3173,7 +3173,7 @@ useEffect(() => {
 ### 3. **CODE QUALITY**
 
 #### 3.1. Type Safety - `auth/page.tsx`
-**File:** `app/auth/page.tsx`  
+**File:** `app/auth/page.tsx`
 **Dòng:** 43, 75
 
 **Vấn đề:**
@@ -3212,7 +3212,7 @@ const handleSignUp = async (values: SignUpValues) => {
 ---
 
 #### 3.2. Magic Numbers - `auth/page.tsx`
-**File:** `app/auth/page.tsx`  
+**File:** `app/auth/page.tsx`
 **Dòng:** 60, 97
 
 **Vấn đề:**
@@ -3250,7 +3250,7 @@ setTimeout(() => {
 ### 1. **SECURITY BUGS**
 
 #### 1.1. Auth Cache TTL Too Short - `config/api.ts`
-**File:** `app/config/api.ts`  
+**File:** `app/config/api.ts`
 **Dòng:** 28
 
 **Vấn đề:**
@@ -3298,7 +3298,7 @@ const getCachedAuthHeader = (): string | null => {
 ---
 
 #### 1.2. Response Cache Memory Leak - `config/api.ts`
-**File:** `app/config/api.ts`  
+**File:** `app/config/api.ts`
 **Dòng:** 83-120
 
 **Vấn đề:**
@@ -3349,7 +3349,7 @@ setInterval(() => {
 ---
 
 #### 1.3. Token Refresh Race Condition - `config/api.ts`
-**File:** `app/config/api.ts`  
+**File:** `app/config/api.ts`
 **Dòng:** 74-80, 160-170
 
 **Vấn đề:**
@@ -3405,7 +3405,7 @@ if (isRefreshing) {
 ### 2. **CODE QUALITY**
 
 #### 2.1. Magic Numbers - `config/api.ts`
-**File:** `app/config/api.ts`  
+**File:** `app/config/api.ts`
 **Dòng:** 20, 28, 84
 
 **Vấn đề:**
@@ -3446,7 +3446,7 @@ apiClient = axios.create({
 ### 1. **SECURITY BUGS**
 
 #### 1.1. XSS Risk in RichTextEditor - `components/common/RichTextEditor.tsx`
-**File:** `app/components/common/RichTextEditor.tsx`  
+**File:** `app/components/common/RichTextEditor.tsx`
 **Dòng:** 46-63, 65-70
 
 **Vấn đề:**
@@ -3518,7 +3518,7 @@ const addImage = () => {
 ---
 
 #### 1.2. No Input Sanitization - `components/common/CustomInput.tsx`
-**File:** `app/components/common/CustomInput.tsx`  
+**File:** `app/components/common/CustomInput.tsx`
 **Dòng:** 41-58
 
 **Vấn đề:**
@@ -3563,7 +3563,7 @@ const sanitizeInput = (value: string): string => {
 ### 2. **MEMORY LEAK**
 
 #### 2.1. IntersectionObserver Not Cleaned Up - `components/common/ScrollAnimation.tsx`
-**File:** `app/components/common/ScrollAnimation.tsx`  
+**File:** `app/components/common/ScrollAnimation.tsx`
 **Dòng:** 21-50
 
 **Vấn đề:**
@@ -3626,7 +3626,7 @@ useEffect(() => {
 ---
 
 #### 2.2. Editor Instance Not Cleaned Up - `components/common/RichTextEditor.tsx`
-**File:** `app/components/common/RichTextEditor.tsx`  
+**File:** `app/components/common/RichTextEditor.tsx`
 **Dòng:** 279-381
 
 **Vấn đề:**
@@ -3668,7 +3668,7 @@ useEffect(() => {
 ### 3. **PERFORMANCE BUGS**
 
 #### 3.1. Unnecessary Re-renders - `components/common/ScrollAnimation.tsx`
-**File:** `app/components/common/ScrollAnimation.tsx`  
+**File:** `app/components/common/ScrollAnimation.tsx`
 **Dòng:** 18-50
 
 **Vấn đề:**
@@ -3726,7 +3726,7 @@ useEffect(() => {
 ---
 
 #### 3.2. Large Component - `components/common/RichTextEditor.tsx`
-**File:** `app/components/common/RichTextEditor.tsx`  
+**File:** `app/components/common/RichTextEditor.tsx`
 **Dòng:** 272-467
 
 **Vấn đề:** Component quá lớn (467 dòng) → khó maintain, re-render toàn bộ
@@ -3743,7 +3743,7 @@ useEffect(() => {
 ### 4. **CODE QUALITY**
 
 #### 4.1. Type Safety - `components/common/PrefetchLink.tsx`
-**File:** `app/components/common/PrefetchLink.tsx`  
+**File:** `app/components/common/PrefetchLink.tsx`
 **Dòng:** 11
 
 **Vấn đề:**
@@ -3763,7 +3763,7 @@ interface PrefetchLinkProps extends React.ComponentProps<typeof Link> {
 ---
 
 #### 4.2. Console.log in Production - `components/common/PrefetchLink.tsx`
-**File:** `app/components/common/PrefetchLink.tsx`  
+**File:** `app/components/common/PrefetchLink.tsx`
 **Dòng:** 26-28
 
 **Vấn đề:**
@@ -3890,7 +3890,7 @@ onMouseEnter={() => {
 ### 1. **ASYNC / TIMING BUGS**
 
 #### 1.1. Race Condition in ThemeContext - `context/ThemeContext.tsx`
-**File:** `app/context/ThemeContext.tsx`  
+**File:** `app/context/ThemeContext.tsx`
 **Dòng:** 49-120
 
 **Vấn đề:**
@@ -3942,7 +3942,7 @@ const toggleTheme = async (e?: React.MouseEvent) => {
 ---
 
 #### 1.2. Unhandled Promise Rejection - `context/ThemeContext.tsx`
-**File:** `app/context/ThemeContext.tsx`  
+**File:** `app/context/ThemeContext.tsx`
 **Dòng:** 85-87
 
 **Vấn đề:**
@@ -3980,7 +3980,7 @@ try {
 ### 2. **CODE QUALITY**
 
 #### 2.1. View Transition API Compatibility - `context/ThemeContext.tsx`
-**File:** `app/context/ThemeContext.tsx`  
+**File:** `app/context/ThemeContext.tsx`
 **Dòng:** 53
 
 **Vấn đề:**
@@ -4022,7 +4022,7 @@ const hasViewTransition = (document as DocumentWithViewTransition).startViewTran
 ### 1. **MEMORY LEAK**
 
 #### 1.1. Event Listener Not Cleaned Up - `hooks/useUserId.ts`
-**File:** `app/hooks/useUserId.ts`  
+**File:** `app/hooks/useUserId.ts`
 **Dòng:** 54-77
 
 **Vấn đề:**
@@ -4080,7 +4080,7 @@ useEffect(() => {
 ---
 
 #### 1.2. Socket Not Disconnected - `hooks/useExamSocket.ts`
-**File:** `app/hooks/useExamSocket.ts`  
+**File:** `app/hooks/useExamSocket.ts`
 **Dòng:** 19-68
 
 **Vấn đề:**
@@ -4170,7 +4170,7 @@ useEffect(() => {
 ---
 
 #### 1.3. Interval Not Cleaned Up - `hooks/useAntiCheat.ts`
-**File:** `app/hooks/useAntiCheat.ts`  
+**File:** `app/hooks/useAntiCheat.ts`
 **Dòng:** 195-198
 
 **Vấn đề:**
@@ -4215,7 +4215,7 @@ useEffect(() => {
 ### 2. **SECURITY BUGS**
 
 #### 2.1. XSS Risk in Overlay HTML - `hooks/useAntiCheat.ts`
-**File:** `app/hooks/useAntiCheat.ts`  
+**File:** `app/hooks/useAntiCheat.ts`
 **Dòng:** 101-108
 
 **Vấn đề:**
@@ -4257,7 +4257,7 @@ div.appendChild(btnEl);
 ---
 
 #### 2.2. DOM Manipulation Security - `hooks/useAntiCheat.ts`
-**File:** `app/hooks/useAntiCheat.ts`  
+**File:** `app/hooks/useAntiCheat.ts`
 **Dòng:** 73-110
 
 **Vấn đề:**
@@ -4284,7 +4284,7 @@ const Overlay = ({ message, onResume, isHardBlock }: OverlayProps) => {
 ### 3. **ASYNC / TIMING BUGS**
 
 #### 3.1. File Upload Race Condition - `hooks/useFileUpload.ts`
-**File:** `app/hooks/useFileUpload.ts`  
+**File:** `app/hooks/useFileUpload.ts`
 **Dòng:** 24-88
 
 **Vấn đề:**
@@ -4370,7 +4370,7 @@ const uploadFile = useCallback(
 ### 4. **CODE QUALITY**
 
 #### 4.1. Magic Numbers - `hooks/useAntiCheat.ts`
-**File:** `app/hooks/useAntiCheat.ts`  
+**File:** `app/hooks/useAntiCheat.ts`
 **Dòng:** 54, 185, 195, 216
 
 **Vấn đề:**
@@ -4392,7 +4392,7 @@ const INCIDENT_COOLDOWN_MS = 1000;
 ---
 
 #### 4.2. Type Safety - `hooks/useExamSocket.ts`
-**File:** `app/hooks/useExamSocket.ts`  
+**File:** `app/hooks/useExamSocket.ts`
 **Dòng:** 16, 23-33
 
 **Vấn đề:**
@@ -4434,7 +4434,7 @@ const socket = io(SOCKET_URL, {
 ### 1. **STATE & DATA FLOW BUGS**
 
 #### 1.1. Stale Closure in SocialContext - `social/SocialContext.tsx`
-**File:** `app/social/SocialContext.tsx`  
+**File:** `app/social/SocialContext.tsx`
 **Dòng:** 1042
 
 **Vấn đề:**
@@ -4476,7 +4476,7 @@ useEffect(() => {
 ---
 
 #### 1.2. Race Condition in Message Loading - `social/SocialContext.tsx`
-**File:** `app/social/SocialContext.tsx`  
+**File:** `app/social/SocialContext.tsx`
 **Dòng:** 381-436
 
 **Vấn đề:**
@@ -4545,7 +4545,7 @@ const loadMessages = useCallback(async (roomId: string) => {
 ---
 
 #### 1.3. Message Deduplication Logic - `social/SocialContext.tsx`
-**File:** `app/social/SocialContext.tsx`  
+**File:** `app/social/SocialContext.tsx`
 **Dòng:** 788-793, 902-927
 
 **Vấn đề:**
@@ -4603,7 +4603,7 @@ if (msgId) {
 ### 2. **ASYNC / TIMING BUGS**
 
 #### 2.1. Socket Reconnection Race Condition - `social/SocialContext.tsx`
-**File:** `app/social/SocialContext.tsx`  
+**File:** `app/social/SocialContext.tsx`
 **Dòng:** 770-781
 
 **Vấn đề:**
@@ -4644,7 +4644,7 @@ const unsubscribeConnection = chatSocketClient.onConnectionChange(
 ---
 
 #### 2.2. Double Message Send - `social/page.tsx`
-**File:** `app/social/page.tsx`  
+**File:** `app/social/page.tsx`
 **Dòng:** 72-91
 
 **Vấn đề:**
@@ -4699,7 +4699,7 @@ const handleSendMessage = async () => {
 ### 3. **MEMORY LEAK**
 
 #### 3.1. Socket Listeners Not Cleaned Up Properly - `social/SocialContext.tsx`
-**File:** `app/social/SocialContext.tsx`  
+**File:** `app/social/SocialContext.tsx`
 **Dòng:** 1028-1041
 
 **Vấn đề:**
@@ -4746,7 +4746,7 @@ useEffect(() => {
 ---
 
 #### 3.2. Large Context Value - `social/SocialContext.tsx`
-**File:** `app/social/SocialContext.tsx`  
+**File:** `app/social/SocialContext.tsx`
 **Dòng:** 1044-1107
 
 **Vấn đề:**
@@ -4781,7 +4781,7 @@ const SocialActionsContext = createContext<SocialActionsContextType>(/* ... */);
 ### 4. **SECURITY BUGS**
 
 #### 4.1. localStorage XSS Risk - `social/SocialContext.tsx`
-**File:** `app/social/SocialContext.tsx`  
+**File:** `app/social/SocialContext.tsx`
 **Dòng:** 146-164
 
 **Vấn đề:**
@@ -4873,7 +4873,7 @@ useEffect(() => {
 ---
 
 #### 5.2. Type Safety - `social/SocialContext.tsx`
-**File:** `app/social/SocialContext.tsx`  
+**File:** `app/social/SocialContext.tsx`
 **Dòng:** 709, 786
 
 **Vấn đề:**
@@ -4910,7 +4910,7 @@ const newRequest: FriendRequestResponse = {
 ---
 
 #### 5.3. Magic Numbers - `social/SocialContext.tsx`
-**File:** `app/social/SocialContext.tsx`  
+**File:** `app/social/SocialContext.tsx`
 **Dòng:** 229, 298, 402
 
 **Vấn đề:**
@@ -5041,8 +5041,8 @@ const MESSAGES_LIMIT = 50;
 ### 1. **STATE & DATA FLOW BUGS** ✅ **FIX HOÀN CHỈNH**
 
 #### 1.1. Race Condition Risk - `super-admin/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/super-admin/page.tsx`  
-**Dòng:** 159-173  
+**File:** `app/super-admin/page.tsx`
+**Dòng:** 159-173
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -5108,8 +5108,8 @@ useEffect(() => {
 ---
 
 #### 1.2. Unnecessary Re-renders - `super-admin/page.tsx` ✅ **ĐÃ FIX HOÀN CHỈNH**
-**File:** `app/super-admin/page.tsx`  
-**Dòng:** 141-145  
+**File:** `app/super-admin/page.tsx`
+**Dòng:** 141-145
 **Status:** ✅ **FIXED HOÀN CHỈNH** - 2026-01-21
 
 **Vấn đề:**
@@ -5138,7 +5138,7 @@ useEffect(() => {
 ### 2. **SECURITY BUGS**
 
 #### 2.1. Cookie Decryption Error Handling - `super-admin/layout.tsx`
-**File:** `app/super-admin/layout.tsx`  
+**File:** `app/super-admin/layout.tsx`
 **Dòng:** 5-30
 
 **Vấn đề:**
@@ -5215,7 +5215,7 @@ async function getInitialUserData() {
 ---
 
 #### 2.2. Missing Error Handling - `super-admin/SuperAdminLayoutClient.tsx`
-**File:** `app/super-admin/SuperAdminLayoutClient.tsx`  
+**File:** `app/super-admin/SuperAdminLayoutClient.tsx`
 **Dòng:** 53-72
 
 **Vấn đề:**
@@ -5294,7 +5294,7 @@ const fetchUserInfo = useCallback(async (showError = false) => {
 ### 3. **CODE QUALITY**
 
 #### 3.1. Magic Numbers - `super-admin/page.tsx`
-**File:** `app/super-admin/page.tsx`  
+**File:** `app/super-admin/page.tsx`
 **Dòng:** 90-96
 
 **Vấn đề:**
@@ -5323,7 +5323,7 @@ const getGreeting = () => {
 ---
 
 #### 3.2. Type Safety - `super-admin/page.tsx`
-**File:** `app/super-admin/page.tsx`  
+**File:** `app/super-admin/page.tsx`
 **Dòng:** 138
 
 **Vấn đề:**
@@ -5366,7 +5366,7 @@ function StatisticsCards({ stats }: { stats: StatCard[] }) {
 ### 1. **STATE & DATA FLOW BUGS**
 
 #### 1.1. Race Condition Risk - `user/page.tsx`
-**File:** `app/user/page.tsx`  
+**File:** `app/user/page.tsx`
 **Dòng:** 111-125
 
 **Vấn đề:**
@@ -5395,7 +5395,7 @@ useEffect(() => {
 ---
 
 #### 1.2. Unnecessary Re-renders - `user/page.tsx`
-**File:** `app/user/page.tsx`  
+**File:** `app/user/page.tsx`
 **Dòng:** 58-99
 
 **Vấn đề:**
@@ -5420,7 +5420,7 @@ useEffect(() => {
 ### 2. **ASYNC / TIMING BUGS**
 
 #### 2.1. Missing Error Handling - `user/UserLayoutClient.tsx`
-**File:** `app/user/UserLayoutClient.tsx`  
+**File:** `app/user/UserLayoutClient.tsx`
 **Dòng:** 43-62
 
 **Vấn đề:**
@@ -5454,7 +5454,7 @@ const fetchUserInfo = useCallback(async (showError = false) => {
 ---
 
 #### 2.2. Date Formatting Mismatch - `user/UserLayoutClient.tsx`
-**File:** `app/user/UserLayoutClient.tsx`  
+**File:** `app/user/UserLayoutClient.tsx`
 **Dòng:** 155
 
 **Vấn đề:**
@@ -5480,7 +5480,7 @@ import { vi } from 'date-fns/locale';
 ### 3. **SECURITY BUGS**
 
 #### 3.1. Cookie Decryption Error Handling - `user/layout.tsx`
-**File:** `app/user/layout.tsx`  
+**File:** `app/user/layout.tsx`
 **Dòng:** 5-30
 
 **Bug:** Tương tự như `super-admin/layout.tsx` - silent failure, không validate data
@@ -5494,7 +5494,7 @@ import { vi } from 'date-fns/locale';
 ### 4. **CODE QUALITY**
 
 #### 4.1. Type Safety - `user/page.tsx`
-**File:** `app/user/page.tsx`  
+**File:** `app/user/page.tsx`
 **Dòng:** 52
 
 **Vấn đề:**
@@ -5539,7 +5539,7 @@ function QuickActionsGrid({ items }: { items: DashboardItem[] }) {
 ### 1. **SECURITY BUGS**
 
 #### 1.1. XSS Risk in Inline Script - `app/layout.tsx`
-**File:** `app/layout.tsx`  
+**File:** `app/layout.tsx`
 **Dòng:** 62-91
 
 **Vấn đề:**
@@ -5587,7 +5587,7 @@ import Script from 'next/script';
 ---
 
 #### 1.2. External Resource Loading - `app/layout.tsx`
-**File:** `app/layout.tsx`  
+**File:** `app/layout.tsx`
 **Dòng:** 50-61
 
 **Vấn đề:**
@@ -5629,7 +5629,7 @@ import Script from 'next/script';
 ### 2. **PERFORMANCE BUGS**
 
 #### 2.1. Prefetch Routes Logic - `components/common/PrefetchRoutes.tsx`
-**File:** `app/components/common/PrefetchRoutes.tsx`  
+**File:** `app/components/common/PrefetchRoutes.tsx`
 **Dòng:** 14-36
 
 **Vấn đề:**
@@ -5687,7 +5687,7 @@ useEffect(() => {
 ---
 
 #### 2.2. requestIdleCallback Fallback - `components/common/PrefetchRoutes.tsx`
-**File:** `app/components/common/PrefetchRoutes.tsx`  
+**File:** `app/components/common/PrefetchRoutes.tsx`
 **Dòng:** 40-53
 
 **Vấn đề:**
@@ -5750,7 +5750,7 @@ useEffect(() => {
 ### 3. **HYDRATION / SSR BUGS**
 
 #### 3.1. Theme Hydration - `app/layout.tsx`
-**File:** `app/layout.tsx`  
+**File:** `app/layout.tsx`
 **Dòng:** 32-37
 
 **Vấn đề:**
@@ -5791,7 +5791,7 @@ return (
 ### 4. **CODE QUALITY**
 
 #### 4.1. Magic Numbers - `app/layout.tsx`
-**File:** `app/layout.tsx`  
+**File:** `app/layout.tsx`
 **Dòng:** 11, 79
 
 **Vấn đề:**
@@ -5820,7 +5820,7 @@ setTimeout(function() {
 ---
 
 #### 4.2. Type Safety - `app/providers.tsx`
-**File:** `app/providers.tsx`  
+**File:** `app/providers.tsx`
 **Dòng:** 6-43
 
 **Vấn đề:**
@@ -5841,7 +5841,7 @@ function AntdConfigProvider({ children }: AntdConfigProviderProps) {
 ---
 
 #### 4.3. Not Found Page - `app/not-found.tsx`
-**File:** `app/not-found.tsx`  
+**File:** `app/not-found.tsx`
 **Dòng:** 8-102
 
 **Vấn đề:**
@@ -6042,7 +6042,7 @@ function AntdConfigProvider({ children }: AntdConfigProviderProps) {
 ### 1. **TYPE SAFETY BUGS**
 
 #### 1.1. Inconsistent Type Definitions - `interface/auth.ts`
-**File:** `interface/auth.ts`  
+**File:** `interface/auth.ts`
 **Dòng:** 8-20
 
 **Vấn đề:**
@@ -6097,7 +6097,7 @@ export interface SignUpUser {
 ---
 
 #### 1.2. Missing Optional Fields - `interface/students.ts`
-**File:** `interface/students.ts`  
+**File:** `interface/students.ts`
 **Dòng:** 1-12
 
 **Vấn đề:**
@@ -6143,7 +6143,7 @@ export interface StudentItem {
 ### 2. **CODE QUALITY**
 
 #### 2.1. Missing Type Exports - `interface/chat.ts`
-**File:** `interface/chat.ts`  
+**File:** `interface/chat.ts`
 **Dòng:** 1-44
 
 **Vấn đề:**
@@ -6172,7 +6172,7 @@ export interface ChatParticipant {
 ---
 
 #### 2.2. Missing Validation Types - `interface/common.ts`
-**File:** `interface/common.ts`  
+**File:** `interface/common.ts`
 **Dòng:** 1-11
 
 **Vấn đề:**
@@ -6221,7 +6221,7 @@ export const isValidComment = (comment: Partial<Comment>): comment is Comment =>
 ### 1. **SECURITY BUGS**
 
 #### 1.1. Weak Encryption Key - `lib/utils/server-cookie-decrypt.ts`
-**File:** `lib/utils/server-cookie-decrypt.ts`  
+**File:** `lib/utils/server-cookie-decrypt.ts`
 **Dòng:** 9
 
 **Vấn đề:**
@@ -6253,7 +6253,7 @@ const key = crypto.scryptSync(ENCRYPTION_KEY, 'salt', 32);
 ---
 
 #### 1.2. Token Storage in localStorage - `lib/socket/client.ts`
-**File:** `lib/socket/client.ts`  
+**File:** `lib/socket/client.ts`
 **Dòng:** 37-56
 
 **Vấn đề:**
@@ -6316,7 +6316,7 @@ private getAccessToken(): string | null {
 ### 2. **MEMORY LEAKS**
 
 #### 2.1. Cookie Cache Never Cleared - `lib/utils/cookies.ts`
-**File:** `lib/utils/cookies.ts`  
+**File:** `lib/utils/cookies.ts`
 **Dòng:** 6-13
 
 **Vấn đề:**
@@ -6386,7 +6386,7 @@ const parsedCookiesCache = new LRUCache<string, string | null>(MAX_CACHE_SIZE);
 ---
 
 #### 2.2. Promise Cache Never Cleared - `lib/utils/cookies.ts`
-**File:** `lib/utils/cookies.ts`  
+**File:** `lib/utils/cookies.ts`
 **Dòng:** 77-79
 
 **Vấn đề:**
@@ -6446,7 +6446,7 @@ const getUserIdFromCookieAsync = async (): Promise<number | string | null> => {
 ### 3. **ASYNC / TIMING BUGS**
 
 #### 3.1. Race Condition in Cookie Decryption - `lib/utils/cookies.ts`
-**File:** `lib/utils/cookies.ts`  
+**File:** `lib/utils/cookies.ts`
 **Dòng:** 160-192
 
 **Vấn đề:**
@@ -6540,7 +6540,7 @@ export const getUserIdFromCookie = (): number | string | null => {
 ---
 
 #### 3.2. Missing Error Handling - `lib/api/auth.ts`
-**File:** `lib/api/auth.ts`  
+**File:** `lib/api/auth.ts`
 **Dòng:** 39-80
 
 **Vấn đề:**
@@ -6626,7 +6626,7 @@ export const signOut = async (): Promise<void> => {
 ### 4. **PERFORMANCE BUGS**
 
 #### 4.1. Inefficient Cookie Parsing - `lib/utils/cookies.ts`
-**File:** `lib/utils/cookies.ts`  
+**File:** `lib/utils/cookies.ts`
 **Dòng:** 39-53
 
 **Vấn đề:**
@@ -6747,7 +6747,7 @@ class FriendSocketClient extends BaseSocketClient {
 ---
 
 #### 5.2. Type Safety - `lib/api/users.ts`
-**File:** `lib/api/users.ts`  
+**File:** `lib/api/users.ts`
 **Dòng:** 93-120
 
 **Vấn đề:**
@@ -7620,9 +7620,10 @@ export const getUserIdFromSession = (): number | string | null => {
 
 ---
 
-**Reviewer:** AI Code Reviewer  
-**Review Date:** 2026-01-21  
-**Total Files Reviewed:** ~200+ files  
-**Total Issues Found:** 210+ issues  
-**Performance Modules Analyzed:** 6 modules đạt chuẩn  
+**Reviewer:** AI Code Reviewer
+**Review Date:** 2026-01-21
+**Total Files Reviewed:** ~200+ files
+**Total Issues Found:** 210+ issues
+**Performance Modules Analyzed:** 6 modules đạt chuẩn
 **Next Review:** Sau khi fix critical issues (estimated 2-3 months)
+
