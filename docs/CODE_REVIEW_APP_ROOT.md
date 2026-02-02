@@ -938,7 +938,7 @@ const fetchVocabularies = async () => {
 2.  Thêm đúng cách error type checking với `instanceof Error`
 3.  Thêm `finally` block để ensure `setLoading(false)` always runs
 4.  Set empty arrays trong
-### 8.2. Thiếu Error Boundary – Tất cả pages
+#### 8.2. Thiếu Error Boundary – Tất cả pages
 
 **Tệp:** `app/error-boundary.tsx` *(file mới)*  
 **Trạng thái:**  Hoàn thành — **2026-01-21**
