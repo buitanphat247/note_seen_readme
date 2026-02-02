@@ -594,14 +594,15 @@ export default function ExamLayout({ children }: { children: React.ReactNode }) 
 
 ### ⚠️ Vấn đề cần cải thiện
 
-#### 1. **XSS Risk với dangerouslySetInnerHTML**
+#### 1. **XSS Risk với dangerouslySetInnerHTML** ✅ **FIXED**
 
 **File:** `app/layout.tsx`  
-**Dòng:** 63-96  
+**Dòng:** 63-96 (đã được fix)  
 **Mức độ:** 🟢 Medium Priority  
-**Ước tính thời gian:** 1-2 giờ
+**Ước tính thời gian:** 1-2 giờ  
+**Status:** ✅ **COMPLETED** - 2026-01-22
 
-**Vấn đề hiện tại:**
+**Vấn đề hiện tại (đã fix):**
 ```typescript
 <script
   id="no-transitions-script"
@@ -707,14 +708,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 - ✅ Không có XSS risk
 - ✅ Code dễ maintain hơn
 
-#### 2. **Prefetch Routes Quá Nhiều**
+#### 2. **Prefetch Routes Quá Nhiều** ✅ **FIXED**
 
 **File:** `app/layout.tsx`  
-**Dòng:** 43-47  
+**Dòng:** 43-47 (đã được fix)  
 **Mức độ:** 🟢 Medium Priority  
-**Ước tính thời gian:** 2-3 giờ
+**Ước tính thời gian:** 2-3 giờ  
+**Status:** ✅ **COMPLETED** - 2026-01-22
 
-**Vấn đề hiện tại:**
+**Vấn đề hiện tại (đã fix):**
 ```typescript
 <link rel="prefetch" href="/admin" as="document" />
 <link rel="prefetch" href="/admin/classes" as="document" />
@@ -857,13 +859,18 @@ export default function PrefetchRoutes() {
 - ✅ Chỉ prefetch routes phù hợp với user role
 - ✅ Bandwidth usage giảm ~50-70%
 
-#### 3. **Thiếu Error Boundary trong Layout**
+#### 3. **Thiếu Error Boundary trong Layout** ✅ **FIXED**
 
-**Vấn đề:**
-- Layout không wrap children với ErrorBoundary
-- Nếu có lỗi trong Providers, sẽ crash toàn bộ app
+**File:** `app/layout.tsx`  
+**Dòng:** 102-107 (đã được fix)  
+**Mức độ:** 🟡 Medium Priority  
+**Status:** ✅ **COMPLETED** - 2026-01-22
 
-**Đề xuất:**
+**Vấn đề (đã fix):**
+- ❌ Layout không wrap children với ErrorBoundary
+- ❌ Nếu có lỗi trong Providers, sẽ crash toàn bộ app
+
+**✅ Đã thực hiện:**
 ```typescript
 <AntdRegistry>
   <ErrorBoundary>
@@ -874,6 +881,11 @@ export default function PrefetchRoutes() {
   </ErrorBoundary>
 </AntdRegistry>
 ```
+
+**Kết quả:**
+- ✅ Errors trong Providers được catch bởi ErrorBoundary
+- ✅ App không crash toàn bộ khi có lỗi
+- ✅ User có fallback UI khi có lỗi
 
 #### 4. **Font Awesome CDN**
 
@@ -2446,6 +2458,15 @@ const handleKeyDown = (e: React.KeyboardEvent) => {
 ## 📋 CHECKLIST THỰC HIỆN
 
 ### 🔴 High Priority (Ưu tiên cao)
+
+- [x] **Layout Improvements** ✅ **COMPLETED** - 2026-01-22
+  - [x] Fix XSS risk với dangerouslySetInnerHTML → Sử dụng Next.js Script component
+  - [x] Remove hardcoded prefetch routes → PrefetchRoutes component xử lý
+  - [x] Add ErrorBoundary trong layout → Wrap Providers với ErrorBoundary
+  - **Files changed:** 
+    - `Edu_Learn_Next/app/layout.tsx` (updated)
+    - `Edu_Learn_Next/app/scripts/no-transitions.ts` (created)
+  - **Thời gian:** ~2 giờ
 
 - [ ] **Error Logging Implementation**
   - [ ] Cài đặt Sentry hoặc error tracking service
