@@ -177,9 +177,9 @@ export const logError = (
   if (typeof window !== 'undefined') {
     // Sentry
     if (window.Sentry) {
-      window.Sentry.captureException(error, {
-        contexts: {
-          react: {
+    window.Sentry.captureException(error, {
+      contexts: {
+        react: {
             componentStack: errorInfo?.componentStack,
           },
         },
@@ -710,11 +710,11 @@ export default function ExamLayout({ children }: { children: React.ReactNode }) 
  * Prevent flash of wrong styles
  */
 export const noTransitionsScript = `
-  (function() {
-    try {
-      var html = document.documentElement;
+    (function() {
+      try {
+        var html = document.documentElement;
       // Disable transitions initially to prevent flash during hydration
-      html.classList.add('no-transitions');
+        html.classList.add('no-transitions');
       
       // Remove no-transitions after a longer delay to allow React hydration
       var removeNoTransitions = function() {
@@ -733,7 +733,7 @@ export const noTransitionsScript = `
     } catch (e) {
       // Silent fail - script is non-critical
     }
-  })();
+    })();
 `;
 ```
 
@@ -2114,65 +2114,7 @@ npm install -D @storybook/react @storybook/addon-docs
 - ✅ Có usage examples
 - ✅ Documentation dễ hiểu
 
-#### 2. **Component Testing**
-
-**File:** `app/components/**/*.tsx`  
-**Mức độ:** 🟢 Low Priority  
-**Ước tính thời gian:** 25-35 giờ
-
-**Vấn đề hiện tại:**
-- ❌ Không có unit tests
-- ❌ Không có integration tests
-- ❌ Khó verify components hoạt động đúng
-- ❌ Risk khi refactor
-
-**Các bước thực hiện:**
-
-**Bước 1:** Setup testing framework
-```bash
-npm install -D @testing-library/react @testing-library/jest-dom @testing-library/user-event jest jest-environment-jsdom
-```
-
-**Bước 2:** Tạo test cho critical components
-```typescript
-// app/components/common/Button.test.tsx
-import { render, screen, fireEvent } from '@testing-library/react';
-import Button from './Button';
-
-describe('Button', () => {
-  it('renders button với text', () => {
-    render(<Button>Click me</Button>);
-    expect(screen.getByText('Click me')).toBeInTheDocument();
-  });
-
-  it('calls onClick khi clicked', () => {
-    const handleClick = jest.fn();
-    render(<Button onClick={handleClick}>Click me</Button>);
-    
-    fireEvent.click(screen.getByText('Click me'));
-    expect(handleClick).toHaveBeenCalledTimes(1);
-  });
-
-  it('disabled khi disabled prop is true', () => {
-    render(<Button disabled>Click me</Button>);
-    expect(screen.getByText('Click me')).toBeDisabled();
-  });
-});
-```
-
-**Bước 3:** Test critical components trước
-- Form components
-- Navigation components
-- Data display components
-- Error boundaries
-
-**Kiểm tra:**
-- ✅ Critical components có tests
-- ✅ Tests cover happy path và edge cases
-- ✅ Tests pass consistently
-- ✅ Test coverage > 70% cho critical components
-
-#### 3. **Accessibility**
+#### 2. **Accessibility**
 
 **File:** `app/components/**/*.tsx`  
 **Mức độ:** 🟢 Low Priority  
@@ -2332,12 +2274,6 @@ const isDark = useIsDark();
 - ⚠️ Add JSDoc comments cho hooks
 - ⚠️ Document return values và dependencies
 
-#### 2. **Hook Testing**
-
-**Đề xuất:**
-- ⚠️ Add unit tests cho custom hooks
-- ⚠️ Test edge cases
-
 ---
 
 ## 📁 app/social
@@ -2426,12 +2362,6 @@ const isDark = useIsDark();
 **Đề xuất:**
 - ⚠️ Add JSDoc comments cho utilities
 - ⚠️ Document function parameters và return values
-
-#### 2. **Utility Testing**
-
-**Đề xuất:**
-- ⚠️ Add unit tests cho utilities
-- ⚠️ Test edge cases
 
 ---
 
@@ -2633,10 +2563,10 @@ const isDark = useIsDark();
 
 #### Short-term (Medium Priority)
 
-1. **Testing**
-   - Add unit tests cho critical components
-   - Add integration tests
-   - Test error scenarios
+1. **Documentation**
+   - Add JSDoc comments cho critical components
+   - Document hooks và utilities
+   - Create developer guide
 
 2. **Documentation**
    - Add JSDoc comments
@@ -2705,7 +2635,7 @@ const isDark = useIsDark();
   - [ ] Cài đặt Sentry hoặc error tracking service
   - [ ] Tạo `lib/utils/errorLogger.ts`
   - [ ] Cập nhật `app/error-boundary.tsx` với error logging
-  - [ ] Test error logging trong development và production
+  - [ ] Verify error logging hoạt động trong development và production
   - **Thời gian:** 2-3 giờ
 
 - [ ] **Error Recovery Strategy**
@@ -2754,7 +2684,7 @@ const isDark = useIsDark();
 - [ ] **Script Optimization**
   - [ ] Tạo `app/scripts/no-transitions.ts`
   - [ ] Cập nhật `app/layout.tsx` với Next.js Script component
-  - [ ] Test script hoạt động đúng
+  - [ ] Verify script hoạt động đúng
   - **Thời gian:** 1-2 giờ
 
 - [ ] **Prefetch Optimization**
@@ -2771,12 +2701,6 @@ const isDark = useIsDark();
   - [ ] Create developer guide
   - **Thời gian:** 10-15 giờ
 
-- [ ] **Testing**
-  - [ ] Add unit tests cho critical components
-  - [ ] Add integration tests
-  - [ ] Test error scenarios
-  - **Thời gian:** 20-30 giờ
-
 - [ ] **Accessibility**
   - [ ] Audit a11y với tools
   - [ ] Add ARIA labels
@@ -2791,14 +2715,14 @@ const isDark = useIsDark();
 
 - **High Priority:** ~9-13 giờ
 - **Medium Priority:** ~7-10 giờ
-- **Low Priority:** ~45-65 giờ
-- **Total:** ~61-88 giờ (1.5-2.5 tuần full-time)
+- **Low Priority:** ~25-40 giờ
+- **Total:** ~41-63 giờ (1-1.5 tuần full-time)
 
 ### Recommended Order
 
 1. **Week 1:** High Priority items (Error logging, recovery, monitoring)
 2. **Week 2:** Medium Priority items (Route boundaries, optimizations)
-3. **Week 3-4:** Low Priority items (Documentation, testing, a11y)
+3. **Week 3-4:** Low Priority items (Documentation, a11y)
 
 ### Dependencies
 
@@ -2870,9 +2794,9 @@ const isDark = useIsDark();
 - **Completed:** 0
 - **Remaining:** 3
 
-- **Total Low Priority Items:** 3
+- **Total Low Priority Items:** 2
 - **Completed:** 0
-- **Remaining:** 3
+- **Remaining:** 2
 
 ### 🎯 Next Steps
 
