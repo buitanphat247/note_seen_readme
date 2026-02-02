@@ -1,4 +1,4 @@
-# 📋 ĐÁNH GIÁ MÃ NGUỒN: Toàn Bộ Codebase - Đánh Giá Chi Tiết Hiệu Năng & Bug Tiềm Ẩn
+#  ĐÁNH GIÁ MÃ NGUỒN: Toàn Bộ Codebase - Đánh Giá Chi Tiết Hiệu Năng & Bug Tiềm Ẩn
 
 **Ngày review:** 2026-01-21  
 **Ngày cập nhật:** 2026-01-22  
@@ -7,38 +7,38 @@
 
 ---
 
-## 📑 MỤC LỤC
+##  MỤC LỤC
 
-### 📁 app/(root) ✅
+###  app/(root) 
 
-- [📊 TỔNG QUAN](#-tổng-quan)
-- [🔴 CÁC LỖI NGHIÊM TRỌNG](#-các-lỗi-nghiêm-trọng) ✅
-  - [1. LỖI TRẠNG THÁI & DÒNG DỮ LIỆU](#1-state--data-flow-bugs--fix-hoàn-chỉnh) ✅
-  - [2. LỖI BẤT ĐỒNG BỘ / THỜI GIAN](#2-async--timing-bugs--fix-hoàn-chỉnh) ✅
-  - [3. LỖI RENDER / VÒNG ĐỜI REACT](#3-render--react-lifecycle-bugs) ✅
-  - [4. LỖI HYDRATION / SSR](#4-hydration--ssr-bugs--fix-hoàn-chỉnh) ✅
-  - [5. RÒ RỈ BỘ NHỚ](#5-memory-leak--fix-hoàn-chỉnh) ✅
-  - [6. LỖI GIAO DIỆN / CSS](#6-ui--css-bugs--fix-hoàn-chỉnh) ✅
-  - [7. LỖI BẢO MẬT](#7-security-bugs--fix-hoàn-chỉnh) ✅
-  - [8. LỖI XỬ LÝ LỖI](#8-error-handling-bugs--fix-hoàn-chỉnh) ✅
-  - [9. LỖI HIỆU NĂNG](#9-performance-bugs--fix-hoàn-chỉnh) ✅
-  - [10. VẤN ĐỀ CHẤT LƯỢNG CODE](#10-vấn-đề-chất-lượng-code) ✅
-  - [11. Thiếu Tối Ưu Hóa](#11-thiếu-tối-ưu-hóa) ✅
-- [🟡 CÁC VẤN ĐỀ CẢNH BÁO](#-các-vấn-đề-cảnh-báo) ✅
-- [🟢 THÔNG TIN / GỢI Ý](#-thông-tin--gợi-ý) ✅
-- [📈 CHỈ SỐ HIỆU NĂNG](#-chỉ-số-hiệu-năng) ✅
-- [✅ DANH SÁCH ƯU TIÊN SỬA LỖI](#-danh-sách-ưu-tiên-sửa-lỗi) ✅
-- [📝 TỔNG KẾT](#-tổng-kết) ✅
-- [🔧 HÀNH ĐỘNG KHUYÊN DÙNG](#-hành-động-khuyên-dùng) ✅
-- [📦 BUNDLE SIZE OPTIMIZATION](#-bundle-size-optimization---tối-ưu-kích-thước-bundle) ✅
+- [ TỔNG QUAN](#-tổng-quan)
+- [ CÁC LỖI NGHIÊM TRỌNG](#-các-lỗi-nghiêm-trọng) 
+  - [1. LỖI TRẠNG THÁI & DÒNG DỮ LIỆU](#1-state--data-flow-bugs--fix-hoàn-chỉnh) 
+  - [2. LỖI BẤT ĐỒNG BỘ / THỜI GIAN](#2-async--timing-bugs--fix-hoàn-chỉnh) 
+  - [3. LỖI RENDER / VÒNG ĐỜI REACT](#3-render--react-lifecycle-bugs) 
+  - [4. LỖI HYDRATION / SSR](#4-hydration--ssr-bugs--fix-hoàn-chỉnh) 
+  - [5. RÒ RỈ BỘ NHỚ](#5-memory-leak--fix-hoàn-chỉnh) 
+  - [6. LỖI GIAO DIỆN / CSS](#6-ui--css-bugs--fix-hoàn-chỉnh) 
+  - [7. LỖI BẢO MẬT](#7-security-bugs--fix-hoàn-chỉnh) 
+  - [8. LỖI XỬ LÝ LỖI](#8-error-handling-bugs--fix-hoàn-chỉnh) 
+  - [9. LỖI HIỆU NĂNG](#9-performance-bugs--fix-hoàn-chỉnh) 
+  - [10. VẤN ĐỀ CHẤT LƯỢNG CODE](#10-vấn-đề-chất-lượng-code) 
+  - [11. Thiếu Tối Ưu Hóa](#11-thiếu-tối-ưu-hóa) 
+- [ CÁC VẤN ĐỀ CẢNH BÁO](#-các-vấn-đề-cảnh-báo) 
+- [ THÔNG TIN / GỢI Ý](#-thông-tin--gợi-ý) 
+- [ CHỈ SỐ HIỆU NĂNG](#-chỉ-số-hiệu-năng) 
+- [ DANH SÁCH ƯU TIÊN SỬA LỖI](#-danh-sách-ưu-tiên-sửa-lỗi) 
+- [ TỔNG KẾT](#-tổng-kết) 
+- [ HÀNH ĐỘNG KHUYÊN DÙNG](#-hành-động-khuyên-dùng) 
+- [ BUNDLE SIZE OPTIMIZATION](#-bundle-size-optimization---tối-ưu-kích-thước-bundle) 
 
-### 📁 app/actions ✅
+###  app/actions 
 
-- [📁 PHÂN TÍCH: app/actions](#-phân-tích-appactions)
-- [🔴 CÁC LỖI NGHIÊM TRỌNG - app/actions](#-các-lỗi-nghiêm-trọng---appactions) ✅
-- [🟡 CÁC VẤN ĐỀ CẢNH BÁO - app/actions](#-các-vấn-đề-cảnh-báo---appactions) ✅
-- [🟢 THÔNG TIN / GỢI Ý - app/actions](#-thông-tin--gợi-ý---appactions)
-- [📈 CHỈ SỐ HIỆU NĂNG - app/actions](#-chỉ-số-hiệu-năng---appactions) ✅
+- [ PHÂN TÍCH: app/actions](#-phân-tích-appactions)
+- [ CÁC LỖI NGHIÊM TRỌNG - app/actions](#-các-lỗi-nghiêm-trọng---appactions) 
+- [ CÁC VẤN ĐỀ CẢNH BÁO - app/actions](#-các-vấn-đề-cảnh-báo---appactions) 
+- [ THÔNG TIN / GỢI Ý - app/actions](#-thông-tin--gợi-ý---appactions)
+- [ CHỈ SỐ HIỆU NĂNG - app/actions](#-chỉ-số-hiệu-năng---appactions) 
 - [✅ DANH SÁCH ƯU TIÊN SỬA LỖI - app/actions](#-danh-sách-ưu-tiên-sửa-lỗi---appactions) ✅
 - [📝 TỔNG KẾT - app/actions](#-tổng-kết---appactions) ✅
 - [🔧 HÀNH ĐỘNG KHUYÊN DÙNG - app/actions](#-hành-động-khuyên-dùng---appactions) ✅
@@ -1977,21 +1977,21 @@ const toggleTheme = async (e?: React.MouseEvent) => {
 
 **Các thay đổi đã thực hiện:**
 
-1. ✅ Thêm `AbortController` để cancel previous requests khi có request mới
-2. ✅ Sử dụng `requestIdRef` để generate unique request IDs
-3. ✅ Track request với `{ id, abortController }` structure
-4. ✅ Cancel previous request ngay khi có request mới
-5. ✅ Check `abortController.signal.aborted` trong tất cả async operations
-6. ✅ Chỉ update state nếu request vẫn là latest và chưa bị abort
-7. ✅ Improved race condition handling: AbortController + request ID tracking
+1.  Thêm `AbortController` để cancel previous requests khi có request mới
+2.  Sử dụng `requestIdRef` để generate unique request IDs
+3.  Track request với `{ id, abortController }` structure
+4.  Cancel previous request ngay khi có request mới
+5.  Check `abortController.signal.aborted` trong tất cả async operations
+6.  Chỉ update state nếu request vẫn là latest và chưa bị abort
+7.  Improved race condition handling: AbortController + request ID tracking
 
 ---
 
-#### 2.2. Promise Rejection Không Được Xử Lý - `ThemeContext.tsx` ✅
+#### 2.2. Promise Rejection Không Được Xử Lý - `ThemeContext.tsx` 
 
 **Tệp:** `app/context/ThemeContext.tsx`  
 **Dòng:** 85-87  
-**Trạng thái:** ✅ Hoàn thành - 2026-01-21
+**Trạng thái:**  Hoàn thành - 2026-01-21
 
 **Vấn đề:**
 
@@ -2003,9 +2003,9 @@ setThemeCookie(newTheme).catch(() => {
 
 **Lỗi:**
 
-- ❌ Silent failure → không log error
-- ❌ Không notify user nếu server action fail
-- ❌ Fallback có thể không hoạt động trong một số trường hợp
+-  Silent failure → không log error
+-  Không notify user nếu server action fail
+-  Fallback có thể không hoạt động trong một số trường hợp
 
 **Sửa:**
 
@@ -2026,15 +2026,15 @@ try {
 
 ---
 
-## 🟡 CÁC VẤN ĐỀ CẢNH BÁO - app/actions ✅
+##  CÁC VẤN ĐỀ CẢNH BÁO - app/actions 
 
-### 3. **CODE QUALITY** ✅
+### 3. **CODE QUALITY** 
 
-#### 3.1. Missing An Toàn Kiểu Dữ Liệu (Type Safety) - `theme.ts` ✅
+#### 3.1. Missing An Toàn Kiểu Dữ Liệu (Type Safety) - `theme.ts` 
 
 **Tệp:** `app/actions/theme.ts`  
 **Dòng:** 5  
-**Trạng thái:** ✅ Hoàn thành - 2026-01-21
+**Trạng thái:**  Hoàn thành - 2026-01-21
 
 **Vấn đề:**
 
@@ -2055,21 +2055,20 @@ export async function setThemeCookie(theme: Theme | string): Promise<{ success: 
 
 **Các thay đổi đã thực hiện:**
 
-1. ✅ Defined `VALID_THEMES` constant với `as const` để type inference
-2. ✅ Tạo `Theme` type từ `VALID_THEMES`
-3. ✅ Function accepts `Theme | string` để allow runtime validation
-4. ✅ Return type includes `theme?: Theme` để
-```typescript
+1.  Defined `VALID_THEMES` constant với `as const` để type inference
+2.  Tạo `Theme` type từ `VALID_THEMES`
+3.  Function accepts `Theme | string` để allow runtime validation
+4.  Return type includes `theme?: Theme` để
 return validated theme
-5. ✅ Type-safe validation với `VALID_THEMES.includes()`
+5.  Type-safe validation với `VALID_THEMES.includes()`
 
 ---
 
-#### 3.2. Số "Ma" (Magic Numbers) - `theme.ts` ✅
+#### 3.2. Số "Ma" (Magic Numbers) - `theme.ts` 
 
 **Tệp:** `app/actions/theme.ts`  
 **Dòng:** 10  
-**Trạng thái:** ✅ Hoàn thành - 2026-01-21
+**Trạng thái:**  Hoàn thành - 2026-01-21
 
 **Vấn đề:**
 
