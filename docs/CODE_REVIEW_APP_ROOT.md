@@ -1,4 +1,4 @@
-# 📋 ĐÁNH GIÁ MÃ NGUỒN: app/(root) - Đánh Giá Chi Tiết Hiệu Năng & Bug Tiềm Ẩn
+#  ĐÁNH GIÁ MÃ NGUỒN: app/(root) - Đánh Giá Chi Tiết Hiệu Năng & Bug Tiềm Ẩn
 
 **Ngày review:** 2026-01-21  
 **Scope:** Toàn bộ code trong `app/(root)` folder  
@@ -6,39 +6,39 @@
 
 ---
 
-## 📑 MỤC LỤC
+##  MỤC LỤC
 
-### 📁 app/(root) ✅
+###  app/(root) 
 
-- [📊 TỔNG QUAN](#-tổng-quan)
-- [🔴 CÁC LỖI NGHIÊM TRỌNG](#-các-lỗi-nghiêm-trọng) ✅
-  - [1. LỖI TRẠNG THÁI & DÒNG DỮ LIỆU](#1-state--data-flow-bugs--fix-hoàn-chỉnh) ✅
-  - [2. LỖI BẤT ĐỒNG BỘ / THỜI GIAN](#2-async--timing-bugs--fix-hoàn-chỉnh) ✅
-  - [3. LỖI RENDER / VÒNG ĐỜI REACT](#3-render--react-lifecycle-bugs) ✅
-  - [4. LỖI HYDRATION / SSR](#4-hydration--ssr-bugs--fix-hoàn-chỉnh) ✅
-  - [5. RÒ RỈ BỘ NHỚ](#5-memory-leak--fix-hoàn-chỉnh) ✅
-  - [6. LỖI GIAO DIỆN / CSS](#6-ui--css-bugs--fix-hoàn-chỉnh) ✅
-  - [7. LỖI BẢO MẬT](#7-security-bugs--fix-hoàn-chỉnh) ✅
-  - [8. LỖI XỬ LÝ LỖI](#8-error-handling-bugs--fix-hoàn-chỉnh) ✅
-  - [9. LỖI HIỆU NĂNG](#9-performance-bugs--fix-hoàn-chỉnh) ✅
-  - [11. VẤN ĐỀ CHẤT LƯỢNG CODE](#11-code-quality-issues--fix-hoàn-chỉnh) ✅
-- [🟡 CÁC VẤN ĐỀ CẢNH BÁO](#-các-vấn-đề-cảnh-báo) ✅
-- [🟢 THÔNG TIN / GỢI Ý](#-thông-tin--gợi-ý) ✅
-- [📈 CHỈ SỐ HIỆU NĂNG](#-chỉ-số-hiệu-năng) ✅
-- [✅ DANH SÁCH ƯU TIÊN SỬA LỖI](#-danh-sách-ưu-tiên-sửa-lỗi) ✅
-- [📝 TỔNG KẾT](#-tổng-kết) ✅
-- [🔧 HÀNH ĐỘNG KHUYÊN DÙNG](#-hành-động-khuyên-dùng) ✅
+- [ TỔNG QUAN](#-tổng-quan)
+- [ CÁC LỖI NGHIÊM TRỌNG](#-các-lỗi-nghiêm-trọng) 
+  - [1. LỖI TRẠNG THÁI & DÒNG DỮ LIỆU](#1-state--data-flow-bugs--fix-hoàn-chỉnh) 
+  - [2. LỖI BẤT ĐỒNG BỘ / THỜI GIAN](#2-async--timing-bugs--fix-hoàn-chỉnh) 
+  - [3. LỖI RENDER / VÒNG ĐỜI REACT](#3-render--react-lifecycle-bugs) 
+  - [4. LỖI HYDRATION / SSR](#4-hydration--ssr-bugs--fix-hoàn-chỉnh) 
+  - [5. RÒ RỈ BỘ NHỚ](#5-memory-leak--fix-hoàn-chỉnh) 
+  - [6. LỖI GIAO DIỆN / CSS](#6-ui--css-bugs--fix-hoàn-chỉnh) 
+  - [7. LỖI BẢO MẬT](#7-security-bugs--fix-hoàn-chỉnh) 
+  - [8. LỖI XỬ LÝ LỖI](#8-error-handling-bugs--fix-hoàn-chỉnh) 
+  - [9. LỖI HIỆU NĂNG](#9-performance-bugs--fix-hoàn-chỉnh) 
+  - [11. VẤN ĐỀ CHẤT LƯỢNG CODE](#11-code-quality-issues--fix-hoàn-chỉnh) 
+- [ CÁC VẤN ĐỀ CẢNH BÁO](#-các-vấn-đề-cảnh-báo) 
+- [ THÔNG TIN / GỢI Ý](#-thông-tin--gợi-ý) 
+- [ CHỈ SỐ HIỆU NĂNG](#-chỉ-số-hiệu-năng) 
+- [ DANH SÁCH ƯU TIÊN SỬA LỖI](#-danh-sách-ưu-tiên-sửa-lỗi) 
+- [ TỔNG KẾT](#-tổng-kết) 
+- [ HÀNH ĐỘNG KHUYÊN DÙNG](#-hành-động-khuyên-dùng) 
 
-### 📁 app/actions ✅
+###  app/actions 
 
-- [📁 PHÂN TÍCH: app/actions](#-phân-tích-appactions)
-- [🔴 CÁC LỖI NGHIÊM TRỌNG - app/actions](#-các-lỗi-nghiêm-trọng---appactions) ✅
-- [🟡 CÁC VẤN ĐỀ CẢNH BÁO - app/actions](#-các-vấn-đề-cảnh-báo---appactions) ✅
-- [🟢 THÔNG TIN / GỢI Ý - app/actions](#-thông-tin--gợi-ý---appactions)
-- [📈 CHỈ SỐ HIỆU NĂNG - app/actions](#-chỉ-số-hiệu-năng---appactions) ✅
-- [✅ DANH SÁCH ƯU TIÊN SỬA LỖI - app/actions](#-danh-sách-ưu-tiên-sửa-lỗi---appactions) ✅
-- [📝 TỔNG KẾT - app/actions](#-tổng-kết---appactions) ✅
-- [🔧 HÀNH ĐỘNG KHUYÊN DÙNG - app/actions](#-hành-động-khuyên-dùng---appactions) ✅
+- [ PHÂN TÍCH: app/actions](#-phân-tích-appactions)
+- [ CÁC LỖI NGHIÊM TRỌNG - app/actions](#-các-lỗi-nghiêm-trọng---appactions) 
+- [ CÁC VẤN ĐỀ CẢNH BÁO - app/actions](#-các-vấn-đề-cảnh-báo---appactions) 
+- [ THÔNG TIN / GỢI Ý - app/actions](#-thông-tin--gợi-ý---appactions)
+- [ CHỈ SỐ HIỆU NĂNG - app/actions](#-chỉ-số-hiệu-năng---appactions) 
+- [ DANH SÁCH ƯU TIÊN SỬA LỖI - app/actions](#-danh-sách-ưu-tiên-sửa-lỗi---appactions) 
+- [ TỔNG KẾT - app/actions](#-tổng-kết---appactions) 
+- [ HÀNH ĐỘNG KHUYÊN DÙNG - app/actions](#-hành-động-khuyên-dùng---appactions) 
 
 ### 📁 app/admin ✅
 
@@ -851,20 +851,20 @@ useEffect(() => {
 
 ---
 
-#### 7.2. Lưu Token Trong localStorage - `profile/page.tsx` ✅
+#### 7.2. Lưu Token Trong localStorage - `profile/page.tsx` 
 
 **Tệp:** `app/(root)/profile/page.tsx`  
 **Dòng:** (implicit - localStorage usage)  
-**Trạng thái:** ✅ Hoàn thành - 2026-01-21
+**Trạng thái:**  Hoàn thành - 2026-01-21
 
 **Vấn đề:** Nếu lưu token trong localStorage → vulnerable to XSS
 
 **Cách sửa đã áp dụng:**
 
-- ✅ `profile/page.tsx` chỉ lưu user data vào localStorage (không phải token)
-- ✅ Token được lưu trong httpOnly cookies (server-side) qua API
-- ✅ User data trong localStorage không chứa sensitive information
-- ✅ Code đã sync user data với localStorage sau fetch (đã fix ở issue 1.2)
+-  `profile/page.tsx` chỉ lưu user data vào localStorage (không phải token)
+-  Token được lưu trong httpOnly cookies (server-side) qua API
+-  User data trong localStorage không chứa sensitive information
+-  Code đã sync user data với localStorage sau fetch (đã fix ở issue 1.2)
 
 **Current implementation:**
 
@@ -875,20 +875,20 @@ localStorage.setItem("user", JSON.stringify(userInfo));
 
 **Các thay đổi đã thực hiện:**
 
-1. ✅ Xác minh không có token trong localStorage
-2. ✅ Tokens được lưu trong httpOnly cookies (secure)
-3. ✅ User data trong localStorage là non-sensitive
-4. ✅ Proper security implementation
+1.  Xác minh không có token trong localStorage
+2.  Tokens được lưu trong httpOnly cookies (secure)
+3.  User data trong localStorage là non-sensitive
+4.  Proper security implementation
 
 ---
 
-### 8. **LỖI XỬ LÝ LỖI** ✅
+### 8. **LỖI XỬ LÝ LỖI** 
 
-#### 8.1. Promise Reject Không Có Catch - `vocabulary/[folderId]/page.tsx` ✅
+#### 8.1. Promise Reject Không Có Catch - `vocabulary/[folderId]/page.tsx` 
 
 **Tệp:** `app/(root)/features/vocabulary/[folderId]/page.tsx`  
 **Dòng:** 29-49  
-**Trạng thái:** ✅ Hoàn thành - 2026-01-21
+**Trạng thái:**  Hoàn thành - 2026-01-21
 
 **Vấn đề:**
 
@@ -934,14 +934,14 @@ const fetchVocabularies = async () => {
 
 **Các thay đổi đã thực hiện:**
 
-1. ✅ Changed `error: any` thành `error: unknown` (type-safe)
-2. ✅ Thêm đúng cách error type checking với `instanceof Error`
-3. ✅ Thêm `finally` block để ensure `setLoading(false)` always runs
-4. ✅ Set empty arrays trong
-## 8.2. Thiếu Error Boundary – Tất cả pages
+1.  Changed `error: any` thành `error: unknown` (type-safe)
+2.  Thêm đúng cách error type checking với `instanceof Error`
+3.  Thêm `finally` block để ensure `setLoading(false)` always runs
+4.  Set empty arrays trong
+### 8.2. Thiếu Error Boundary – Tất cả pages
 
 **Tệp:** `app/error-boundary.tsx` *(file mới)*  
-**Trạng thái:** ✅ Hoàn thành — **2026-01-21**
+**Trạng thái:**  Hoàn thành — **2026-01-21**
 
 ### Vấn đề
 Nếu **một component bị crash** → **toàn bộ app bị crash**, không có fallback UI.
