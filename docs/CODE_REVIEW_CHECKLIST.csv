@@ -1,0 +1,142 @@
+Danh mục,Nhóm,Tiêu đề,File,Mức độ,Trạng thái
+🔴 CÁC LỖI NGHIÊM TRỌNG,LỖI TRẠNG THÁI & DÒNG DỮ LIỆU,1.1.,`app/(root)/events/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG,LỖI TRẠNG THÁI & DÒNG DỮ LIỆU,1.2.,`app/(root)/profile/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG,LỖI BẤT ĐỒNG BỘ / THỜI GIAN,2.1.,`app/(root)/events/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG,LỖI BẤT ĐỒNG BỘ / THỜI GIAN,2.2.,`app/(root)/news/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG,LỖI RENDER / VÒNG ĐỜI REACT,3.1.,`app/(root)/news/[id]/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG,LỖI RENDER / VÒNG ĐỜI REACT,3.2.,`app/(root)/events/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG,LỖI RENDER / VÒNG ĐỜI REACT,3.3.,`app/(root)/about/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG,LỖI HYDRATION / SSR,4.1.,`app/(root)/news/[id]/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG,LỖI HYDRATION / SSR,4.2.,`app/(root)/profile/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG,RÒ RỈ BỘ NHỚ,5.1.,`app/(root)/features/writing/[id]/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG,RÒ RỈ BỘ NHỚ,5.2.,`app/(root)/news/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG,LỖI GIAO DIỆN / CSS,6.1.,`app/(root)/about/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG,LỖI GIAO DIỆN / CSS,6.2.,`app/(root)/news/[id]/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG,LỖI BẢO MẬT,7.1.,"`app/(root)/guide/page.tsx`, `app/(root)/innovation/page.tsx`",Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG,LỖI BẢO MẬT,7.2.,`app/(root)/profile/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG,LỖI XỬ LÝ LỖI,8.1.,`app/(root)/features/vocabulary/[folderId]/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG,LỖI XỬ LÝ LỖI,8.2.,`app/error-boundary.tsx` (new file),Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG,LỖI HIỆU NĂNG,9.1.,`app/(root)/news/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG,LỖI HIỆU NĂNG,9.2.,`app/(root)/about/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG,LỖI HIỆU NĂNG,9.3.,`app/(root)/features/writing/[id]/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG,VẤN ĐỀ CHẤT LƯỢNG CODE,11.1.,`app/(root)/guide/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG,VẤN ĐỀ CHẤT LƯỢNG CODE,11.2.,`app/(root)/news/page.tsx`,Cao,Hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO,Thiếu Tối Ưu Hóa,10.1.,`app/(root)/news/page.tsx`,Trung bình,Hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO,Thiếu Tối Ưu Hóa,10.2.,`app/(root)/events/page.tsx`,Trung bình,Hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO,Thiếu Tối Ưu Hóa,10.3.,`app/(root)/events/page.tsx`,Trung bình,Hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO,Code Quality Issues,11.1.,`app/(root)/guide/page.tsx`,Trung bình,Hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO,Code Quality Issues,11.2.,`app/(root)/news/page.tsx`,Trung bình,Hoàn thành
+🟢 THÔNG TIN / GỢI Ý,Thực Thi Tốt Nhất,12.1.,`app/(root)/about/page.tsx`,Thấp,Hoàn thành
+🟢 THÔNG TIN / GỢI Ý,Thực Thi Tốt Nhất,12.2.,,Thấp,Hoàn thành
+🟢 THÔNG TIN / GỢI Ý,Thực Thi Tốt Nhất,12.3.,,Thấp,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/actions,LỖI BẢO MẬT,1.1.,`app/actions/theme.ts`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/actions,LỖI BẢO MẬT,1.2.,`app/actions/theme.ts`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/actions,LỖI BẢO MẬT,1.3.,`app/actions/theme.ts`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/actions,LỖI BẤT ĐỒNG BỘ / THỜI GIAN,2.1.,`app/context/ThemeContext.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/actions,LỖI BẤT ĐỒNG BỘ / THỜI GIAN,2.2.,`app/context/ThemeContext.tsx`,Cao,Hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - app/actions,CODE QUALITY,3.1.,`app/actions/theme.ts`,Trung bình,Hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - app/actions,CODE QUALITY,3.2.,`app/actions/theme.ts`,Trung bình,Hoàn thành
+🟢 THÔNG TIN / GỢI Ý - app/actions,BEST PRACTICES,4.1.,,Thấp,Hoàn thành
+🟢 THÔNG TIN / GỢI Ý - app/actions,BEST PRACTICES,4.2.,,Thấp,Chưa hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/admin,LỖI TRẠNG THÁI & DÒNG DỮ LIỆU,1.1.,`app/admin/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/admin,LỖI TRẠNG THÁI & DÒNG DỮ LIỆU,1.2.,`app/admin/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/admin,LỖI BẤT ĐỒNG BỘ / THỜI GIAN,2.1.,`app/admin/AdminLayoutClient.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/admin,LỖI BẤT ĐỒNG BỘ / THỜI GIAN,2.2.,`app/admin/AdminLayoutClient.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/admin,LỖI BẢO MẬT,3.1.,`app/admin/layout.tsx`,Cao,Hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - app/admin,CODE QUALITY,4.1.,`app/admin/page.tsx`,Trung bình,Hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - app/admin,CODE QUALITY,4.2.,`app/admin/page.tsx`,Trung bình,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/api-proxy,LỖI BẢO MẬT,1.1.,`app/api-proxy/[...path]/route.ts`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/api-proxy,LỖI BẢO MẬT,1.2.,`app/api-proxy/[...path]/route.ts`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/api-proxy,LỖI BẢO MẬT,1.3.,Tất cả files trong `app/api-proxy`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/api-proxy,LỖI BẤT ĐỒNG BỘ / THỜI GIAN,2.1.,`app/api-proxy/[...path]/route.ts`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/api-proxy,LỖI BẤT ĐỒNG BỘ / THỜI GIAN,2.2.,`app/api-proxy/writing-chat-bot/generate/route.ts`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/api-proxy,LỖI XỬ LÝ LỖI,3.1.,Tất cả files trong `app/api-proxy`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/api-proxy,LỖI XỬ LÝ LỖI,3.2.,Tất cả files trong `app/api-proxy`,Cao,Hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - app/api-proxy,CODE QUALITY,4.1.,Tất cả files trong `app/api-proxy`,Trung bình,Hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - app/api-proxy,CODE QUALITY,4.2.,Tất cả files trong `app/api-proxy`,Trung bình,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/auth,LỖI BẢO MẬT,1.1.,`app/auth/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/auth,LỖI BẢO MẬT,1.2.,`app/auth/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/auth,LỖI BẢO MẬT,1.3.,`app/auth/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/auth,LỖI BẢO MẬT,1.4.,`app/auth/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/auth,LỖI TRẠNG THÁI & DÒNG DỮ LIỆU,2.1.,`app/auth/page.tsx`,Cao,Hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - app/auth,CODE QUALITY,3.1.,`app/auth/page.tsx`,Trung bình,Hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - app/auth,CODE QUALITY,3.2.,`app/auth/page.tsx`,Trung bình,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/config,LỖI BẢO MẬT,1.1.,`app/config/api.ts`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/config,LỖI BẢO MẬT,1.2.,`app/config/api.ts`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/config,LỖI BẢO MẬT,1.3.,`app/config/api.ts`,Cao,Hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - app/config,CODE QUALITY,2.1.,`app/config/api.ts`,Trung bình,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/components,LỖI BẢO MẬT,1.1.,`app/components/common/RichTextEditor.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/components,LỖI BẢO MẬT,1.2.,`app/components/common/CustomInput.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/components,RÒ RỈ BỘ NHỚ,2.1.,`app/components/common/ScrollAnimation.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/components,RÒ RỈ BỘ NHỚ,2.2.,`app/components/common/RichTextEditor.tsx`,Cao,Chưa hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/components,LỖI HIỆU NĂNG,3.1.,`app/components/common/ScrollAnimation.tsx`,Cao,Chưa hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/components,LỖI HIỆU NĂNG,3.2.,`app/components/common/RichTextEditor.tsx`,Cao,Chưa hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - app/components,CODE QUALITY,4.1.,`app/components/common/PrefetchLink.tsx`,Trung bình,Chưa hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - app/components,CODE QUALITY,4.2.,`app/components/common/PrefetchLink.tsx`,Trung bình,Chưa hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/context,LỖI BẤT ĐỒNG BỘ / THỜI GIAN,1.1.,`app/context/ThemeContext.tsx`,Cao,Chưa hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/context,LỖI BẤT ĐỒNG BỘ / THỜI GIAN,1.2.,`app/context/ThemeContext.tsx`,Cao,Chưa hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - app/context,CODE QUALITY,2.1.,`app/context/ThemeContext.tsx`,Trung bình,Chưa hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/hooks,RÒ RỈ BỘ NHỚ,1.1.,`app/hooks/useUserId.ts`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/hooks,RÒ RỈ BỘ NHỚ,1.2.,`app/hooks/useExamSocket.ts`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/hooks,RÒ RỈ BỘ NHỚ,1.3.,`app/hooks/useAntiCheat.ts`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/hooks,LỖI BẢO MẬT,2.1.,`app/hooks/useAntiCheat.ts`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/hooks,LỖI BẢO MẬT,2.2.,`app/hooks/useAntiCheat.ts`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/hooks,LỖI BẤT ĐỒNG BỘ / THỜI GIAN,3.1.,`app/hooks/useFileUpload.ts`,Cao,Hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - app/hooks,CODE QUALITY,4.1.,`app/hooks/useAntiCheat.ts`,Trung bình,Hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - app/hooks,CODE QUALITY,4.2.,`app/hooks/useExamSocket.ts`,Trung bình,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/social,LỖI TRẠNG THÁI & DÒNG DỮ LIỆU,1.1.,`app/social/SocialContext.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/social,LỖI TRẠNG THÁI & DÒNG DỮ LIỆU,1.2.,`app/social/SocialContext.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/social,LỖI TRẠNG THÁI & DÒNG DỮ LIỆU,1.3.,`app/social/SocialContext.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/social,LỖI BẤT ĐỒNG BỘ / THỜI GIAN,2.1.,`app/social/SocialContext.tsx`,Cao,Chưa hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/social,LỖI BẤT ĐỒNG BỘ / THỜI GIAN,2.2.,`app/social/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/social,RÒ RỈ BỘ NHỚ,3.1.,`app/social/SocialContext.tsx`,Cao,Chưa hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/social,RÒ RỈ BỘ NHỚ,3.2.,`app/social/SocialContext.tsx`,Cao,Chưa hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/social,LỖI BẢO MẬT,4.1.,`app/social/SocialContext.tsx`,Cao,Hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - app/social,CODE QUALITY,5.1.,,Trung bình,Chưa hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - app/social,CODE QUALITY,5.2.,`app/social/SocialContext.tsx`,Trung bình,Hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - app/social,CODE QUALITY,5.3.,`app/social/SocialContext.tsx`,Trung bình,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/super-admin,LỖI TRẠNG THÁI & DÒNG DỮ LIỆU,1.1.,`app/super-admin/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/super-admin,LỖI TRẠNG THÁI & DÒNG DỮ LIỆU,1.2.,`app/super-admin/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/super-admin,LỖI BẢO MẬT,2.1.,`app/super-admin/layout.tsx`,Cao,Chưa hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/super-admin,LỖI BẢO MẬT,2.2.,`app/super-admin/SuperAdminLayoutClient.tsx`,Cao,Chưa hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - app/super-admin,CODE QUALITY,3.1.,`app/super-admin/page.tsx`,Trung bình,Chưa hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - app/super-admin,CODE QUALITY,3.2.,`app/super-admin/page.tsx`,Trung bình,Chưa hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/user,LỖI TRẠNG THÁI & DÒNG DỮ LIỆU,1.1.,`app/user/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/user,LỖI TRẠNG THÁI & DÒNG DỮ LIỆU,1.2.,`app/user/page.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/user,LỖI BẤT ĐỒNG BỘ / THỜI GIAN,2.1.,`app/user/UserLayoutClient.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/user,LỖI BẤT ĐỒNG BỘ / THỜI GIAN,2.2.,`app/user/UserLayoutClient.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app/user,LỖI BẢO MẬT,3.1.,`app/user/layout.tsx`,Cao,Hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - app/user,CODE QUALITY,4.1.,`app/user/page.tsx`,Trung bình,Chưa hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app (Global Files),LỖI BẢO MẬT,1.1.,`app/layout.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app (Global Files),LỖI BẢO MẬT,1.2.,`app/layout.tsx`,Cao,Chưa hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app (Global Files),LỖI HIỆU NĂNG,2.1.,`app/components/common/PrefetchRoutes.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app (Global Files),LỖI HIỆU NĂNG,2.2.,`app/components/common/PrefetchRoutes.tsx`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - app (Global Files),LỖI HYDRATION / SSR,3.1.,`app/layout.tsx`,Cao,Chưa hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - app (Global Files),CODE QUALITY,4.1.,`app/layout.tsx`,Trung bình,Chưa hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - app (Global Files),CODE QUALITY,4.2.,`app/providers.tsx`,Trung bình,Chưa hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - app (Global Files),CODE QUALITY,4.3.,`app/not-found.tsx`,Trung bình,Chưa hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - interface,TYPE SAFETY BUGS,1.1.,`interface/auth.ts`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - interface,TYPE SAFETY BUGS,1.2.,`interface/students.ts`,Cao,Hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - interface,CODE QUALITY,2.1.,`interface/chat.ts`,Trung bình,Chưa hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - interface,CODE QUALITY,2.2.,`interface/common.ts`,Trung bình,Chưa hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - lib,LỖI BẢO MẬT,1.1.,`lib/utils/server-cookie-decrypt.ts`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - lib,LỖI BẢO MẬT,1.2.,`lib/socket/client.ts`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - lib,RÒ RỈ BỘ NHỚS,2.1.,`lib/utils/cookies.ts`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - lib,RÒ RỈ BỘ NHỚS,2.2.,`lib/utils/cookies.ts`,Cao,Chưa hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - lib,LỖI BẤT ĐỒNG BỘ / THỜI GIAN,3.1.,`lib/utils/cookies.ts`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - lib,LỖI BẤT ĐỒNG BỘ / THỜI GIAN,3.2.,`lib/api/auth.ts`,Cao,Hoàn thành
+🔴 CÁC LỖI NGHIÊM TRỌNG - lib,LỖI HIỆU NĂNG,4.1.,`lib/utils/cookies.ts`,Cao,Hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - lib,CODE QUALITY,5.1.,"`lib/socket/client.ts`, `lib/socket/friend-client.ts`, `lib/socket/chat-client.ts`",Trung bình,Chưa hoàn thành
+🟡 CÁC VẤN ĐỀ CẢNH BÁO - lib,CODE QUALITY,5.2.,`lib/api/users.ts`,Trung bình,Hoàn thành
+📊 ƯỚC LƯỢNG TRUY CẬP VÀ LẬP KẾ HOẠCH NĂNG LỰC,News Detail Page,1.1.,,Thấp,Chưa hoàn thành
+📊 ƯỚC LƯỢNG TRUY CẬP VÀ LẬP KẾ HOẠCH NĂNG LỰC,News Detail Page,1.2.,,Thấp,Chưa hoàn thành
+📊 ƯỚC LƯỢNG TRUY CẬP VÀ LẬP KẾ HOẠCH NĂNG LỰC,News Detail Page,2.1.,,Thấp,Chưa hoàn thành
+📊 ƯỚC LƯỢNG TRUY CẬP VÀ LẬP KẾ HOẠCH NĂNG LỰC,News Detail Page,2.2.,,Thấp,Chưa hoàn thành
+📊 ƯỚC LƯỢNG TRUY CẬP VÀ LẬP KẾ HOẠCH NĂNG LỰC,News Detail Page,3.1.,,Thấp,Chưa hoàn thành
+📊 ƯỚC LƯỢNG TRUY CẬP VÀ LẬP KẾ HOẠCH NĂNG LỰC,News Detail Page,3.2.,,Thấp,Chưa hoàn thành
+📊 ƯỚC LƯỢNG TRUY CẬP VÀ LẬP KẾ HOẠCH NĂNG LỰC,News Detail Page,3.3.,,Thấp,Chưa hoàn thành
+📊 ƯỚC LƯỢNG TRUY CẬP VÀ LẬP KẾ HOẠCH NĂNG LỰC,News Detail Page,4.1.,,Thấp,Chưa hoàn thành
+📊 ƯỚC LƯỢNG TRUY CẬP VÀ LẬP KẾ HOẠCH NĂNG LỰC,News Detail Page,4.2.,,Thấp,Chưa hoàn thành
+📊 ƯỚC LƯỢNG TRUY CẬP VÀ LẬP KẾ HOẠCH NĂNG LỰC,News Detail Page,4.3.,,Thấp,Chưa hoàn thành
+📊 ƯỚC LƯỢNG TRUY CẬP VÀ LẬP KẾ HOẠCH NĂNG LỰC,News Detail Page,5.1.,,Thấp,Chưa hoàn thành
+📊 ƯỚC LƯỢNG TRUY CẬP VÀ LẬP KẾ HOẠCH NĂNG LỰC,News Detail Page,5.2.,,Thấp,Chưa hoàn thành

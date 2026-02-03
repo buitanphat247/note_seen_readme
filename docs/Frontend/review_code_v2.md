@@ -2402,14 +2402,14 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
 **Recommended next steps:**
 1. ⚠️ Install accessibility testing tools:
-   ```bash
-   npm install -D @axe-core/react eslint-plugin-jsx-a11y
-   ```
+```bash
+npm install -D @axe-core/react eslint-plugin-jsx-a11y
+```
 
 2. ⚠️ Test với screen readers:
-   - NVDA (Windows)
-   - VoiceOver (Mac/iOS)
-   - JAWS (Windows)
+- NVDA (Windows)
+- VoiceOver (Mac/iOS)
+- JAWS (Windows)
 
 3. ⚠️ Color contrast audit:
    - Use tools như WebAIM Contrast Checker
